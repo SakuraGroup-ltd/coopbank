@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme inline {
+  /* Colors — lighter blue per CoopBank feedback */
+  --color-navy: #1A56A0;
+  --color-navy-dark: #0F3D7A;
+  --color-navy-light: #2468B8;
+  --color-green: #1A8A3A;
+  --color-green-accent: #00C853;
+  --color-green-dark: #14692D;
+  --color-teal: #1F7A8C;
+  --color-gray-bg: #F2F4F8;
+  --color-gray-body: #4A5568;
+  --color-dark-text: #1A1A2E;
+  --color-white: #FFFFFF;
+  --color-hero-overlay: rgba(15, 61, 122, 0.7);
+
+  /* Typography */
+  --font-sans: 'Gilroy', 'Inter', Arial, sans-serif;
+
+  /* Spacing */
+  --container-max: 1440px;
+  --section-padding: 6rem;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #1A1A2E;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Gilroy', 'Inter', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.glass-dark {
+  background: rgba(26, 86, 160, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gradient overlays — blue-to-green per CoopBank feedback */
+.hero-overlay {
+  background: linear-gradient(135deg, rgba(15, 61, 122, 0.8) 0%, rgba(26, 86, 160, 0.65) 50%, rgba(26, 138, 58, 0.5) 100%);
+}
+
+/* Hide scrollbar for carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
