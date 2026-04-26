@@ -14,7 +14,11 @@ export async function fetchSheet<T>(url: string, ttl = 300): Promise<T[]> {
       transform: (v) => v.trim(),
     });
     if (errors.length) console.warn("[sheets] Parse warnings:", errors.slice(0, 3));
-    return data;
+    // Strip instruction/note rows (first column starts with ℹ or is empty)
+    return (data as Record<string, string>[]).filter((row) => {
+      const first = Object.values(row)[0] || "";
+      return first && !first.startsWith("ℹ") && !first.startsWith("#");
+    }) as T[];
   } catch (err) {
     console.error("[sheets] fetchSheet error:", err);
     return [];
