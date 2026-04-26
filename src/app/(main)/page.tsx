@@ -4,12 +4,15 @@ import MobileBanking from "@/components/home/MobileBanking";
 import ForexTicker from "@/components/home/ForexTicker";
 import ServicesGrid from "@/components/home/ServicesGrid";
 import ProductsCarousel from "@/components/home/ProductsCarousel";
-export default function Home() {
+import { fetchForexRates } from "@/lib/sheets";
+
+export default async function Home() {
+  const rates = await fetchForexRates();
   return (
     <>
       <Hero />
       <QuickLinks />
-      <ForexTicker />
+      <ForexTicker rates={rates} />
       <ProductsCarousel />
       <MobileBanking />
       <ServicesGrid />
