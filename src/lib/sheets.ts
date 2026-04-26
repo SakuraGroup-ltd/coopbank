@@ -2,9 +2,9 @@ import Papa from "papaparse";
 
 // ── Generic fetcher ───────────────────────────────────────────────────────────
 
-export async function fetchSheet<T>(url: string, ttl = 300): Promise<T[]> {
+export async function fetchSheet<T>(url: string, ttl = 300, noCache = false): Promise<T[]> {
   try {
-    const res = await fetch(url, { next: { revalidate: ttl } });
+    const res = await fetch(url, noCache ? { cache: "no-store" } : { next: { revalidate: ttl } });
     if (!res.ok) throw new Error(`Sheet fetch failed: ${res.status}`);
     const csv = await res.text();
     const { data, errors } = Papa.parse<T>(csv, {
@@ -88,30 +88,30 @@ export const isTenderOpen = (t: Tender) => {
 
 // ── Typed fetch functions ─────────────────────────────────────────────────────
 
-export async function fetchForexRates(): Promise<ForexRate[]> {
+export async function fetchForexRates(noCache = false): Promise<ForexRate[]> {
   const url = process.env.SHEET_FOREX_URL;
   if (!url) return [];
-  const rows = await fetchSheet<ForexRate>(url, 300);
+  const rows = await fetchSheet<ForexRate>(url, 300, noCache);
   return rows.filter((r) => bool(r.active));
 }
 
-export async function fetchJobListings(includeAll = false): Promise<JobListing[]> {
+export async function fetchJobListings(includeAll = false, noCache = false): Promise<JobListing[]> {
   const url = process.env.SHEET_JOBS_URL;
   if (!url) return [];
-  const rows = await fetchSheet<JobListing>(url, 600);
+  const rows = await fetchSheet<JobListing>(url, 600, noCache);
   return includeAll ? rows : rows.filter((r) => r.status === "open");
 }
 
-export async function fetchTenders(includeAll = false): Promise<Tender[]> {
+export async function fetchTenders(includeAll = false, noCache = false): Promise<Tender[]> {
   const url = process.env.SHEET_TENDERS_URL;
   if (!url) return [];
-  const rows = await fetchSheet<Tender>(url, 600);
+  const rows = await fetchSheet<Tender>(url, 600, noCache);
   return includeAll ? rows : rows.filter((r) => r.status !== "draft");
 }
 
-export async function fetchBranches(includeAll = false): Promise<Branch[]> {
+export async function fetchBranches(includeAll = false, noCache = false): Promise<Branch[]> {
   const url = process.env.SHEET_BRANCHES_URL;
   if (!url) return [];
-  const rows = await fetchSheet<Branch>(url, 3600);
+  const rows = await fetchSheet<Branch>(url, 3600, noCache);
   return includeAll ? rows : rows.filter((r) => bool(r.active));
 }
