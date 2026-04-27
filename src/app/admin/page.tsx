@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { fetchForexRates, fetchJobListings, fetchTenders, fetchBranches, isTenderOpen, bool } from "@/lib/sheets";
+import { fetchForexRates, fetchJobListings, fetchTenders, fetchBranches, fetchBlogPosts, isTenderOpen, bool } from "@/lib/sheets";
 import AdminLogout from "./AdminLogout";
 import AdminTabs from "./AdminTabs";
 
@@ -12,11 +12,12 @@ function sheetEditUrl(envUrl: string | undefined) {
 }
 
 export default async function AdminDashboard() {
-  const [forex, jobs, tenders, branches] = await Promise.all([
+  const [forex, jobs, tenders, branches, blog] = await Promise.all([
     fetchForexRates(true),
     fetchJobListings(true, true),
     fetchTenders(true, true),
     fetchBranches(true, true),
+    fetchBlogPosts(true, true),
   ]);
 
   const urls = {
@@ -24,6 +25,7 @@ export default async function AdminDashboard() {
     jobs:     sheetEditUrl(process.env.SHEET_JOBS_URL),
     tenders:  sheetEditUrl(process.env.SHEET_TENDERS_URL),
     branches: sheetEditUrl(process.env.SHEET_BRANCHES_URL),
+    blog:     sheetEditUrl(process.env.SHEET_BLOG_URL),
   };
 
   const now     = new Date();
@@ -57,7 +59,7 @@ export default async function AdminDashboard() {
             { label: "Forex rates",     value: forex.length,                               color: "border-l-[#1A56A0]" },
             { label: "Open positions",  value: jobs.filter(j=>j.status==="open").length,   color: "border-l-emerald-500" },
             { label: "Active tenders",  value: tenders.filter(t=>isTenderOpen(t)).length,  color: "border-l-amber-500"  },
-            { label: "Locations",       value: branches.filter(b=>bool(b.active)).length,  color: "border-l-purple-500" },
+            { label: "Published posts", value: blog.filter(p=>p.status==="published").length, color: "border-l-purple-500" },
           ].map(({ label, value, color }) => (
             <div key={label} className={`bg-white rounded-xl border border-gray-100 border-l-4 ${color} px-5 py-3.5 shadow-sm`}>
               <p className="text-2xl font-black text-[#1A1A2E]">{value}</p>
@@ -73,6 +75,7 @@ export default async function AdminDashboard() {
         jobs={jobs}
         tenders={tenders}
         branches={branches}
+        blog={blog}
         urls={urls}
         now={now.toISOString()}
         in7days={in7days.toISOString()}
