@@ -5,18 +5,68 @@ import type { ForexRate, JobListing, Tender, Branch, BlogPost } from "@/lib/shee
 import { isTenderOpen, bool } from "@/lib/sheets";
 import ContentEditor from "@/components/admin/ContentEditor";
 
+// ── Tab SVG icons ─────────────────────────────────────────────────────────────
+
+const TAB_ICONS: Record<string, React.ReactNode> = {
+  forex: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="w-[15px] h-[15px]">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M9.5 9.5C9.5 8.672 10.619 8 12 8s2.5.672 2.5 1.5S13.381 11 12 11s-2.5.672-2.5 1.5S10.619 14 12 14s2.5.672 2.5 1.5M12 7v1m0 8v1"/>
+    </svg>
+  ),
+  jobs: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="w-[15px] h-[15px]">
+      <rect x="2" y="7" width="20" height="14" rx="2"/>
+      <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+    </svg>
+  ),
+  tenders: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="w-[15px] h-[15px]">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="8" y1="13" x2="16" y2="13"/>
+      <line x1="8" y1="17" x2="13" y2="17"/>
+    </svg>
+  ),
+  blog: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="w-[15px] h-[15px]">
+      <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
+      <path d="M17.586 3.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+    </svg>
+  ),
+  branches: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="w-[15px] h-[15px]">
+      <path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/>
+      <circle cx="12" cy="10" r="3"/>
+    </svg>
+  ),
+};
+
 // ── Shared UI ─────────────────────────────────────────────────────────────────
 
 function Pill({ label, variant }: { label: string; variant: "green"|"red"|"amber"|"blue"|"gray"|"purple" }) {
-  const cls: Record<string, string> = {
-    green:  "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200",
-    red:    "bg-red-50 text-red-700 ring-1 ring-red-200",
-    amber:  "bg-amber-50 text-amber-700 ring-1 ring-amber-200",
-    blue:   "bg-blue-50 text-blue-700 ring-1 ring-blue-200",
-    gray:   "bg-gray-100 text-gray-500 ring-1 ring-gray-200",
-    purple: "bg-purple-50 text-purple-700 ring-1 ring-purple-200",
+  const dot: Record<string, string> = {
+    green:  "bg-emerald-400",
+    red:    "bg-red-400",
+    amber:  "bg-amber-400",
+    blue:   "bg-[#1A56A0]",
+    gray:   "bg-gray-300",
+    purple: "bg-purple-400",
   };
-  return <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${cls[variant]}`}>{label}</span>;
+  const txt: Record<string, string> = {
+    green:  "text-emerald-700",
+    red:    "text-red-600",
+    amber:  "text-amber-700",
+    blue:   "text-[#1A56A0]",
+    gray:   "text-gray-500",
+    purple: "text-purple-700",
+  };
+  return (
+    <span className={`inline-flex items-center gap-1.5 text-[11px] font-semibold ${txt[variant]}`}>
+      <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dot[variant]}`} />
+      {label}
+    </span>
+  );
 }
 
 function SheetLink({ url, label }: { url: string | null; label: string }) {
@@ -161,13 +211,19 @@ function ForexTab({ rates, url }: { rates: ForexRate[]; url: string | null }) {
                   <Td mono><span className="font-semibold">{Number(r.buy_rate).toLocaleString()}</span></Td>
                   <Td mono>{Number(r.sell_rate).toLocaleString()}</Td>
                   <Td>
-                    <Pill label={r.trend || "neutral"}
-                      variant={r.trend==="up" ? "green" : r.trend==="down" ? "red" : "gray"} />
+                    {r.trend === "up"
+                      ? <span className="flex items-center gap-1 text-emerald-600 text-xs font-medium"><svg className="w-3 h-3" viewBox="0 0 12 12" fill="currentColor"><path d="M6 2l4 5H2z"/></svg>Up</span>
+                      : r.trend === "down"
+                      ? <span className="flex items-center gap-1 text-red-500 text-xs font-medium"><svg className="w-3 h-3" viewBox="0 0 12 12" fill="currentColor"><path d="M6 10L2 5h8z"/></svg>Down</span>
+                      : <span className="text-gray-400 text-xs">—</span>
+                    }
                   </Td>
                   <Td><span className="text-xs text-gray-500">{r.updated_date}</span></Td>
                   <Td>
-                    <Pill label={bool(r.active) ? "TRUE" : "FALSE"}
-                      variant={bool(r.active) ? "green" : "gray"} />
+                    {bool(r.active)
+                      ? <span className="text-emerald-600 text-xs font-medium flex items-center gap-1"><svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/></svg>Active</span>
+                      : <span className="text-gray-300 text-xs">Inactive</span>
+                    }
                   </Td>
                 </tr>
               ))}
@@ -370,7 +426,6 @@ function BlogTab({ posts, url }: { posts: BlogPost[]; url: string|null }) {
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
         <p className="text-sm text-gray-500">
           {posts.length} posts · <span className="text-gray-400">Communications</span>
-          {!url && <span className="ml-2 text-amber-500 font-medium">· SHEET_BLOG_URL not set</span>}
         </p>
         <div className="flex items-center gap-3">
           {url && <SheetLink url={url} label="Open Sheet" />}
@@ -383,12 +438,7 @@ function BlogTab({ posts, url }: { posts: BlogPost[]; url: string|null }) {
 
       {posts.length === 0 ? (
         <div className="px-6 py-12 text-center">
-          <p className="text-gray-400 text-sm mb-2">No blog posts yet.</p>
-          {!url && (
-            <p className="text-xs text-amber-600 mb-4">
-              Add a <code className="bg-amber-50 px-1 rounded">blog_posts</code> tab to the Google Sheet and set <code className="bg-amber-50 px-1 rounded">SHEET_BLOG_URL</code>.
-            </p>
-          )}
+          <p className="text-gray-400 text-sm mb-4">No blog posts yet.</p>
           <button onClick={() => setEditing("new")}
             className="text-xs font-bold bg-[#1A56A0] text-white px-5 py-2.5 rounded-lg hover:bg-[#1547a0] transition">
             Write First Post
@@ -496,11 +546,11 @@ function BranchesTab({ branches, url }: { branches: Branch[]; url: string|null }
 // ── Root component ────────────────────────────────────────────────────────────
 
 const TABS = [
-  { key: "forex",    label: "Forex Rates",  icon: "💱" },
-  { key: "jobs",     label: "Job Listings", icon: "💼" },
-  { key: "tenders",  label: "Tenders",      icon: "📋" },
-  { key: "blog",     label: "Blog",         icon: "✍️" },
-  { key: "branches", label: "Branches",     icon: "📍" },
+  { key: "forex",    label: "Forex Rates"  },
+  { key: "jobs",     label: "Job Listings" },
+  { key: "tenders",  label: "Tenders"      },
+  { key: "blog",     label: "Blog"         },
+  { key: "branches", label: "Branches"     },
 ];
 
 export default function AdminTabs({
@@ -524,14 +574,14 @@ export default function AdminTabs({
       {/* Tab bar */}
       <div className="flex items-center border-b border-gray-200 bg-white rounded-t-2xl overflow-hidden shadow-sm">
         <div className="flex flex-1">
-          {TABS.map(({ key, label, icon }) => (
+          {TABS.map(({ key, label }) => (
             <button key={key} onClick={() => setActive(key)}
-              className={`flex-1 py-3.5 text-sm font-semibold transition-all border-b-2 flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-3.5 text-sm font-semibold transition-all border-b-2 flex items-center justify-center gap-2 ${
                 active === key
-                  ? "border-[#1A56A0] text-[#1A56A0] bg-blue-50/40"
+                  ? "border-[#1A56A0] text-[#1A56A0] bg-blue-50/30"
                   : "border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-50"
               }`}>
-              <span className="text-base leading-none">{icon}</span>
+              <span className="opacity-80">{TAB_ICONS[key]}</span>
               <span className="hidden sm:inline">{label}</span>
             </button>
           ))}

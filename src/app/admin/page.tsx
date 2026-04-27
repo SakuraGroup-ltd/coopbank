@@ -54,16 +54,35 @@ export default async function AdminDashboard() {
 
       {/* Summary row */}
       <div className="max-w-7xl mx-auto px-6 pt-6">
-        <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-4 gap-3 mb-6">
           {[
-            { label: "Forex rates",     value: forex.length,                               color: "border-l-[#1A56A0]" },
-            { label: "Open positions",  value: jobs.filter(j=>j.status==="open").length,   color: "border-l-emerald-500" },
-            { label: "Active tenders",  value: tenders.filter(t=>isTenderOpen(t)).length,  color: "border-l-amber-500"  },
-            { label: "Published posts", value: blog.filter(p=>p.status==="published").length, color: "border-l-purple-500" },
-          ].map(({ label, value, color }) => (
-            <div key={label} className={`bg-white rounded-xl border border-gray-100 border-l-4 ${color} px-5 py-3.5 shadow-sm`}>
-              <p className="text-2xl font-black text-[#1A1A2E]">{value}</p>
-              <p className="text-xs font-medium text-gray-500 mt-0.5">{label}</p>
+            {
+              label: "Forex rates",
+              value: forex.length,
+              icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-4 h-4"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5C9.5 8.672 10.619 8 12 8s2.5.672 2.5 1.5S13.381 11 12 11s-2.5.672-2.5 1.5S10.619 14 12 14s2.5.672 2.5 1.5M12 7v1m0 8v1"/></svg>,
+            },
+            {
+              label: "Open positions",
+              value: jobs.filter(j=>j.status==="open").length,
+              icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-4 h-4"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>,
+            },
+            {
+              label: "Active tenders",
+              value: tenders.filter(t=>isTenderOpen(t)).length,
+              icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-4 h-4"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>,
+            },
+            {
+              label: "Published posts",
+              value: blog.filter(p=>p.status==="published").length,
+              icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-4 h-4"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/><path d="M17.586 3.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>,
+            },
+          ].map(({ label, value, icon }) => (
+            <div key={label} className="bg-white rounded-xl border border-gray-100 px-5 py-4 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">{label}</span>
+                <span className="text-gray-300">{icon}</span>
+              </div>
+              <p className="text-3xl font-black text-[#0E1B36] tracking-tight">{value}</p>
             </div>
           ))}
         </div>
