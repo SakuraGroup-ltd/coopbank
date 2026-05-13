@@ -4,61 +4,14 @@ import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
-// ── SVG icons (no emojis) ─────────────────────────────────────────────────────
-
-const icons = {
-  forex: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-4 h-4">
-      <circle cx="12" cy="12" r="9"/>
-      <path d="M12 7v1m0 8v1M9.5 9.5C9.5 8.672 10.619 8 12 8s2.5.672 2.5 1.5S13.381 11 12 11s-2.5.672-2.5 1.5S10.619 14 12 14s2.5.672 2.5 1.5"/>
-    </svg>
-  ),
-  jobs: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-4 h-4">
-      <rect x="2" y="7" width="20" height="14" rx="2"/>
-      <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
-    </svg>
-  ),
-  tenders: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-4 h-4">
-      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-      <polyline points="14 2 14 8 20 8"/>
-      <line x1="8" y1="13" x2="16" y2="13"/>
-      <line x1="8" y1="17" x2="13" y2="17"/>
-    </svg>
-  ),
-  blog: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-4 h-4">
-      <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
-      <path d="M17.586 3.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-    </svg>
-  ),
-  branches: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-4 h-4">
-      <path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/>
-      <circle cx="12" cy="10" r="3"/>
-    </svg>
-  ),
-};
-
-const MODULES = [
-  { icon: icons.forex,    label: "Forex Rates",   owner: "Treasury / Finance" },
-  { icon: icons.jobs,     label: "Job Listings",  owner: "Human Resources" },
-  { icon: icons.tenders,  label: "Tenders",       owner: "Procurement" },
-  { icon: icons.blog,     label: "Blog Posts",    owner: "Communications" },
-  { icon: icons.branches, label: "Branches",      owner: "Business Development" },
-];
-
-// ── Login form ────────────────────────────────────────────────────────────────
-
 function LoginForm() {
   const router  = useRouter();
   const params  = useSearchParams();
   const from    = params.get("from") || "/admin";
-  const [pw, setPw]             = useState("");
-  const [show, setShow]         = useState(false);
-  const [error, setError]       = useState("");
-  const [loading, setLoading]   = useState(false);
+  const [pw, setPw]           = useState("");
+  const [show, setShow]       = useState(false);
+  const [error, setError]     = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,63 +33,46 @@ function LoginForm() {
   return (
     <div className="min-h-screen flex">
 
-      {/* ── Left — brand panel ────────────────────────────────────────────── */}
-      <div
-        className="hidden lg:flex lg:w-[42%] flex-col justify-between p-12 relative overflow-hidden"
-        style={{ background: "#0E1B36" }}
-      >
-        {/* Dot-grid background */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-          }}
+      {/* ── Left — photo panel ─────────────────────────────────────────────── */}
+      <div className="hidden lg:flex lg:w-[58%] relative overflow-hidden flex-col justify-between p-12">
+
+        {/* Background photo */}
+        <Image
+          src="/images/coopbank-dodoma.gif"
+          alt="Co-operative Bank of Tanzania — Dodoma Branch"
+          fill
+          className="object-cover object-center"
+          priority
+          unoptimized
         />
 
-        {/* Accent circle — bottom right */}
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full opacity-[0.04] border-[40px] border-white pointer-events-none" />
+        {/* Dark gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#03080f]/90 via-[#03080f]/40 to-[#03080f]/10" />
 
-        {/* Content */}
+        {/* Logo — top left */}
         <div className="relative z-10">
           <Image
             src="/images/coopbank-logo.png"
             alt="Cooperative Bank Tanzania"
-            width={180}
-            height={64}
-            className="brightness-0 invert mb-12"
+            width={160}
+            height={56}
+            className="brightness-0 invert"
             priority
           />
-
-          <h2 className="text-white text-2xl font-bold tracking-tight mb-2">
-            Content Management
-          </h2>
-          <p className="text-white/40 text-sm leading-relaxed mb-10 max-w-[280px]">
-            Manage your website content — forex rates, job listings, tenders, blog posts and branch information.
-          </p>
-
-          {/* Module list */}
-          <div className="space-y-0 border-t border-white/10">
-            {MODULES.map(({ icon, label, owner }) => (
-              <div key={label} className="flex items-center gap-4 py-3.5 border-b border-white/[0.07]">
-                <div className="w-8 h-8 rounded-lg bg-white/[0.08] flex items-center justify-center text-white/60 flex-shrink-0">
-                  {icon}
-                </div>
-                <div>
-                  <div className="text-white/90 text-sm font-semibold leading-none mb-0.5">{label}</div>
-                  <div className="text-white/30 text-[11px]">{owner}</div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
-        <p className="relative z-10 text-white/20 text-[10px] tracking-widest uppercase">
-          Cooperative Bank of Tanzania Plc
-        </p>
+        {/* Bottom copy */}
+        <div className="relative z-10">
+          <h2 className="text-white text-3xl font-bold tracking-tight leading-snug mb-3">
+            Co-operative Bank<br />of Tanzania
+          </h2>
+          <p className="text-white/50 text-sm leading-relaxed max-w-[320px]">
+            Ustawi kwa Wote &mdash; Prosperity for All
+          </p>
+        </div>
       </div>
 
-      {/* ── Right — login form ────────────────────────────────────────────── */}
+      {/* ── Right — login form ─────────────────────────────────────────────── */}
       <div className="flex-1 bg-white flex flex-col items-center justify-center px-8">
 
         {/* Mobile logo */}
@@ -145,14 +81,11 @@ function LoginForm() {
         </div>
 
         <div className="w-full max-w-[340px]">
-
-          {/* Heading */}
           <div className="mb-8">
             <h1 className="text-[22px] font-bold text-[#0E1B36] tracking-tight">Staff Portal</h1>
             <p className="text-sm text-gray-400 mt-1">Sign in with your admin credentials</p>
           </div>
 
-          {/* Error */}
           {error && (
             <div className="mb-5 flex items-center gap-2.5 bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl">
               <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

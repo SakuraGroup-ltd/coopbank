@@ -7,11 +7,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  revalidatePath("/");
-  revalidatePath("/branches");
-  revalidatePath("/careers");
-  revalidatePath("/tenders");
-  revalidatePath("/news");
+  // Bust the entire app cache tree — invalidates all fetches and rendered pages
+  revalidatePath("/", "layout");
 
   return NextResponse.json({ ok: true, synced_at: new Date().toISOString() });
 }
