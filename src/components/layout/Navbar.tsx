@@ -634,7 +634,7 @@ export default function Navbar() {
             exit="exit"
             onMouseEnter={() => {}}
             onMouseLeave={() => {}}
-            className="absolute inset-x-0 hidden xl:block bg-[#0b1d35] border-t border-white/5 shadow-2xl"
+            className="absolute inset-x-0 hidden xl:block bg-white border-t border-slate-200 shadow-2xl"
             style={{ top: "calc(44px + 52px)" }}
           >
             <div className="mx-auto max-w-[1440px] px-10 py-10">
@@ -645,7 +645,7 @@ export default function Navbar() {
               >
                 {activeMegaColumns.map((col) => (
                   <div key={col.title}>
-                    <h4 className="mb-5 pb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-white/35 border-b border-white/5">
+                    <h4 className="mb-5 pb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-slate-500 border-b border-slate-200">
                       {col.title}
                     </h4>
                     <ul className="space-y-0.5">
@@ -654,15 +654,15 @@ export default function Navbar() {
                           <Link
                             href={item.href}
                             onClick={() => setActiveMega(null)}
-                            className="group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-white/5"
+                            className="group flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors duration-150 hover:bg-slate-50"
                           >
-                            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-white/15 group-hover:bg-[#00C853] transition-colors" />
+                            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-300 group-hover:bg-[#00C853] transition-colors" />
                             <div>
-                              <span className="block text-[13px] font-medium text-white/85 group-hover:text-[#00C853] transition-colors">
+                              <span className="block text-[13px] font-medium text-slate-800 group-hover:text-[#00C853] transition-colors">
                                 {item.label}
                               </span>
                               {item.desc && (
-                                <span className="block mt-0.5 text-[11px] text-white/30 group-hover:text-white/50 transition-colors leading-relaxed">
+                                <span className="block mt-0.5 text-[11px] text-slate-400 group-hover:text-slate-600 transition-colors leading-relaxed">
                                   {item.desc}
                                 </span>
                               )}
@@ -702,18 +702,18 @@ export default function Navbar() {
               </div>
 
               {/* Bottom row */}
-              <div className="mt-8 border-t border-white/5 pt-5 flex items-center justify-between">
+              <div className="mt-8 border-t border-slate-200 pt-5 flex items-center justify-between">
                 <Link
                   href={activeNavItem?.href ?? "/"}
                   onClick={() => setActiveMega(null)}
-                  className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#00C853] hover:text-white transition-colors"
+                  className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#1A8A3A] hover:text-[#0F3D7A] transition-colors"
                 >
                   View all {activeMega?.toLowerCase()} <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
                 <div className="flex items-center gap-4">
-                  <Link href="#" onClick={() => setActiveMega(null)} className="text-[11px] text-white/35 hover:text-white/60 transition-colors">Find a Branch</Link>
-                  <Link href="#" onClick={() => setActiveMega(null)} className="text-[11px] text-white/35 hover:text-white/60 transition-colors">FAQs</Link>
-                  <Link href="/about-us#contact" onClick={() => setActiveMega(null)} className="text-[11px] text-white/35 hover:text-white/60 transition-colors">Contact Us</Link>
+                  <Link href="/branches" onClick={() => setActiveMega(null)} className="text-[11px] text-slate-500 hover:text-slate-800 transition-colors">Find a Branch</Link>
+                  <Link href="/faqs" onClick={() => setActiveMega(null)} className="text-[11px] text-slate-500 hover:text-slate-800 transition-colors">FAQs</Link>
+                  <Link href="/about-us#contact" onClick={() => setActiveMega(null)} className="text-[11px] text-slate-500 hover:text-slate-800 transition-colors">Contact Us</Link>
                 </div>
               </div>
             </div>
@@ -756,13 +756,13 @@ export default function Navbar() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed inset-0 top-[52px] z-40 xl:hidden bg-[#0F3D7A] overflow-y-auto"
+            className="fixed inset-0 top-[52px] z-40 xl:hidden bg-white overflow-y-auto"
           >
             <div className="px-5 py-4">
               {/* Mobile search */}
-              <div className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-3 mb-4">
-                <Search className="h-4 w-4 text-white/40 shrink-0" />
-                <input type="text" placeholder="Search..." className="flex-1 text-sm text-white placeholder:text-white/40 outline-none bg-transparent" />
+              <div className="flex items-center gap-3 bg-slate-100 rounded-lg px-4 py-3 mb-4">
+                <Search className="h-4 w-4 text-slate-400 shrink-0" />
+                <input type="text" placeholder="Search..." className="flex-1 text-sm text-slate-900 placeholder:text-slate-400 outline-none bg-transparent" />
               </div>
 
               {/* Mobile CoopNet + Register row */}
@@ -786,7 +786,7 @@ export default function Navbar() {
               </div>
 
               {/* Main nav items with mega submenus */}
-              <p className="px-4 mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-white/25">Banking</p>
+              <p className="px-4 mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500">Banking</p>
               <div className="flex flex-col gap-0.5 mb-4">
                 {mainNavItems.map((item, i) => {
                   const hasMega = !!item.megaMenu;
@@ -800,11 +800,11 @@ export default function Navbar() {
                             type="button"
                             onClick={() => setMobileExpanded(isExpanded ? null : item.label)}
                             className={`flex w-full items-center justify-between rounded-lg px-4 py-3.5 text-sm font-bold transition-colors ${
-                              isExpanded ? "text-[#00C853] bg-white/5" : "text-white hover:bg-white/5"
+                              isExpanded ? "text-[#1A8A3A] bg-slate-100" : "text-slate-900 hover:bg-slate-100"
                             }`}
                           >
                             {item.label}
-                            <ChevronDown className={`h-4 w-4 text-white/40 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
+                            <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
                           </button>
 
                           <AnimatePresence>
@@ -815,16 +815,16 @@ export default function Navbar() {
                                 exit={{ height: 0, opacity: 0, transition: { duration: 0.18, ease: "easeIn" as const } }}
                                 className="overflow-hidden"
                               >
-                                <div className="ml-4 border-l border-[#1A8A3A]/20 pl-3 pb-3 space-y-4 mt-1">
+                                <div className="ml-4 border-l border-[#1A8A3A]/30 pl-3 pb-3 space-y-4 mt-1">
                                   {item.megaMenu.map((col) => (
                                     <div key={col.title}>
-                                      <p className="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-white/25">{col.title}</p>
+                                      <p className="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500">{col.title}</p>
                                       {col.items.map((sub) => (
                                         <Link
                                           key={sub.href + sub.label}
                                           href={sub.href}
                                           onClick={() => setMobileOpen(false)}
-                                          className="block rounded-md px-3 py-2 text-[13px] text-white/65 font-medium transition-colors hover:bg-white/5 hover:text-[#00C853]"
+                                          className="block rounded-md px-3 py-2 text-[13px] text-slate-600 font-medium transition-colors hover:bg-slate-100 hover:text-[#1A8A3A]"
                                         >
                                           {sub.label}
                                         </Link>
@@ -840,7 +840,7 @@ export default function Navbar() {
                         <Link
                           href={item.href}
                           onClick={() => setMobileOpen(false)}
-                          className="block rounded-lg px-4 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white/5"
+                          className="block rounded-lg px-4 py-3.5 text-sm font-bold text-slate-900 transition-colors hover:bg-slate-100"
                         >
                           {item.label}
                         </Link>
@@ -851,7 +851,7 @@ export default function Navbar() {
               </div>
 
               {/* Secondary links */}
-              <p className="px-4 mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-white/25">More</p>
+              <p className="px-4 mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500">More</p>
               <div className="flex flex-col gap-0.5">
                 {[
                   { label: "About Us", href: "/about-us" },
@@ -866,7 +866,7 @@ export default function Navbar() {
                     key={link.label}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="block rounded-lg px-4 py-3 text-sm text-white/55 font-medium transition-colors hover:bg-white/5 hover:text-white"
+                    className="block rounded-lg px-4 py-3 text-sm text-slate-600 font-medium transition-colors hover:bg-slate-100 hover:text-slate-900"
                   >
                     {link.label}
                   </Link>
@@ -874,22 +874,22 @@ export default function Navbar() {
               </div>
 
               {/* Mobile footer */}
-              <div className="mt-6 border-t border-white/10 pt-6 flex items-center gap-4">
-                <div className="flex items-center rounded-full border border-white/15 overflow-hidden">
+              <div className="mt-6 border-t border-slate-200 pt-6 flex items-center gap-4">
+                <div className="flex items-center rounded-full border border-slate-300 overflow-hidden">
                   <button
                     type="button"
                     onClick={() => setLang("EN")}
-                    className={`px-4 py-2 text-xs font-bold transition-colors ${lang === "EN" ? "bg-[#1A8A3A] text-white" : "text-white/50"}`}
+                    className={`px-4 py-2 text-xs font-bold transition-colors ${lang === "EN" ? "bg-[#1A8A3A] text-white" : "text-slate-500"}`}
                   >EN</button>
                   <button
                     type="button"
                     onClick={() => setLang("SW")}
-                    className={`px-4 py-2 text-xs font-bold transition-colors ${lang === "SW" ? "bg-[#1A8A3A] text-white" : "text-white/50"}`}
+                    className={`px-4 py-2 text-xs font-bold transition-colors ${lang === "SW" ? "bg-[#1A8A3A] text-white" : "text-slate-500"}`}
                   >SW</button>
                 </div>
                 <div className="flex-1 text-right">
-                  <p className="text-[11px] text-white/30">+255 27 275 4470</p>
-                  <p className="text-[11px] text-white/30">info@cbtbank.co.tz</p>
+                  <p className="text-[11px] text-slate-500">+255 27 275 4470</p>
+                  <p className="text-[11px] text-slate-500">info@cbtbank.co.tz</p>
                 </div>
               </div>
             </div>
