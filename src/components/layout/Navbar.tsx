@@ -123,6 +123,7 @@ const cardsPaymentsMenu: MegaColumn[] = [
       { label: "QR Pay", href: "/cards#qr-pay", desc: "Scan-to-pay at merchant points" },
       { label: "Bill Payments", href: "/cards#bill-pay", desc: "Utilities, school fees & more" },
       { label: "Money Transfers", href: "/cards#transfers", desc: "Send money locally & abroad" },
+      { label: "International Payments", href: "/cards#intl-payments", desc: "Cross-border fund transfers" },
       { label: "Airtime & Bundles", href: "/cards#airtime", desc: "Top up any network" },
     ],
   },
@@ -165,30 +166,20 @@ const loanProductsMenu: MegaColumn[] = [
 
 const treasuryMenu: MegaColumn[] = [
   {
-    title: "Foreign Exchange",
+    title: "FX & Exchange",
     items: [
       { label: "Spot Foreign Exchange", href: "/treasury#spot-fx", desc: "Buy & sell currencies at live rates" },
-      { label: "Forward FX Contracts", href: "/treasury#forward-fx", desc: "Lock in future exchange rates" },
-      { label: "Foreign Exchange Swaps", href: "/treasury#fx-swaps", desc: "Swap currencies for flexible terms" },
-      { label: "International Payments", href: "/treasury#intl-payments", desc: "Cross-border fund transfers" },
-      { label: "Daily Exchange Rates", href: "/treasury#rates", desc: "Today's CoopBank FX rates" },
+      { label: "Forward Foreign Exchange", href: "/treasury#forward-fx", desc: "Lock in future exchange rates" },
+      { label: "Foreign Exchange Swap", href: "/treasury#fx-swap", desc: "Flexible currency swap arrangements" },
+      { label: "Daily Exchange Rate", href: "/treasury#rates", desc: "Today's CoopBank FX rates" },
     ],
   },
   {
-    title: "Money Markets & Investments",
+    title: "Investments & Services",
     items: [
-      { label: "Money Market", href: "/treasury#money-market", desc: "Short-term investment instruments" },
-      { label: "Government Securities", href: "/treasury#govt-securities", desc: "Treasury bills & bonds" },
-      { label: "Fixed Deposits", href: "/treasury#fixed-deposits", desc: "Competitive term deposit rates" },
-      { label: "Interbank Cash", href: "/treasury#interbank", desc: "Interbank lending & borrowing" },
-    ],
-  },
-  {
-    title: "Financial Institutions",
-    items: [
-      { label: "Bank to Bank Services", href: "/treasury#b2b", desc: "Correspondent banking" },
-      { label: "Custody Services", href: "/treasury#custody", desc: "Safekeeping & settlement" },
-      { label: "Tailor Made Solutions", href: "/treasury#custom", desc: "Bespoke treasury products" },
+      { label: "Government Bonds", href: "/treasury#govt-bonds", desc: "Treasury bonds & long-term securities" },
+      { label: "Fixed Deposit", href: "/treasury#fixed-deposit", desc: "Competitive term deposit rates" },
+      { label: "Custodian Services", href: "/treasury#custodian", desc: "Safekeeping & settlement, with bespoke solutions" },
       { label: "Contact Treasury Desk", href: "/treasury#contact", desc: "Speak to our dealers" },
     ],
   },

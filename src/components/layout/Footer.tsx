@@ -35,6 +35,7 @@ const cardsPayments = [
   { label: "QR Pay", href: "/cards#qr-pay" },
   { label: "Bill Payments", href: "/cards#bill-pay" },
   { label: "Money Transfers", href: "/cards#transfers" },
+  { label: "International Payments", href: "/cards#intl-payments" },
   { label: "Treasury Services", href: "/treasury" },
 ];
 
