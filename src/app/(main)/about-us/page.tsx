@@ -237,7 +237,7 @@ export default function AboutUsPage() {
           </p>
           {/* Active branch location boxes */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-            {["Tabora", "Tandahimba", "Dodoma", "Moshi"].map((branch, i) => (
+            {["Dodoma", "Mtwara", "Tabora", "Moshi"].map((branch, i) => (
               <FadeIn key={branch} delay={i * 0.08}>
                 <div className="flex flex-col items-center gap-3 rounded-2xl border border-[#1A8A3A]/20 bg-white p-6 shadow-sm hover:shadow-md hover:border-[#1A8A3A]/40 transition-all text-center">
                   <span className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-[#1A8A3A]/10">
@@ -257,7 +257,7 @@ export default function AboutUsPage() {
             </span>
             <p className="text-sm text-[#4A5568] leading-relaxed">
               <span className="font-semibold text-[#1A1A2E]">Coming soon — </span>
-              We are launching new branches in <span className="font-semibold text-[#1A56A0]">Dar es Salaam</span>, <span className="font-semibold text-[#1A56A0]">Kagera</span>, and <span className="font-semibold text-[#1A56A0]">Mtwara</span>, with more locations planned as part of our continued national growth strategy.
+              We are launching new branches in <span className="font-semibold text-[#1A56A0]">Kagera</span>, <span className="font-semibold text-[#1A56A0]">Mbeya</span>, <span className="font-semibold text-[#1A56A0]">Mwanza</span>, and <span className="font-semibold text-[#1A56A0]">Dar es Salaam</span> between Q3 2026 and Q2 2027, with more locations planned as part of our continued national growth strategy.
             </p>
           </div>
         </FadeIn>
@@ -326,7 +326,7 @@ export default function AboutUsPage() {
                 {
                   year: "2026+",
                   title: "National Expansion",
-                  desc: "New branches launching in Dar es Salaam, Kagera, and Mtwara — part of a long-term target of 30+ branches nationwide.",
+                  desc: "New branches launching in Kagera, Mbeya, Mwanza, and Dar es Salaam — part of a long-term target of 30+ branches nationwide.",
                   position: "top",
                   color: "#1A8A3A",
                 },
