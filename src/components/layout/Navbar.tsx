@@ -408,7 +408,7 @@ export default function Navbar() {
               ))}
               <span className="text-white/15 mx-1">|</span>
               <Link
-                href="#"
+                href="/branches"
                 className="flex items-center gap-1 text-[11px] text-white/55 hover:text-white transition-colors px-1.5 py-0.5"
               >
                 <MapPin className="h-3 w-3" />
