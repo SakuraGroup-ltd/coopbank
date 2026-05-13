@@ -1,6 +1,8 @@
 import { fetchFaqs } from "@/lib/sheets";
 import FaqsClient from "./FaqsClient";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "FAQs — Cooperative Bank Tanzania",
   description:
