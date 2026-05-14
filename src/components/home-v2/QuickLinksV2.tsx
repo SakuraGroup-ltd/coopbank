@@ -33,7 +33,7 @@ const links: QuickLink[] = [
   { icon: Smartphone, label: "Mobile Banking", href: "/digital-banking#coopesa", color: "#00BCD4" },
   { icon: Users, label: "SACCOS & Groups", href: "/personal-banking#group-accounts", color: "#7C4DFF" },
   { icon: Store, label: "Agency Banking", href: "/digital-banking#coopwakala", color: "#FF6D00" },
-  { icon: Globe, label: "Treasury & Forex", href: "/treasury", color: "#00BCD4" },
+  { icon: Globe, label: "Treasury & Forex", href: "/treasury/foreign-exchange", color: "#00BCD4" },
   { icon: Calculator, label: "Loan Calculator", href: "/loan-products#calculator", color: "#00C853" },
   { icon: MapPin, label: "Branches & ATMs", href: "/branches", color: "#7C4DFF" },
   { icon: BarChart3, label: "Investors", href: "/investors", color: "#00BCD4" },

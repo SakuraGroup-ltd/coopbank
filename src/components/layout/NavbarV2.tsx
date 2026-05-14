@@ -35,7 +35,7 @@ const segments = [
   { label: "Digital Banking", href: "/digital-banking" },
   { label: "Cards & Payments", href: "/cards" },
   { label: "Loan Products", href: "/loan-products" },
-  { label: "Treasury", href: "/treasury" },
+  { label: "Treasury", href: "/treasury/foreign-exchange" },
   { label: "Investors", href: "/investors" },
   { label: "About Us", href: "/about-us" },
 ];
@@ -136,26 +136,26 @@ const forexMenu: MegaColumn[] = [
   {
     title: "Foreign Exchange",
     items: [
-      { label: "Spot Foreign Exchange", href: "/treasury#spot-fx", desc: "Live currency rates" },
-      { label: "Forward FX Contracts", href: "/treasury#forward-fx", desc: "Lock future rates" },
-      { label: "FX Swaps", href: "/treasury#fx-swaps", desc: "Flexible currency swaps" },
-      { label: "Daily Exchange Rates", href: "/treasury#rates", desc: "Today's rates" },
+      { label: "Spot Foreign Exchange", href: "/treasury/foreign-exchange#spot-fx", desc: "Competitive market rates, no commission" },
+      { label: "Forward FX Contracts", href: "/treasury/foreign-exchange#forward-fx", desc: "Lock future rates up to 12 months" },
+      { label: "FX Swaps", href: "/treasury/foreign-exchange#fx-swaps", desc: "Flexible currency swaps" },
+      { label: "Daily Exchange Rates", href: "/treasury/foreign-exchange#rates", desc: "Today's rates against TZS" },
     ],
   },
   {
-    title: "Money Markets",
+    title: "Investments",
     items: [
-      { label: "Government Securities", href: "/treasury#govt-securities", desc: "T-bills & bonds" },
-      { label: "Fixed Deposits", href: "/treasury#fixed-deposits", desc: "Competitive rates" },
-      { label: "International Payments", href: "/treasury#intl-payments", desc: "Cross-border transfers" },
+      { label: "Fixed Deposits", href: "/treasury/fixed-deposits", desc: "Competitive rates, flexible tenors" },
+      { label: "Government Securities", href: "/treasury/government-securities", desc: "T-Bills & T-Bonds via BOT" },
+      { label: "Q2 Auction Calendar", href: "/treasury/government-securities#calendar", desc: "Upcoming BOT auctions" },
     ],
   },
   {
-    title: "Institutions",
+    title: "Treasury Desk",
     items: [
-      { label: "Bank to Bank", href: "/treasury#b2b", desc: "Correspondent banking" },
-      { label: "Custody Services", href: "/treasury#custody", desc: "Safekeeping" },
-      { label: "Contact Treasury", href: "/treasury#contact", desc: "Speak to dealers" },
+      { label: "Contact Our Dealers", href: "/treasury/foreign-exchange#contact", desc: "Hamis & Valentino" },
+      { label: "Call: +255 766 722 201", href: "tel:+255766722201", desc: "Hamis C. Mwita" },
+      { label: "Call: +255 756 401 135", href: "tel:+255756401135", desc: "Valentino I. Hungu" },
     ],
   },
 ];
@@ -191,7 +191,7 @@ const productNav: NavItem[] = [
   { label: "Accounts", href: "/personal-banking", megaMenu: accountsMenu, cta: { label: "Open an Account", href: "https://coopnet.coopbank.co.tz/Account/Register", desc: "Start banking with CoopBank today" } },
   { label: "Cards", href: "/cards", megaMenu: cardsMenu, cta: { label: "Apply for a Card", href: "/cards#apply", desc: "Get your Visa card today" } },
   { label: "Loans", href: "/loan-products", megaMenu: loansMenu, cta: { label: "Loan Calculator", href: "/loan-products#calculator", desc: "Estimate your repayments" } },
-  { label: "Foreign Exchange", href: "/treasury", megaMenu: forexMenu, cta: { label: "Daily FX Rates", href: "/treasury#rates", desc: "View today's exchange rates" } },
+  { label: "Foreign Exchange", href: "/treasury/foreign-exchange", megaMenu: forexMenu, cta: { label: "Daily FX Rates", href: "/treasury/foreign-exchange#rates", desc: "View today's exchange rates" } },
   { label: "Ways of Banking", href: "/digital-banking", megaMenu: waysMenu, cta: { label: "Download CoopEsa", href: "/digital-banking#download", desc: "Get the app on Android or iOS" } },
 ];
 

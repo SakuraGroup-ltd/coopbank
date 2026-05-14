@@ -119,6 +119,18 @@ export interface Branch {
   active: string;
 }
 
+export interface Auction {
+  instrument: string;
+  tenor: string;
+  announcement_date: string;
+  auction_date: string;
+  value_date: string;
+  maturity_date: string;
+  notes: string;
+  status: string;
+  active: string;
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 export const bool = (v: string) => v?.toLowerCase() === "true";
@@ -175,6 +187,108 @@ export async function fetchBranches(includeAll = false, noCache = false): Promis
   if (!url) return [];
   const rows = await fetchSheet<Branch>(url, 3600, noCache, "branches");
   return includeAll ? rows : rows.filter((r) => bool(r.active));
+}
+
+// Starter auction rows used when the sheet tab is missing or empty.
+// Marketing/Treasury can override by populating the `auctions` tab.
+const FALLBACK_AUCTIONS: Auction[] = [
+  {
+    instrument: "Treasury Bill",
+    tenor: "35 days",
+    announcement_date: "2026-04-02",
+    auction_date: "2026-04-09",
+    value_date: "2026-04-10",
+    maturity_date: "2026-05-15",
+    notes: "Q2 2025/26 — short-term liquidity",
+    status: "upcoming",
+    active: "TRUE",
+  },
+  {
+    instrument: "Treasury Bill",
+    tenor: "91 days",
+    announcement_date: "2026-04-02",
+    auction_date: "2026-04-09",
+    value_date: "2026-04-10",
+    maturity_date: "2026-07-09",
+    notes: "Q2 2025/26",
+    status: "upcoming",
+    active: "TRUE",
+  },
+  {
+    instrument: "Treasury Bill",
+    tenor: "182 days",
+    announcement_date: "2026-04-16",
+    auction_date: "2026-04-23",
+    value_date: "2026-04-24",
+    maturity_date: "2026-10-23",
+    notes: "Q2 2025/26",
+    status: "upcoming",
+    active: "TRUE",
+  },
+  {
+    instrument: "Treasury Bill",
+    tenor: "364 days",
+    announcement_date: "2026-04-16",
+    auction_date: "2026-04-23",
+    value_date: "2026-04-24",
+    maturity_date: "2027-04-23",
+    notes: "Q2 2025/26",
+    status: "upcoming",
+    active: "TRUE",
+  },
+  {
+    instrument: "Treasury Bond",
+    tenor: "2 years",
+    announcement_date: "2026-04-23",
+    auction_date: "2026-04-30",
+    value_date: "2026-05-02",
+    maturity_date: "2028-04-30",
+    notes: "Q2 2025/26 — fixed coupon",
+    status: "upcoming",
+    active: "TRUE",
+  },
+  {
+    instrument: "Treasury Bond",
+    tenor: "5 years",
+    announcement_date: "2026-05-07",
+    auction_date: "2026-05-14",
+    value_date: "2026-05-16",
+    maturity_date: "2031-05-14",
+    notes: "Q2 2025/26",
+    status: "upcoming",
+    active: "TRUE",
+  },
+  {
+    instrument: "Treasury Bond",
+    tenor: "10 years",
+    announcement_date: "2026-05-21",
+    auction_date: "2026-05-28",
+    value_date: "2026-05-30",
+    maturity_date: "2036-05-28",
+    notes: "Q2 2025/26",
+    status: "upcoming",
+    active: "TRUE",
+  },
+  {
+    instrument: "Treasury Bond",
+    tenor: "15 years",
+    announcement_date: "2026-06-04",
+    auction_date: "2026-06-11",
+    value_date: "2026-06-13",
+    maturity_date: "2041-06-11",
+    notes: "Q2 2025/26",
+    status: "upcoming",
+    active: "TRUE",
+  },
+];
+
+export async function fetchAuctions(includeAll = false, noCache = false): Promise<Auction[]> {
+  const url = process.env.SHEET_AUCTIONS_URL;
+  if (!url) return includeAll ? FALLBACK_AUCTIONS : FALLBACK_AUCTIONS.filter((r) => bool(r.active));
+  const rows = await fetchSheet<Auction>(url, 1800, noCache, "auctions");
+  const filtered = includeAll ? rows : rows.filter((r) => bool(r.active));
+  if (filtered.length === 0) return includeAll ? FALLBACK_AUCTIONS : FALLBACK_AUCTIONS.filter((r) => bool(r.active));
+  return filtered.sort((a, b) => (a.auction_date || "").localeCompare(b.auction_date || ""));
 }
 
 // Starter FAQs used when the sheet tab is missing or empty. Marketing can override

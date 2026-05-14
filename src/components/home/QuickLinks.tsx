@@ -29,7 +29,7 @@ const links: QuickLink[] = [
   { icon: Tractor, label: "Agri Loans", href: "/loan-products#agri-business" },
   { icon: Smartphone, label: "Mobile Banking", href: "/digital-banking#coopesa" },
   { icon: Store, label: "Agency Banking", href: "/digital-banking#coopwakala" },
-  { icon: Globe, label: "Treasury & Forex", href: "/treasury" },
+  { icon: Globe, label: "Treasury & Forex", href: "/treasury/foreign-exchange" },
   { icon: Calculator, label: "Loan Calculator", href: "/loan-products#calculator" },
   { icon: MapPin, label: "Branches & ATMs", href: "/branches" },
 ];

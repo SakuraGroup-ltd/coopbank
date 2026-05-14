@@ -166,21 +166,21 @@ const loanProductsMenu: MegaColumn[] = [
 
 const treasuryMenu: MegaColumn[] = [
   {
-    title: "FX & Exchange",
+    title: "Foreign Exchange",
     items: [
-      { label: "Spot Foreign Exchange", href: "/treasury#spot-fx", desc: "Buy & sell currencies at live rates" },
-      { label: "Forward Foreign Exchange", href: "/treasury#forward-fx", desc: "Lock in future exchange rates" },
-      { label: "Foreign Exchange Swap", href: "/treasury#fx-swap", desc: "Flexible currency swap arrangements" },
-      { label: "Daily Exchange Rate", href: "/treasury#rates", desc: "Today's CoopBank FX rates" },
+      { label: "Spot Foreign Exchange", href: "/treasury/foreign-exchange#spot-fx", desc: "Competitive rates, no commission" },
+      { label: "Forward FX Contracts", href: "/treasury/foreign-exchange#forward-fx", desc: "Lock future rates up to 12 months" },
+      { label: "FX Swaps", href: "/treasury/foreign-exchange#fx-swaps", desc: "Flexible currency swaps" },
+      { label: "Daily Exchange Rates", href: "/treasury/foreign-exchange#rates", desc: "Today's rates against TZS" },
     ],
   },
   {
-    title: "Investments & Services",
+    title: "Investments",
     items: [
-      { label: "Government Bonds", href: "/treasury#govt-bonds", desc: "Treasury bonds & long-term securities" },
-      { label: "Fixed Deposit", href: "/treasury#fixed-deposit", desc: "Competitive term deposit rates" },
-      { label: "Custodian Services", href: "/treasury#custodian", desc: "Safekeeping & settlement, with bespoke solutions" },
-      { label: "Contact Treasury Desk", href: "/treasury#contact", desc: "Speak to our dealers" },
+      { label: "Fixed Deposits", href: "/treasury/fixed-deposits", desc: "Competitive rates, flexible tenors" },
+      { label: "Government Securities", href: "/treasury/government-securities", desc: "T-Bills & T-Bonds via BOT" },
+      { label: "Q2 Auction Calendar", href: "/treasury/government-securities#calendar", desc: "Upcoming BOT auctions" },
+      { label: "Contact Treasury Desk", href: "/treasury/foreign-exchange#contact", desc: "Speak to our dealers" },
     ],
   },
 ];
@@ -246,9 +246,9 @@ const mainNavItems: NavItem[] = [
   },
   {
     label: "Treasury",
-    href: "/treasury",
+    href: "/treasury/foreign-exchange",
     megaMenu: treasuryMenu,
-    cta: { label: "Daily FX Rates", href: "/treasury#rates", desc: "View today's CoopBank foreign exchange rates" },
+    cta: { label: "Daily FX Rates", href: "/treasury/foreign-exchange#rates", desc: "View today's CoopBank foreign exchange rates" },
   },
   {
     label: "Investors",
