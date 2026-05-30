@@ -3,6 +3,8 @@ FROM node:20-alpine AS base
 FROM base AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
+# scripts/postinstall-patches.cjs runs during `npm ci`, so copy it before the install.
+COPY scripts ./scripts
 RUN npm ci
 
 FROM base AS builder
