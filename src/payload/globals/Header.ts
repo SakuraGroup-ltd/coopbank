@@ -1,0 +1,35 @@
+import type { GlobalConfig } from "payload";
+import { editorOf } from "../access/editorOf";
+
+export const Header: GlobalConfig = {
+  slug: "header",
+  access: { read: () => true, update: editorOf("marketing") },
+  fields: [
+    {
+      name: "topBar",
+      type: "group",
+      fields: [
+        { name: "ctaLabel", type: "text", defaultValue: "Open an Account" },
+        { name: "ctaHref", type: "text", defaultValue: "/personal-banking/open-account" },
+      ],
+    },
+    {
+      name: "primaryNav",
+      type: "array",
+      labels: { singular: "Nav item", plural: "Primary nav" },
+      fields: [
+        { name: "label", type: "text", required: true },
+        { name: "href", type: "text" },
+        {
+          name: "children",
+          type: "array",
+          labels: { singular: "Sub-item", plural: "Sub-items" },
+          fields: [
+            { name: "label", type: "text", required: true },
+            { name: "href", type: "text", required: true },
+          ],
+        },
+      ],
+    },
+  ],
+};
