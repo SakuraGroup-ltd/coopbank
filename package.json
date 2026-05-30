@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "node ./scripts/postinstall-patches.cjs",
+    "migrate:sheets": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/migrate-from-sheets.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
@@ -17,6 +19,7 @@
     "@types/dompurify": "^3.0.5",
     "@types/leaflet": "^1.9.21",
     "@types/papaparse": "^5.5.2",
+    "dotenv": "^17.4.2",
     "framer-motion": "^12.35.2",
     "googleapis": "^171.4.0",
     "graphql": "^16.14.0",
