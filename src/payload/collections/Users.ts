@@ -47,10 +47,11 @@ export const Users: CollectionConfig = {
         { label: "Operations / Procurement", value: "operations" },
         { label: "Business Development", value: "busdev" },
         { label: "Marketing", value: "marketing" },
+        { label: "Compliance / Risk", value: "compliance" },
       ],
       admin: {
         description:
-          "Department scope for editor role. Treasury edits forex rates, HR edits jobs, Operations edits tenders, BusDev edits branches, Marketing edits blog + pages.",
+          "Department scope for editor role. Treasury edits forex rates, HR edits jobs, Operations edits tenders, BusDev edits branches, Marketing edits blog + pages, Compliance handles whistleblower reports + risk disclosures.",
       },
       access: { update: isAdminField },
     },

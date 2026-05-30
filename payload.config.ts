@@ -12,6 +12,7 @@ import { ForexRates } from "./src/payload/collections/ForexRates";
 import { Branches } from "./src/payload/collections/Branches";
 import { BlogPosts } from "./src/payload/collections/BlogPosts";
 import { Pages } from "./src/payload/collections/Pages";
+import { WhistleblowerReports } from "./src/payload/collections/WhistleblowerReports";
 
 import { Header } from "./src/payload/globals/Header";
 import { Footer } from "./src/payload/globals/Footer";
@@ -21,7 +22,25 @@ import { SiteSettings } from "./src/payload/globals/SiteSettings";
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default buildConfig({
-  admin: { user: "users" },
+  admin: {
+    user: "users",
+    // Brand the admin so it visibly reads as CoopBank, not generic Payload.
+    components: {
+      graphics: {
+        Logo: "/src/payload/components/Logo",
+        Icon: "/src/payload/components/Icon",
+      },
+    },
+    meta: {
+      titleSuffix: " — CoopBank Admin",
+      icons: [{ rel: "icon", url: "/apple-icon.png", type: "image/png" }],
+      openGraph: {
+        title: "Cooperative Bank Tanzania — Admin",
+        siteName: "CoopBank Admin",
+      },
+    },
+    theme: "light",
+  },
   editor: lexicalEditor(),
   collections: [
     Users,
@@ -32,6 +51,7 @@ export default buildConfig({
     JobListings,
     ForexRates,
     Branches,
+    WhistleblowerReports,
   ],
   globals: [Header, Footer, Homepage, SiteSettings],
   secret: process.env.PAYLOAD_SECRET || "spike-secret-not-for-prod",

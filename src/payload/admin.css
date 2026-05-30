@@ -1,0 +1,107 @@
+/* CoopBank brand overrides for the Payload admin.
+   Keep this file small — only override what's visibly mismatched with the
+   public site, so we don't fight Payload's own UI on every release. */
+
+:root {
+  --cb-navy: #0F3D7A;
+  --cb-navy-deep: #0a2b5a;
+  --cb-green: #1A8A3A;
+  --cb-green-deep: #14692D;
+  --cb-accent: #00C853;
+  --cb-paper: #f7f8fb;
+
+  /* Payload uses --theme-elevation-* tokens; tint the brand-ish ones. */
+  --theme-success-500: var(--cb-green);
+  --theme-success-600: var(--cb-green-deep);
+}
+
+/* ───── Login page ─────────────────────────────────────────────── */
+
+.payload__login,
+.template-default[data-route$="/login"] {
+  background:
+    radial-gradient(120% 120% at 50% -10%, rgba(26, 138, 58, 0.10) 0%, transparent 55%),
+    linear-gradient(180deg, var(--cb-navy) 0%, var(--cb-navy-deep) 100%) !important;
+  min-height: 100vh;
+}
+
+/* Login card */
+.payload__login .login__wrap,
+.template-default[data-route$="/login"] .login__wrap {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45);
+  padding: 40px 36px;
+  max-width: 440px;
+}
+
+/* Brand logo sizing inside login card */
+.cb-logo { padding: 4px 0 18px; }
+
+/* Primary action button */
+.payload__login .btn--style-primary,
+.template-default[data-route$="/login"] .btn--style-primary {
+  background: var(--cb-green) !important;
+  border-color: var(--cb-green) !important;
+  color: #fff !important;
+  border-radius: 10px;
+  font-weight: 700;
+}
+.payload__login .btn--style-primary:hover,
+.template-default[data-route$="/login"] .btn--style-primary:hover {
+  background: var(--cb-green-deep) !important;
+  border-color: var(--cb-green-deep) !important;
+}
+
+/* "Forgot password" + other text links */
+.payload__login a,
+.template-default[data-route$="/login"] a {
+  color: var(--cb-navy);
+}
+.payload__login a:hover,
+.template-default[data-route$="/login"] a:hover {
+  color: var(--cb-green);
+}
+
+/* ───── Sidebar / app chrome — keep subtle, match marketing site palette ───── */
+
+.app-header__icon-link,
+.nav__link--active,
+.nav__link:hover {
+  color: var(--cb-navy) !important;
+}
+
+.nav .nav__link.active-link,
+.nav__link[aria-current="page"] {
+  background: rgba(15, 61, 122, 0.07);
+  border-left-color: var(--cb-green) !important;
+}
+
+/* Primary buttons across the admin (Save, Publish) */
+.btn--style-primary,
+.doc-controls .btn--style-primary,
+.publish-button {
+  background: var(--cb-green) !important;
+  border-color: var(--cb-green) !important;
+}
+.btn--style-primary:hover,
+.publish-button:hover {
+  background: var(--cb-green-deep) !important;
+  border-color: var(--cb-green-deep) !important;
+}
+
+/* Status pills */
+.pill--style-success,
+.status--published { background: var(--cb-green) !important; color: #fff !important; }
+.pill--style-warning { background: #d9892b !important; }
+
+/* Tiny brand touch under the sidebar logo */
+.nav-header::after {
+  content: "Cooperative Bank Tanzania";
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-top: 2px;
+}

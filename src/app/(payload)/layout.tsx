@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // Payload root layout — keeps Payload's HTML/CSS isolated from the marketing site.
 import "@payloadcms/next/css";
+import "../../payload/admin.css";
 import config from "../../../payload.config";
 import { RootLayout, handleServerFunctions } from "@payloadcms/next/layouts";
 import { importMap } from "./admin/importMap.js";

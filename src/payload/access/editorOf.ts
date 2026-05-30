@@ -6,7 +6,8 @@ export type DepartmentSlug =
   | "hr"
   | "operations"
   | "busdev"
-  | "marketing";
+  | "marketing"
+  | "compliance"; // Compliance / Risk — owns whistleblower reports + risk disclosures
 
 // Allows admins + users whose `departments` array contains the given slug.
 export const editorOf = (slug: DepartmentSlug): Access =>
