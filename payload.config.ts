@@ -25,7 +25,8 @@ export default buildConfig({
   admin: {
     user: "users",
     // Brand the admin so it visibly reads as CoopBank, not generic Payload.
-    css: path.resolve(dirname, "src/app/(payload)/custom.css"),
+    // The custom CSS is injected via the (payload) route-group layout import,
+    // not via an admin.css config — that property isn't on Payload 3.85's type.
     components: {
       graphics: {
         Logo: "/src/payload/components/Logo",
