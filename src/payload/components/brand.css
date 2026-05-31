@@ -1,107 +1,112 @@
-/* CoopBank brand overrides for the Payload admin.
-   Keep this file small — only override what's visibly mismatched with the
-   public site, so we don't fight Payload's own UI on every release. */
+/* CoopBank brand overrides for Payload 3.85's admin.
+   Selectors here were verified against:
+   - node_modules/@payloadcms/ui/dist/styles.css (BEM source of truth)
+   - The actual rendered RSC payload on /admin/login
+   Don't add classes that aren't in either — they'll silently no-op. */
 
 :root {
   --cb-navy: #0F3D7A;
   --cb-navy-deep: #0a2b5a;
   --cb-green: #1A8A3A;
   --cb-green-deep: #14692D;
-  --cb-accent: #00C853;
   --cb-paper: #f7f8fb;
 
-  /* Payload uses --theme-elevation-* tokens; tint the brand-ish ones. */
+  /* Tint Payload's success scale to CoopBank green so save/publish
+     pills/buttons that already use these tokens pick up brand colour. */
   --theme-success-500: var(--cb-green);
   --theme-success-600: var(--cb-green-deep);
+  --theme-success-700: var(--cb-green-deep);
 }
 
-/* ───── Login page ─────────────────────────────────────────────── */
+/* ───── Minimal templates (login, forgot, create-first-user) ───────── */
 
-.payload__login,
-.template-default[data-route$="/login"] {
+.template-minimal {
   background:
     radial-gradient(120% 120% at 50% -10%, rgba(26, 138, 58, 0.10) 0%, transparent 55%),
-    linear-gradient(180deg, var(--cb-navy) 0%, var(--cb-navy-deep) 100%) !important;
+    linear-gradient(180deg, var(--cb-navy) 0%, var(--cb-navy-deep) 100%);
   min-height: 100vh;
 }
 
-/* Login card */
-.payload__login .login__wrap,
-.template-default[data-route$="/login"] .login__wrap {
+.template-minimal__wrap {
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45);
   padding: 40px 36px;
-  max-width: 440px;
+  max-width: 460px;
 }
 
-/* Brand logo sizing inside login card */
-.cb-logo { padding: 4px 0 18px; }
+/* Brand block above the login form */
+.login__brand .cb-logo,
+.login__brand {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 18px;
+}
 
-/* Primary action button */
-.payload__login .btn--style-primary,
-.template-default[data-route$="/login"] .btn--style-primary {
-  background: var(--cb-green) !important;
-  border-color: var(--cb-green) !important;
-  color: #fff !important;
+/* ───── Buttons — primary maps to CoopBank green ─────────────────── */
+
+.btn--style-primary {
+  background: var(--cb-green);
+  border-color: var(--cb-green);
+  color: #fff;
   border-radius: 10px;
-  font-weight: 700;
+  font-weight: 600;
 }
-.payload__login .btn--style-primary:hover,
-.template-default[data-route$="/login"] .btn--style-primary:hover {
-  background: var(--cb-green-deep) !important;
-  border-color: var(--cb-green-deep) !important;
+.btn--style-primary:hover,
+.btn--style-primary:focus {
+  background: var(--cb-green-deep);
+  border-color: var(--cb-green-deep);
 }
 
-/* "Forgot password" + other text links */
-.payload__login a,
-.template-default[data-route$="/login"] a {
+.btn--style-secondary {
+  border-color: var(--cb-navy);
   color: var(--cb-navy);
 }
-.payload__login a:hover,
-.template-default[data-route$="/login"] a:hover {
+.btn--style-secondary:hover {
+  background: rgba(15, 61, 122, 0.05);
+}
+
+/* Text links inside the admin */
+.template-minimal a,
+.nav a:hover {
+  color: var(--cb-navy);
+}
+.template-minimal a:hover {
   color: var(--cb-green);
 }
 
-/* ───── Sidebar / app chrome — keep subtle, match marketing site palette ───── */
+/* ───── Sidebar nav + app header ─────────────────────────────────── */
 
-.app-header__icon-link,
-.nav__link--active,
-.nav__link:hover {
-  color: var(--cb-navy) !important;
+.nav__header {
+  border-bottom: 1px solid rgba(15, 61, 122, 0.08);
 }
 
-.nav .nav__link.active-link,
-.nav__link[aria-current="page"] {
+.nav-group__toggle:hover {
+  color: var(--cb-navy);
+}
+
+.nav a[aria-current="page"],
+.nav .active {
   background: rgba(15, 61, 122, 0.07);
-  border-left-color: var(--cb-green) !important;
+  color: var(--cb-navy);
 }
 
-/* Primary buttons across the admin (Save, Publish) */
-.btn--style-primary,
+.app-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.app-header__bg {
+  background: linear-gradient(180deg, #ffffff 0%, var(--cb-paper) 100%);
+}
+
+/* ───── Document controls (save, publish, status pills) ──────────── */
+
 .doc-controls .btn--style-primary,
-.publish-button {
-  background: var(--cb-green) !important;
-  border-color: var(--cb-green) !important;
-}
-.btn--style-primary:hover,
-.publish-button:hover {
-  background: var(--cb-green-deep) !important;
-  border-color: var(--cb-green-deep) !important;
+.doc-controls__controls .btn--style-primary {
+  background: var(--cb-green);
+  border-color: var(--cb-green);
 }
 
-/* Status pills */
-.pill--style-success,
-.status--published { background: var(--cb-green) !important; color: #fff !important; }
-.pill--style-warning { background: #d9892b !important; }
-
-/* Tiny brand touch under the sidebar logo */
-.nav-header::after {
-  content: "Cooperative Bank Tanzania";
-  display: block;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.55;
-  margin-top: 2px;
+.pill--style-success {
+  background: var(--cb-green);
+  color: #fff;
 }

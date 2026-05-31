@@ -12,6 +12,17 @@ export const Pages: CollectionConfig = {
     useAsTitle: "title",
     defaultColumns: ["title", "slug", "_status", "updatedAt"],
     listSearchableFields: ["title", "slug"],
+    livePreview: {
+      url: ({ data }) => {
+        const slug = (data?.slug || "").toString().replace(/^\/+/, "");
+        return `${process.env.NEXT_PUBLIC_SITE_URL || "https://dev.coopbank.co.tz"}/preview/${slug}`;
+      },
+      breakpoints: [
+        { label: "Mobile", name: "mobile", width: 375, height: 667 },
+        { label: "Tablet", name: "tablet", width: 768, height: 1024 },
+        { label: "Desktop", name: "desktop", width: 1280, height: 800 },
+      ],
+    },
   },
   access: {
     read: publicReadPublished,

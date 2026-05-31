@@ -1,12 +1,14 @@
-// Payload's admin uses string paths (e.g. "/src/payload/components/Logo") for
-// component refs. This map resolves those paths to the actual React imports so
-// SSR can render the custom Logo/Icon on the login page and sidebar.
+// Payload's admin resolves component refs as "<path>#<export>". The schema
+// path on the config (admin.components.graphics.Logo = "/src/payload/components/Logo")
+// + the export name ("default") becomes the lookup key — so the importMap key
+// MUST be "/src/payload/components/Logo#default", not "/src/payload/components/Logo".
+// Without the #default suffix Payload silently fails to render the component, the
+// whole admin tree errors during SSR, and the page returns an empty Suspense
+// (blank white screen).
 import Logo from "../../../payload/components/Logo";
 import Icon from "../../../payload/components/Icon";
-import BrandStyles from "../../../payload/components/BrandStyles";
 
 export const importMap = {
-  "/src/payload/components/Logo": Logo,
-  "/src/payload/components/Icon": Icon,
-  "/src/payload/components/BrandStyles": BrandStyles,
+  "/src/payload/components/Logo#default": Logo,
+  "/src/payload/components/Icon#default": Icon,
 };
