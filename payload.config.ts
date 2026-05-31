@@ -1,6 +1,7 @@
 import { buildConfig } from "payload";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { gcsStorage } from "@payloadcms/storage-gcs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -77,4 +78,22 @@ export default buildConfig({
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URI },
   }),
+  // Uploads land in GCS — files survive Cloud Run cold-starts and serve
+  // globally via the public bucket. On Cloud Run the SDK picks up Application
+  // Default Credentials from the runtime service account; locally it falls
+  // back to gcloud auth.
+  plugins: [
+    gcsStorage({
+      bucket: process.env.GCS_BUCKET || "coopbank-media",
+      collections: {
+        media: true,
+      },
+      // Skip plugin entirely in environments without explicit opt-in so the
+      // local dev flow can still use the on-disk media/ folder.
+      enabled: Boolean(process.env.GCS_BUCKET),
+      options: {
+        projectId: process.env.GCS_PROJECT_ID || "sakura-group-482908",
+      },
+    }),
+  ],
 });
