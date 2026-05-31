@@ -1,5 +1,9 @@
-import { fetchForexRates } from "@/lib/sheets";
+// Reads from Payload — no Sheets. Treasury updates daily via /studio/forex
+// and the ticker here picks up new rates on the next request.
+import { getPayload } from "payload";
+import config from "../../../../../payload.config";
 import ForeignExchangeClient from "./ForeignExchangeClient";
+import type { ForexRate } from "./ForeignExchangeClient";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +14,38 @@ export const metadata = {
 };
 
 export default async function ForeignExchangePage() {
-  const rates = await fetchForexRates();
+  const payload = await getPayload({ config });
+  const result = await payload.find({
+    collection: "forex-rates",
+    limit: 50,
+    depth: 0,
+    sort: "currencyCode",
+  });
+
+  const rates: ForexRate[] = result.docs
+    .map((d) => {
+      const r = d as unknown as {
+        currencyCode: string;
+        currencyName: string;
+        flagEmoji?: string;
+        buyRate: number;
+        sellRate: number;
+        trend?: string;
+        updatedDate?: string;
+        active?: boolean;
+      };
+      return {
+        currency_code: r.currencyCode,
+        currency_name: r.currencyName,
+        flag_emoji: r.flagEmoji || "",
+        buy_rate: String(r.buyRate),
+        sell_rate: String(r.sellRate),
+        trend: r.trend || "neutral",
+        updated_date: r.updatedDate?.slice(0, 10) || "",
+        active: r.active === false ? "false" : "true",
+      };
+    })
+    .filter((r) => r.active !== "false");
+
   return <ForeignExchangeClient rates={rates} />;
 }

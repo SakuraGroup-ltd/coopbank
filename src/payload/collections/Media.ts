@@ -14,6 +14,9 @@ export const Media: CollectionConfig = {
     mimeTypes: ["image/*", "application/pdf"],
   },
   admin: {
+    group: "System",
+    description:
+      "Every image and PDF used on the site. Upload once → reuse across pages, posts, and blocks. Always fill `alt` for accessibility and SEO. Annual reports and tender PDFs live here too.",
     useAsTitle: "filename",
     defaultColumns: ["filename", "alt", "mimeType", "filesize"],
   },

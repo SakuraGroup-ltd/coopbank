@@ -1,16 +1,32 @@
 import type { CollectionConfig } from "payload";
 import { isAdmin } from "../access/isAdmin";
 import { editorOf, publicReadPublished } from "../access/editorOf";
+import { trackEditor, auditFields } from "../hooks/trackEditor";
+import { scheduledPublishField } from "../fields/scheduledPublish";
 
 // Drives /tenders. Status is auto-derived from closingDate at read time on the
 // frontend — editors set draft/open/closed manually for unusual cases.
 export const Tenders: CollectionConfig = {
   slug: "tenders",
   versions: { drafts: true, maxPerDoc: 20 },
+  hooks: { beforeChange: [trackEditor] },
   admin: {
+    group: "Procurement",
+    description:
+      "Public tender notices on /tenders. Each tender has open and close dates; past `closingDate` auto-shows as Closed on the public site. Attach the bid document via Media. Always include a tenders@ reply-to so vendors can request clarifications.",
     useAsTitle: "title",
     defaultColumns: ["tenderRef", "title", "category", "closingDate", "_status"],
     listSearchableFields: ["tenderRef", "title", "category"],
+    livePreview: {
+      url: ({ data }) => {
+        const ref = (data?.tenderRef || data?.id || "").toString();
+        return `${process.env.NEXT_PUBLIC_SITE_URL || "https://dev.coopbank.co.tz"}/preview/tenders/${ref}`;
+      },
+      breakpoints: [
+        { label: "Mobile", name: "mobile", width: 375, height: 667 },
+        { label: "Desktop", name: "desktop", width: 1280, height: 800 },
+      ],
+    },
   },
   access: {
     read: publicReadPublished,
@@ -62,12 +78,26 @@ export const Tenders: CollectionConfig = {
       required: true,
       admin: { description: "Past closingDate auto-displays as Closed on the frontend." },
     },
-    { name: "description", type: "richText" },
+    {
+      name: "description",
+      type: "richText",
+      admin: { description: "Legacy Lexical field. Studio writes to `descriptionHtml`." },
+    },
+    {
+      name: "descriptionHtml",
+      type: "textarea",
+      admin: {
+        description: "Tender brief written via the Studio editor.",
+        readOnly: true,
+      },
+    },
     {
       name: "document",
       type: "upload",
       relationTo: "media",
       admin: { description: "Tender PDF (specs, requirements). Optional but expected." },
     },
+      ...auditFields,
+    scheduledPublishField,
   ],
 };

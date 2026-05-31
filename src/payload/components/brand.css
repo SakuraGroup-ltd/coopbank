@@ -1,8 +1,7 @@
 /* CoopBank brand overrides for Payload 3.85's admin.
-   Selectors here were verified against:
-   - node_modules/@payloadcms/ui/dist/styles.css (BEM source of truth)
-   - The actual rendered RSC payload on /admin/login
-   Don't add classes that aren't in either — they'll silently no-op. */
+   Selectors are verified against node_modules/@payloadcms/ui/dist/styles.css
+   and the rendered RSC payload. Don't add classes that aren't in either —
+   they'll silently no-op. */
 
 :root {
   --cb-navy: #0F3D7A;
@@ -11,11 +10,65 @@
   --cb-green-deep: #14692D;
   --cb-paper: #f7f8fb;
 
-  /* Tint Payload's success scale to CoopBank green so save/publish
-     pills/buttons that already use these tokens pick up brand colour. */
+  /* Tint Payload's success scale to CoopBank green so save/publish buttons
+     and pills that already use these tokens pick up brand colour. */
   --theme-success-500: var(--cb-green);
   --theme-success-600: var(--cb-green-deep);
   --theme-success-700: var(--cb-green-deep);
+}
+
+/* ───── Logo + Icon components ───────────────────────────────────── */
+
+.cb-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0 10px;
+}
+.cb-logo__img {
+  width: 220px;
+  height: auto;
+  max-width: 100%;
+  display: block;
+}
+.cb-logo__tagline {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cb-green);
+  font-weight: 600;
+}
+
+/* On the small sidebar header, shrink the wordmark and hide the tagline. */
+.nav__header .cb-logo,
+.app-header .cb-logo {
+  padding: 0;
+  flex-direction: row;
+  gap: 8px;
+}
+.nav__header .cb-logo__img,
+.app-header .cb-logo__img {
+  width: 140px;
+}
+.nav__header .cb-logo__tagline,
+.app-header .cb-logo__tagline {
+  display: none;
+}
+
+.cb-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: block;
+  object-fit: contain;
+  background: #fff;
+}
+
+/* Breadcrumb document icon spot is often 16-20px — scale gracefully. */
+.app-header .cb-icon {
+  width: 22px;
+  height: 22px;
 }
 
 /* ───── Minimal templates (login, forgot, create-first-user) ───────── */
@@ -31,16 +84,16 @@
   background: #ffffff;
   border-radius: 16px;
   box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45);
-  padding: 40px 36px;
+  padding: 36px 36px 32px;
   max-width: 460px;
 }
 
-/* Brand block above the login form */
-.login__brand .cb-logo,
 .login__brand {
   display: flex;
   justify-content: center;
-  padding-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(15, 61, 122, 0.08);
+  margin-bottom: 22px;
 }
 
 /* ───── Buttons — primary maps to CoopBank green ─────────────────── */
@@ -66,7 +119,6 @@
   background: rgba(15, 61, 122, 0.05);
 }
 
-/* Text links inside the admin */
 .template-minimal a,
 .nav a:hover {
   color: var(--cb-navy);
@@ -77,10 +129,22 @@
 
 /* ───── Sidebar nav + app header ─────────────────────────────────── */
 
+.nav {
+  background: #fcfdff;
+}
 .nav__header {
   border-bottom: 1px solid rgba(15, 61, 122, 0.08);
+  padding-block: 16px;
 }
 
+/* Sidebar group labels (Site Content / Recruitment / Treasury / ...) */
+.nav-group__toggle {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  color: rgba(15, 61, 122, 0.65);
+  font-weight: 700;
+}
 .nav-group__toggle:hover {
   color: var(--cb-navy);
 }
@@ -89,6 +153,7 @@
 .nav .active {
   background: rgba(15, 61, 122, 0.07);
   color: var(--cb-navy);
+  border-left: 3px solid var(--cb-green);
 }
 
 .app-header {
@@ -109,4 +174,20 @@
 .pill--style-success {
   background: var(--cb-green);
   color: #fff;
+}
+
+/* Tiny wordmark line under the sidebar — gives admin a brand footprint
+   that survives across pages without us needing to add custom components. */
+.nav::after {
+  content: "Cooperative Bank Tanzania Plc.  ·  Ustawi kwa wote";
+  display: block;
+  position: sticky;
+  bottom: 0;
+  padding: 14px 18px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(15, 61, 122, 0.45);
+  background: linear-gradient(180deg, transparent 0%, #fcfdff 40%);
+  text-align: center;
 }

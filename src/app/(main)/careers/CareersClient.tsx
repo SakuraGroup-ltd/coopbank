@@ -1,8 +1,27 @@
 "use client";
 
-import { useState } from "react";
-import type { JobListing } from "@/lib/sheets";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+
+function sluggify(s: string): string {
+  return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+// Shape passed in from app/(main)/careers/page.tsx after it reads from Payload.
+// Names mirror the old Sheet column names so the rest of this file barely
+// changes — but `description_html` and `requirements_html` are new and let
+// editors push rich content from /studio/jobs all the way through to here.
+export type ClientJob = {
+  id: string;
+  job_title: string;
+  department: string;
+  location: string;
+  job_type: string;
+  apply_by_date: string;
+  description: string;
+  description_html: string;
+  requirements_html: string;
+};
 import {
   TrendingUp,
   BookOpen,
@@ -169,9 +188,33 @@ const staggerContainer = {
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
-export default function CareersClient({ jobs }: { jobs: JobListing[] }) {
+export default function CareersClient({
+  jobs,
+  expandSlug,
+}: {
+  jobs: ClientJob[];
+  // When set (Live Preview from the Studio), open this job by default and
+  // scroll it into view — editors land on the row they were just editing.
+  expandSlug?: string;
+}) {
   const [activeFilter, setActiveFilter] = useState<"All" | ContractType>("All");
-  const [expandedJobIdx, setExpandedJobIdx] = useState<number | null>(null);
+  const initialIdx = expandSlug
+    ? jobs.findIndex((j) => j.id === expandSlug || sluggify(j.job_title) === expandSlug)
+    : -1;
+  const [expandedJobIdx, setExpandedJobIdx] = useState<number | null>(
+    initialIdx >= 0 ? initialIdx : null,
+  );
+  const focusedRef = useRef<HTMLDivElement | null>(null);
+
+  // Smooth-scroll the focused job into view once after mount so editors see
+  // the expanded row immediately on Live Preview.
+  useEffect(() => {
+    if (initialIdx < 0) return;
+    const t = setTimeout(() => {
+      focusedRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 200);
+    return () => clearTimeout(t);
+  }, [initialIdx]);
 
   const filteredJobs =
     activeFilter === "All"
@@ -332,6 +375,7 @@ const getDeptIcon = (dept: string): React.ElementType => DEPT_ICONS[dept] || Bri
               {filteredJobs.map((job, idx) => {
                 const Icon = getDeptIcon(job.department);
                 const isExpanded = expandedJobIdx === idx;
+                const isFocused = initialIdx === idx;
                 return (
                   <motion.div
                     key={idx}
@@ -340,7 +384,10 @@ const getDeptIcon = (dept: string): React.ElementType => DEPT_ICONS[dept] || Bri
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.35 }}
-                    className="overflow-hidden rounded-2xl border border-gray-100 bg-gray-bg shadow-sm"
+                    ref={isFocused ? focusedRef : undefined}
+                    className={`overflow-hidden rounded-2xl border bg-gray-bg shadow-sm ${
+                      isFocused ? "border-[#1A8A3A] ring-2 ring-[#1A8A3A]/15" : "border-gray-100"
+                    }`}
                   >
                     <div className="p-6 sm:p-8">
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -399,19 +446,20 @@ const getDeptIcon = (dept: string): React.ElementType => DEPT_ICONS[dept] || Bri
                             className="overflow-hidden"
                           >
                             <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6">
-                              {job.job_type === "Consultancy" && (
+                              {/* Requirements are now editor-controlled via /studio/jobs */}
+                              {job.requirements_html && (
                                 <div className="mb-5">
                                   <p className="mb-3 text-sm font-semibold text-navy">
                                     Key Requirements
                                   </p>
-                                  <ul className="list-disc pl-5 space-y-1.5 text-sm leading-relaxed text-body">
-                                    <li>10+ years of relevant banking IT consultancy experience, with at least 5 years in core banking system implementation or migration projects</li>
-                                    <li>Hands-on experience with T24 (Temenos), Finacle (Infosys), or Flexcube (Oracle) strongly preferred</li>
-                                    <li>PRINCE2, PMP, or equivalent project management certification preferred</li>
-                                    <li>Strong understanding of banking operations, regulatory compliance, and data migration best practices</li>
-                                    <li>Proven ability to manage cross-functional teams and stakeholder communication at executive level</li>
-                                    <li>Experience working with financial institutions in East Africa is an added advantage</li>
-                                  </ul>
+                                  <div
+                                    className="prose prose-sm max-w-none text-body
+                                               prose-ul:list-disc prose-ul:pl-5 prose-ul:space-y-1.5
+                                               prose-li:leading-relaxed prose-p:leading-relaxed
+                                               prose-strong:text-navy prose-headings:text-navy
+                                               prose-a:text-[#1A8A3A]"
+                                    dangerouslySetInnerHTML={{ __html: job.requirements_html }}
+                                  />
                                 </div>
                               )}
                               <p className="mb-4 text-sm font-semibold text-navy">

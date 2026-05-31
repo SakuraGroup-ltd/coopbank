@@ -1,9 +1,72 @@
-import { fetchBranches } from "@/lib/sheets";
+// Reads from Payload — no Sheets. Branches publish from /studio/branches
+// and land here on the next request.
+import { getPayload } from "payload";
+import config from "../../../../payload.config";
 import BranchesClient from "./BranchesClient";
+import type { ClientBranch } from "./BranchesClient";
 
 export const dynamic = "force-dynamic";
 
+const REGION_LABEL: Record<string, string> = {
+  arusha: "Arusha",
+  "dar-es-salaam": "Dar es Salaam",
+  dodoma: "Dodoma",
+  kagera: "Kagera",
+  kilimanjaro: "Kilimanjaro",
+  mbeya: "Mbeya",
+  mtwara: "Mtwara",
+  mwanza: "Mwanza",
+  tabora: "Tabora",
+  other: "Other",
+};
+const TYPE_LABEL: Record<string, string> = {
+  branch: "Branch",
+  agency: "Agency",
+  "sub-branch": "Sub-branch",
+  atm: "ATM",
+};
+
 export default async function BranchesPage() {
-  const branches = await fetchBranches();
+  const payload = await getPayload({ config });
+  const result = await payload.find({
+    collection: "branches",
+    limit: 500,
+    depth: 0,
+    sort: "name",
+  });
+
+  const branches: ClientBranch[] = result.docs.map((d) => {
+    const r = d as unknown as {
+      name: string;
+      type?: string;
+      region?: string;
+      address?: string;
+      phone?: string;
+      hoursWeekday?: string;
+      hoursSaturday?: string;
+      mapsUrl?: string;
+      isHq?: boolean;
+      comingSoon?: boolean;
+      expectedOpening?: string;
+      active?: boolean;
+    };
+    return {
+      name: r.name,
+      type: TYPE_LABEL[r.type || "branch"] || r.type || "Branch",
+      region: REGION_LABEL[r.region || "other"] || r.region || "Other",
+      address: r.address || "",
+      phone: r.phone || "",
+      hours_weekday: r.hoursWeekday || "",
+      hours_saturday: r.hoursSaturday || "",
+      maps_url: r.mapsUrl || "",
+      is_hq: r.isHq ? "true" : "false",
+      coming_soon: r.comingSoon ? "true" : "false",
+      expected_opening: r.expectedOpening || "",
+      active: r.active === false ? "false" : "true",
+    };
+  })
+  // Hide branches the editor has paused via active=false
+  .filter((b) => b.active !== "false");
+
   return <BranchesClient branches={branches} />;
 }

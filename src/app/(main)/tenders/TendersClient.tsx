@@ -1,8 +1,29 @@
 "use client";
 
-import { useState } from "react";
-import type { Tender as SheetTender } from "@/lib/sheets";
-import { isTenderOpen } from "@/lib/sheets";
+import { useState, useEffect, useRef } from "react";
+// Public-facing tender shape. Names mirror the legacy Sheet columns so the
+// rest of this file barely changes — but `description_html` and
+// `document_url` are now Payload-fed and let Procurement push the full
+// brief from /studio/tenders.
+export type ClientTender = {
+  tender_ref: string;
+  tender_title: string;
+  category: string;
+  contract_type: string;
+  published_date: string;
+  closing_date: string;
+  description: string;
+  description_html: string;
+  document_url: string;
+  status: string;
+};
+// Inline helper — keeps this file independent of the Sheets module so we
+// can fully retire @/lib/sheets once the remaining pages migrate.
+function isTenderOpen(t: { status?: string; closing_date?: string }): boolean {
+  if (t.status === "Closed" || t.status === "closed" || t.status === "draft") return false;
+  if (!t.closing_date) return t.status === "Open" || t.status === "open";
+  return new Date(t.closing_date) >= new Date(new Date().toDateString());
+}
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FileText,
@@ -123,9 +144,26 @@ const staggerContainer = {
 /*  Page                                                               */
 /* ------------------------------------------------------------------ */
 
-export default function TendersClient({ tenders }: { tenders: SheetTender[] }) {
+export default function TendersClient({
+  tenders,
+  expandRef,
+}: {
+  tenders: ClientTender[];
+  expandRef?: string;
+}) {
   const [activeFilter, setActiveFilter] = useState<string>("All Tenders");
-  const [expandedTender, setExpandedTender] = useState<string | null>(null);
+  const [expandedTender, setExpandedTender] = useState<string | null>(
+    expandRef || null,
+  );
+  const focusedRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!expandRef) return;
+    const t = setTimeout(() => {
+      focusedRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 200);
+    return () => clearTimeout(t);
+  }, [expandRef]);
 
   const filteredTenders =
     activeFilter === "All Tenders"
@@ -220,10 +258,11 @@ export default function TendersClient({ tenders }: { tenders: SheetTender[] }) {
           {/* Tender cards */}
           <div className="space-y-5">
             <AnimatePresence mode="popLayout">
-              {filteredTenders.map((tender: SheetTender, idx: number) => {
+              {filteredTenders.map((tender: ClientTender, idx: number) => {
                 const config = categoryConfig[tender.category as keyof typeof categoryConfig] || { color: "#1A56A0", bg: "rgba(13,56,117,0.1)", icon: ClipboardList };
                 const CategoryIcon = config.icon;
                 const isExpanded = expandedTender === (tender.tender_ref || String(idx));
+                const isFocused = expandRef && tender.tender_ref === expandRef;
                 return (
                   <motion.div
                     key={tender.tender_ref || idx}
@@ -232,7 +271,10 @@ export default function TendersClient({ tenders }: { tenders: SheetTender[] }) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.35 }}
-                    className="overflow-hidden rounded-2xl border border-gray-100 bg-gray-bg shadow-sm"
+                    ref={isFocused ? focusedRef : undefined}
+                    className={`overflow-hidden rounded-2xl border bg-gray-bg shadow-sm ${
+                      isFocused ? "border-[#1A8A3A] ring-2 ring-[#1A8A3A]/15" : "border-gray-100"
+                    }`}
                   >
                     <div className="p-6 sm:p-8">
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -318,15 +360,42 @@ export default function TendersClient({ tenders }: { tenders: SheetTender[] }) {
                             className="overflow-hidden"
                           >
                             <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6">
+                              {/* Scope + requirements live in Payload now */}
+                              {tender.description_html && (
+                                <div className="mb-5">
+                                  <p className="mb-3 text-sm font-semibold text-navy">
+                                    Scope &amp; Requirements
+                                  </p>
+                                  <div
+                                    className="prose prose-sm max-w-none text-body
+                                               prose-headings:text-navy
+                                               prose-strong:text-navy
+                                               prose-a:text-[#1A8A3A]
+                                               prose-ul:list-disc prose-ul:pl-5 prose-ul:space-y-1.5
+                                               prose-li:leading-relaxed"
+                                    dangerouslySetInnerHTML={{ __html: tender.description_html }}
+                                  />
+                                </div>
+                              )}
+                              {tender.document_url && (
+                                <p className="mb-4 text-sm">
+                                  <a
+                                    href={tender.document_url}
+                                    target="_blank"
+                                    rel="noopener"
+                                    className="inline-flex items-center gap-1.5 font-semibold text-[#1A8A3A] underline"
+                                  >
+                                    Download tender document (PDF)
+                                  </a>
+                                </p>
+                              )}
                               <p className="mb-4 text-sm font-semibold text-navy">
                                 How to Participate
                               </p>
                               <p className="text-sm leading-relaxed text-body">
-                                To participate in this tender, please contact our
-                                Procurement Team to obtain the full tender
-                                documents and specifications. All bids must be
-                                submitted in a sealed envelope before the closing
-                                date.
+                                Submit your bid in a sealed envelope before the
+                                closing date. Quotations may also be sent to the
+                                Procurement Team below.
                               </p>
                               <p className="mt-3 text-sm text-body">
                                 For inquiries, contact us at{" "}

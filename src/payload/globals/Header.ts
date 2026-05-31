@@ -3,6 +3,10 @@ import { editorOf } from "../access/editorOf";
 
 export const Header: GlobalConfig = {
   slug: "header",
+  admin: {
+    group: "Configuration",
+    description: "Primary navigation, top-bar CTA, and the mega-menu structure rendered site-wide.",
+  },
   access: { read: () => true, update: editorOf("marketing") },
   fields: [
     {

@@ -5,6 +5,10 @@ import { isAdmin } from "../access/isAdmin";
 // Used by EVERY page, so it stays in one global rather than scattered constants.
 export const SiteSettings: GlobalConfig = {
   slug: "site-settings",
+  admin: {
+    group: "Configuration",
+    description: "Contact details, social handles, emergency banner — referenced across every page.",
+  },
   access: { read: () => true, update: isAdmin },
   fields: [
     {

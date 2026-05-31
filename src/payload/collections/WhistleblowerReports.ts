@@ -9,10 +9,11 @@ import { editorOf } from "../access/editorOf";
 export const WhistleblowerReports: CollectionConfig = {
   slug: "whistleblower-reports",
   admin: {
+    group: "Compliance",
     useAsTitle: "subject",
     defaultColumns: ["caseRef", "category", "subject", "status", "submittedAt"],
     description:
-      "Submissions from the public /whistleblower form. Read-restricted to Compliance / Risk and admins.",
+      "Submissions from the public /whistleblower form. Read-restricted to Compliance / Risk and admins. Records are append-only from the public form; only `status` and `internalNotes` should be edited during triage.",
   },
   access: {
     // Public submission via API — anyone can create a report (typically via the

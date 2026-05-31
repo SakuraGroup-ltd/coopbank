@@ -1,7 +1,24 @@
 "use client";
 
-import { bool } from "@/lib/sheets";
-import type { Branch as SheetBranch } from "@/lib/sheets";
+// Public-facing branch shape. Names mirror the legacy Sheet columns so the
+// rest of this file barely changes. Now fed from Payload via /studio/branches.
+export type ClientBranch = {
+  name: string;
+  type: string;
+  region: string;
+  address: string;
+  phone: string;
+  hours_weekday: string;
+  hours_saturday: string;
+  maps_url: string;
+  is_hq: string;
+  coming_soon: string;
+  expected_opening: string;
+  active: string;
+};
+
+// Cheap truth-y string check kept here so we don't depend on /lib/sheets.
+const bool = (v?: string): boolean => v === "true" || v === "TRUE" || v === "1";
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import {
@@ -85,9 +102,9 @@ const staggerContainer = {
 /*  PAGE                                                               */
 /* ------------------------------------------------------------------ */
 
-export default function BranchesClient({ branches }: { branches: import("@/lib/sheets").Branch[] }) {
-  const activeBranches    = branches.filter((b: SheetBranch) => !bool(b.coming_soon));
-  const comingSoonBranches = branches.filter((b: SheetBranch) => bool(b.coming_soon));
+export default function BranchesClient({ branches }: { branches: ClientBranch[] }) {
+  const activeBranches    = branches.filter((b: ClientBranch) => !bool(b.coming_soon));
+  const comingSoonBranches = branches.filter((b: ClientBranch) => bool(b.coming_soon));
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -234,7 +251,7 @@ export default function BranchesClient({ branches }: { branches: import("@/lib/s
                   variants={staggerContainer}
                   className="grid gap-6 sm:grid-cols-2"
                 >
-                  {filteredActive.map((branch: SheetBranch, i: number) => {
+                  {filteredActive.map((branch: ClientBranch, i: number) => {
                     const isOpen = expandedId === branch.name;
                     const status = getBranchStatus(branch.hours_weekday || undefined);
                     const mapsQuery = encodeURIComponent(
@@ -468,7 +485,7 @@ export default function BranchesClient({ branches }: { branches: import("@/lib/s
                       variants={staggerContainer}
                       className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
                     >
-                      {filteredComingSoon.map((branch: SheetBranch, i: number) => (
+                      {filteredComingSoon.map((branch: ClientBranch, i: number) => (
                         <motion.div
                           key={branch.name}
                           variants={fadeUp}

@@ -1,6 +1,17 @@
 "use client";
 
-import type { ForexRate } from "@/lib/sheets";
+// Public-facing FX rate shape. Names mirror the legacy Sheet columns so the
+// rest of this file barely changes. Now fed from Payload via /studio/forex.
+export type ForexRate = {
+  currency_code: string;
+  currency_name: string;
+  flag_emoji: string;
+  buy_rate: string;
+  sell_rate: string;
+  trend: string;
+  updated_date: string;
+  active: string;
+};
 import { TreasuryHero } from "@/components/treasury/TreasuryHero";
 import { FadeInSection } from "@/components/treasury/TreasuryFadeIn";
 import { BenefitsList } from "@/components/treasury/BenefitsList";

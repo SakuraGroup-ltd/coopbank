@@ -8,6 +8,9 @@ export const ForexRates: CollectionConfig = {
   slug: "forex-rates",
   versions: { drafts: false, maxPerDoc: 100 }, // keep audit history of rate changes
   admin: {
+    group: "Treasury",
+    description:
+      "Daily foreign-exchange board. One row per currency; Treasury updates on weekday mornings. `active=false` hides a currency from the homepage ticker without deleting its history. Per-rate version history is kept for audit.",
     useAsTitle: "currencyCode",
     defaultColumns: ["currencyCode", "currencyName", "buyRate", "sellRate", "trend", "updatedDate", "active"],
   },

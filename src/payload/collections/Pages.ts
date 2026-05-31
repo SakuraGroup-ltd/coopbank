@@ -2,13 +2,19 @@ import type { CollectionConfig } from "payload";
 import { isAdmin } from "../access/isAdmin";
 import { editorOf, publicReadPublished } from "../access/editorOf";
 import { allBlocks } from "../blocks";
+import { trackEditor, auditFields } from "../hooks/trackEditor";
+import { scheduledPublishField } from "../fields/scheduledPublish";
 
 // Generic block-composed pages. Marketing builds About, Risk Disclosures,
 // landing pages, campaign pages, etc. by stacking the available blocks.
 export const Pages: CollectionConfig = {
   slug: "pages",
   versions: { drafts: true, maxPerDoc: 30 },
+  hooks: { beforeChange: [trackEditor] },
   admin: {
+    group: "Site Content",
+    description:
+      "Compose any marketing page by stacking blocks — Hero, Stats, Product Grid, Image+Text, FAQ, etc. Live Preview shows the result as you edit. The page is reachable at /<slug>; publish to make it live.",
     useAsTitle: "title",
     defaultColumns: ["title", "slug", "_status", "updatedAt"],
     listSearchableFields: ["title", "slug"],
@@ -64,5 +70,7 @@ export const Pages: CollectionConfig = {
       labels: { singular: "Block", plural: "Blocks" },
       blocks: allBlocks,
     },
+      ...auditFields,
+    scheduledPublishField,
   ],
 };

@@ -3,6 +3,10 @@ import { editorOf } from "../access/editorOf";
 
 export const Footer: GlobalConfig = {
   slug: "footer",
+  admin: {
+    group: "Configuration",
+    description: "Footer columns, tagline, and bottom-bar links — shared across every page.",
+  },
   access: { read: () => true, update: editorOf("marketing") },
   fields: [
     {

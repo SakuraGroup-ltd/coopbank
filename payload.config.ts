@@ -13,6 +13,14 @@ import { Branches } from "./src/payload/collections/Branches";
 import { BlogPosts } from "./src/payload/collections/BlogPosts";
 import { Pages } from "./src/payload/collections/Pages";
 import { WhistleblowerReports } from "./src/payload/collections/WhistleblowerReports";
+import { Faqs } from "./src/payload/collections/Faqs";
+import { Auctions } from "./src/payload/collections/Auctions";
+import { InterestRates } from "./src/payload/collections/InterestRates";
+import { PressReleases } from "./src/payload/collections/PressReleases";
+import { ServiceFees } from "./src/payload/collections/ServiceFees";
+import { AnnualReports } from "./src/payload/collections/AnnualReports";
+import { StatutoryNotices } from "./src/payload/collections/StatutoryNotices";
+import { LeadershipTeam } from "./src/payload/collections/LeadershipTeam";
 
 import { Header } from "./src/payload/globals/Header";
 import { Footer } from "./src/payload/globals/Footer";
@@ -54,6 +62,14 @@ export default buildConfig({
     ForexRates,
     Branches,
     WhistleblowerReports,
+    Faqs,
+    Auctions,
+    InterestRates,
+    PressReleases,
+    ServiceFees,
+    AnnualReports,
+    StatutoryNotices,
+    LeadershipTeam,
   ],
   globals: [Header, Footer, Homepage, SiteSettings],
   secret: process.env.PAYLOAD_SECRET || "spike-secret-not-for-prod",

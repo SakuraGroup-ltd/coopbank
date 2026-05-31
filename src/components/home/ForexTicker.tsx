@@ -1,7 +1,18 @@
 "use client";
 
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
-import type { ForexRate } from "@/lib/sheets";
+// Local shape so the ticker is independent of @/lib/sheets. Matches what
+// app/(main)/page.tsx passes in after reading from Payload.
+export type ForexRate = {
+  currency_code: string;
+  currency_name: string;
+  flag_emoji: string;
+  buy_rate: string;
+  sell_rate: string;
+  trend: string;
+  updated_date: string;
+  active: string;
+};
 
 function fmt(n: number) {
   return n.toLocaleString("en", { minimumFractionDigits: 2, maximumFractionDigits: 2 });

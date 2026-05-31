@@ -5,6 +5,9 @@ import { editorOf } from "../access/editorOf";
 export const Branches: CollectionConfig = {
   slug: "branches",
   admin: {
+    group: "Network",
+    description:
+      "Branches, sub-branches, agents and ATMs — drives /branches and the locate-us map. Use `active=false` to retire a location without losing history; `comingSoon=true` shows the location with a 'Coming Soon' badge instead of operating hours.",
     useAsTitle: "name",
     defaultColumns: ["name", "type", "region", "isHq", "comingSoon", "active"],
   },

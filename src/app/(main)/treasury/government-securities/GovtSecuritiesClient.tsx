@@ -1,6 +1,18 @@
 "use client";
 
-import type { Auction } from "@/lib/sheets";
+// Public-facing auction shape. Names mirror the legacy Sheet columns so the
+// rest of this file barely changes. Now fed from Payload via the Studio.
+export type Auction = {
+  instrument: string;
+  tenor: string;
+  announcement_date: string;
+  auction_date: string;
+  value_date: string;
+  maturity_date: string;
+  notes: string;
+  status: string;
+  active: string;
+};
 import { TreasuryHero } from "@/components/treasury/TreasuryHero";
 import { FadeInSection } from "@/components/treasury/TreasuryFadeIn";
 import { TreasuryDeskContact } from "@/components/treasury/TreasuryDeskContact";

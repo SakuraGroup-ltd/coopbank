@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* Studio-only design tokens. The public site uses Gilroy/Inter at large scale,
+   the Studio is a tighter, denser editorial surface — system + Inter at smaller
+   tracking. Colors echo the brand but lean monochrome on neutrals. */
+
+@theme inline {
+  --color-cb-navy: #0F3D7A;
+  --color-cb-navy-deep: #0a2b5a;
+  --color-cb-green: #1A8A3A;
+  --color-cb-green-deep: #14692D;
+  --color-cb-paper: #FAFAF7;
+
+  /* Studio neutrals — warm-tinted greys so the surface feels editorial,
+     not generic SaaS. Tuned to the Untitled UI reference. */
+  --color-studio-bg: #F4F2EC;
+  --color-studio-panel: #FFFFFF;
+  --color-studio-border: #E7E5DF;
+  --color-studio-soft: #F7F6F2;
+  --color-studio-ink: #1A1A19;
+  --color-studio-ink-2: #4A4A48;
+  --color-studio-ink-3: #8A8A85;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    background: var(--color-studio-bg);
+    color: var(--color-studio-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Subtle paper texture behind the panel — gives the "real product" feel
+     instead of a flat dev background. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(rgba(15, 61, 122, 0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+/* Animations */
+@keyframes studio-fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: studio-fade-up 0.35s ease-out forwards; }

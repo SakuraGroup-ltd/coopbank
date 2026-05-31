@@ -8,6 +8,9 @@ export const Homepage: GlobalConfig = {
   slug: "homepage",
   access: { read: () => true, update: editorOf("marketing") },
   admin: {
+    group: "Configuration",
+    description:
+      "Site-wide homepage settings — featured news rail picks, hero overrides, optional emergency banner. The homepage's main block stack lives in Pages → 'home'.",
     livePreview: {
       url: () =>
         // Homepage content lives in the Pages collection with slug=home; the

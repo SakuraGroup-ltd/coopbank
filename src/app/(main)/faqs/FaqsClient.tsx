@@ -4,7 +4,16 @@ import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Search, MessageCircle, Phone, Mail } from "lucide-react";
 import Link from "next/link";
-import type { Faq } from "@/lib/sheets";
+// Public-facing FAQ shape. Names mirror the legacy Sheet columns so the
+// rest of this file barely changes. Now fed from Payload via the Studio.
+// `answer` may now include HTML markup which FaqItem renders accordingly.
+export type Faq = {
+  question: string;
+  answer: string;
+  category: string;
+  order: string;
+  active: string;
+};
 
 function FaqItem({ q, a, defaultOpen = false }: { q: string; a: string; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
