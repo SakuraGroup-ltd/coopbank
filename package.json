@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NODE_OPTIONS=\"--max-old-space-size=6144\" next build",
     "start": "next start",
     "lint": "eslint",
     "postinstall": "node ./scripts/postinstall-patches.cjs",
-    "migrate:sheets": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/migrate-from-sheets.ts",
     "seed:assets": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/seed-assets.ts",
     "seed:homepage": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/seed-homepage.ts"
   },
