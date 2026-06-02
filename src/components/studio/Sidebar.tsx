@@ -48,7 +48,7 @@ const groups: Group[] = [
       { href: "/studio/press", label: "Press releases", icon: Megaphone, scope: "press" },
       { href: "/studio/pages", label: "Pages", icon: ScrollText, scope: "pages" },
       { href: "/studio/faqs", label: "FAQs", icon: HelpCircle, scope: "faqs" },
-      { href: "/studio/media", label: "Media library", icon: Images, scope: "media" },
+      { href: "/studio/library", label: "Media library", icon: Images, scope: "library" },
     ],
   },
   {
