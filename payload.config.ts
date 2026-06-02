@@ -86,10 +86,11 @@ export default buildConfig({
     gcsStorage({
       bucket: process.env.GCS_BUCKET || "coopbank-media",
       collections: {
-        media: true,
+        // disablePayloadAccessControl: media docs' `url` field becomes the
+        // direct public GCS URL. Studio + public pages load images straight
+        // from storage.googleapis.com — no more 404 on /api/media/file/*.
+        media: { disablePayloadAccessControl: true },
       },
-      // Skip plugin entirely in environments without explicit opt-in so the
-      // local dev flow can still use the on-disk media/ folder.
       enabled: Boolean(process.env.GCS_BUCKET),
       options: {
         projectId: process.env.GCS_PROJECT_ID || "sakura-group-482908",
