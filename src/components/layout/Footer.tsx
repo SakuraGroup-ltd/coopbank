@@ -293,7 +293,6 @@ export default function Footer() {
               <span className="text-[11px] text-white/40 hover:text-white/70 transition-colors cursor-default">Privacy Policy</span>
               <span className="text-[11px] text-white/40 hover:text-white/70 transition-colors cursor-default">Terms of Service</span>
               <span className="text-[11px] text-white/40 hover:text-white/70 transition-colors cursor-default">Cookie Policy</span>
-              <span className="text-[11px] text-white/40 hover:text-white/70 transition-colors cursor-default">AML Policy</span>
               <Link href="/whistleblower" className="text-[11px] text-white/40 transition-colors hover:text-white/70">Whistleblower</Link>
             </div>
           </div>

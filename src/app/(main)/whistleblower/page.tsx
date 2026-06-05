@@ -5,10 +5,7 @@ import { motion } from "framer-motion";
 import {
   Shield,
   AlertTriangle,
-  Phone,
   Mail,
-  FileText,
-  Users,
   Landmark,
   Wifi,
   Scale,
@@ -86,27 +83,6 @@ const reportingChannels: ReportingChannel[] = [
       "Send a detailed, written report to whistleblow@cbtbank.co.tz \u2014 include dates, names, locations, and supporting evidence.",
     detail: "whistleblow@cbtbank.co.tz",
   },
-  {
-    icon: Phone,
-    title: "Confidential Hotline",
-    description:
-      "Dedicated confidential hotline operated by an independent third party. Available 24 hours, 7 days a week.",
-    detail: "+255 27 275 4470 (Ext. 200)",
-  },
-  {
-    icon: FileText,
-    title: "Written Letter",
-    description:
-      "Submit a sealed, written report marked CONFIDENTIAL to the Head of Internal Audit, CoopBank HQ, P.O. Box 4040, Dar es Salaam.",
-    detail: "P.O. Box 4040, Dar es Salaam",
-  },
-  {
-    icon: Users,
-    title: "In-Person Meeting",
-    description:
-      "Request a private, face-to-face meeting with the Head of Internal Audit or the Board Audit Committee Member. Contact Internal Audit to schedule.",
-    detail: "+255 27 275 4470 Ext. 201",
-  },
 ];
 
 const protectionGuarantees = [
@@ -167,16 +143,33 @@ function WhistleblowerForm() {
   const [file, setFile] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [refNumber, setRefNumber] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const ref = `WB-2026-${String(Math.floor(1000 + Math.random() * 9000))}`;
-    setRefNumber(ref);
-    setSubmitted(true);
+    setError("");
+    setSubmitting(true);
+    try {
+      const body = new FormData();
+      Object.entries(formData).forEach(([k, v]) => body.append(k, v));
+      if (file) body.append("file", file);
+
+      const res = await fetch("/api/whistleblower", { method: "POST", body });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.error || "Submission failed. Please try again.");
+
+      setRefNumber(data.caseRef || "");
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Submission failed. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -388,12 +381,18 @@ function WhistleblowerForm() {
 
               {/* Submit */}
               <div className="pt-2">
+                {error && (
+                  <p className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-center text-sm font-medium text-red-700">
+                    {error}
+                  </p>
+                )}
                 <button
                   type="submit"
-                  className="inline-flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#1A8A3A] px-8 py-3.5 text-sm font-bold text-white shadow-lg transition-colors hover:bg-[#00C853]"
+                  disabled={submitting}
+                  className="inline-flex w-full items-center justify-center gap-2.5 rounded-lg bg-[#1A8A3A] px-8 py-3.5 text-sm font-bold text-white shadow-lg transition-colors hover:bg-[#00C853] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <Shield className="h-4 w-4" />
-                  Submit Report Securely
+                  {submitting ? "Submitting securely…" : "Submit Report Securely"}
                 </button>
                 <p className="mt-4 text-center text-xs leading-relaxed text-body/70">
                   Your report is encrypted and will be reviewed only by the Internal Audit department. Your identity, if provided, is protected under the Tanzania Whistleblower and Witness Protection Act.
@@ -532,13 +531,13 @@ export default function WhistleblowerPage() {
             </motion.p>
           </motion.div>
 
-          {/* 4-method grid */}
+          {/* Confidential email channel */}
           <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid gap-8 sm:grid-cols-2"
+            className="mx-auto max-w-xl"
           >
             {reportingChannels.map((channel, i) => {
               const Icon = channel.icon;
