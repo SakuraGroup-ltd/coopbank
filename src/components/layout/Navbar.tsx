@@ -84,7 +84,7 @@ const digitalBankingMenu: MegaColumn[] = [
     title: "Digital Channels",
     items: [
       { label: "CoopNet Internet Banking", href: "/digital-banking#coopnet", desc: "24/7 browser-based banking" },
-      { label: "CoopEsa Mobile App", href: "/digital-banking#coopesa", desc: "Android & iOS banking" },
+      { label: "CoopPesa Mobile App", href: "/digital-banking#coopesa", desc: "Android & iOS banking" },
       { label: "USSD *150*84#", href: "/digital-banking#ussd", desc: "Works on every phone" },
       { label: "CoopWakala Agency", href: "/digital-banking#coopwakala", desc: "100+ agent points nationwide" },
     ],
@@ -92,9 +92,9 @@ const digitalBankingMenu: MegaColumn[] = [
   {
     title: "Mobile Banking",
     items: [
-      { label: "Download CoopEsa", href: "/digital-banking#download", desc: "Google Play & App Store" },
+      { label: "Download CoopPesa", href: "/digital-banking#download", desc: "Google Play & App Store" },
       { label: "Cardless ATM Withdrawal", href: "/digital-banking#cardless", desc: "Withdraw without your card" },
-      { label: "QR Code Payments", href: "/digital-banking#qr-pay", desc: "Scan-to-pay with CoopEsa" },
+      { label: "QR Code Payments", href: "/digital-banking#qr-pay", desc: "Scan-to-pay with CoopPesa" },
       { label: "Push Notifications", href: "/digital-banking#notifications", desc: "Real-time transaction alerts" },
     ],
   },
@@ -150,7 +150,7 @@ const loanProductsMenu: MegaColumn[] = [
     title: "Personal & Salaried",
     items: [
       { label: "Salaried Loans", href: "/loan-products#salaried", desc: "Fast payroll-linked loans" },
-      { label: "Digital Loans", href: "/loan-products#digital", desc: "Instant via CoopEsa app" },
+      { label: "Digital Loans", href: "/loan-products#digital", desc: "Instant via CoopPesa app" },
       { label: "Investment Account Loans", href: "/loan-products#investment", desc: "Deposit as collateral" },
     ],
   },
@@ -224,13 +224,13 @@ const mainNavItems: NavItem[] = [
     label: "Personal Banking",
     href: "/personal-banking",
     megaMenu: personalBankingMenu,
-    cta: { label: "Open an Account", href: "https://coopnet.coopbank.co.tz/Account/Register", desc: "Start your banking journey with CoopBank today" },
+    cta: { label: "Download CoopPesa", href: "/digital-banking#download", desc: "Get the CoopPesa app on Android or iOS" },
   },
   {
     label: "Digital Banking",
     href: "/digital-banking",
     megaMenu: digitalBankingMenu,
-    cta: { label: "Download CoopEsa", href: "/digital-banking#download", desc: "Get the CoopEsa app on Android or iOS" },
+    cta: { label: "Download CoopPesa", href: "/digital-banking#download", desc: "Get the CoopPesa app on Android or iOS" },
   },
   {
     label: "Cards & Payments",
@@ -592,12 +592,11 @@ export default function Navbar() {
               );
             })}
 
-            {/* Right side of main nav — Open Account CTA (desktop) */}
+            {/* Right side of main nav — Download CoopPesa CTA (desktop) */}
             <div className="ml-auto hidden xl:flex items-center gap-3">
-              {/* "Open an Account" CTA hidden per request — set to true to restore */}
-              {false && (
+              {true && (
                 <Link
-                  href="https://coopnet.coopbank.co.tz/Account/Register" target="_blank" rel="noopener"
+                  href="/digital-banking#download"
                   className={`inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[11px] font-bold transition-colors ${
                     activeMega
                       ? "bg-[#1A8A3A] text-white hover:bg-[#14692D]"
@@ -606,7 +605,7 @@ export default function Navbar() {
                       : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
                   }`}
                 >
-                  Open an Account
+                  Download CoopPesa
                   <ArrowRight className="h-3 w-3" />
                 </Link>
               )}

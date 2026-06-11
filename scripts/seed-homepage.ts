@@ -103,7 +103,7 @@ async function main() {
             { title: "Debit Cards", description: "Visa cards for everyday spending.", icon: "CreditCard", href: "/cards" },
             { title: "Personal Loans", description: "Payroll-linked loans, fast approval.", icon: "Banknote", href: "/loan-products#salaried" },
             { title: "Agri Loans", description: "TSH 100K-50M, built for farmers.", icon: "Tractor", href: "/loan-products#agri-business" },
-            { title: "Mobile Banking", description: "Bank from your phone with CoopEsa.", icon: "Smartphone", href: "/digital-banking#coopesa" },
+            { title: "Mobile Banking", description: "Bank from your phone with CoopPesa.", icon: "Smartphone", href: "/digital-banking#coopesa" },
             { title: "Agency Banking", description: "100+ CoopWakala agents nationwide.", icon: "Store", href: "/digital-banking#coopwakala" },
             { title: "Treasury & Forex", description: "Daily FX rates, fixed deposits, T-bills.", icon: "Globe", href: "/treasury/foreign-exchange" },
             { title: "Loan Calculator", description: "Estimate your repayments in seconds.", icon: "Calculator", href: "/loan-products/calculator" },
@@ -139,10 +139,10 @@ async function main() {
           ],
         },
 
-        // ── 5. CoopEsa promo ──────────────────────────────────────────
+        // ── 5. CoopPesa promo ──────────────────────────────────────────
         {
           blockType: "image-text",
-          eyebrow: "CoopEsa Mobile Banking",
+          eyebrow: "CoopPesa Mobile Banking",
           heading: "Your bank, in your pocket.",
           image: coopesaMockup,
           imageSide: "right",
@@ -173,7 +173,7 @@ async function main() {
             { title: "Bill Payments", description: "LUKU, DAWASA, school fees & more.", icon: "ShoppingCart", href: "/cards#bill-pay" },
             { title: "Agri-Business Loans", description: "TSH 100K-50M, 8-12% rate.", icon: "Tractor", href: "/loan-products#agri-business" },
             { title: "Salaried Loans", description: "Fast payroll-linked loans.", icon: "PiggyBank", href: "/loan-products#salaried" },
-            { title: "Digital Loans", description: "Instant via CoopEsa app.", icon: "Smartphone", href: "/loan-products#digital" },
+            { title: "Digital Loans", description: "Instant via CoopPesa app.", icon: "Smartphone", href: "/loan-products#digital" },
             { title: "SME Loans", description: "Working capital & asset finance.", icon: "Briefcase", href: "/loan-products#sme" },
             { title: "Asset Financing", description: "Up to 80% of asset value.", icon: "Car", href: "/loan-products#asset-financing" },
             { title: "Business Loans", description: "Corporate & large enterprise.", icon: "Store", href: "/loan-products#business" },
@@ -197,7 +197,7 @@ async function main() {
         {
           blockType: "cta-strip",
           headline: "Open an account in minutes",
-          subhead: "No paperwork, no queues — just your ID and the CoopEsa app.",
+          subhead: "No paperwork, no queues — just your ID and the CoopPesa app.",
           background: "brand",
           ctas: [
             { label: "Open Online", href: "/open-account" },

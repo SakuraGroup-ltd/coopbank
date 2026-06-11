@@ -33,7 +33,7 @@ const channels: DigitalChannel[] = [
   {
     id: 2,
     slug: "coopesa",
-    name: "CoopEsa Mobile App",
+    name: "CoopPesa Mobile App",
     description:
       "A simple, secure and convenient way to access your accounts using your smartphone. Send money, pay bills, buy airtime, apply for digital loans, and manage your finances on the go. Secured with fingerprint and Face ID login, with real-time push notifications for every transaction.",
     image: "/images/products/coopesa-oldman.jpg",
@@ -477,7 +477,7 @@ export default function DigitalBankingPage() {
             className="text-white/60 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto text-center"
           >
             Pay bills, transfer funds, and manage your finances seamlessly with
-            CoopNet, CoopEsa, USSD and more.
+            CoopNet, CoopPesa, USSD and more.
           </motion.p>
 
 
@@ -492,7 +492,7 @@ export default function DigitalBankingPage() {
       ))}
 
       {/* ============================================================ */}
-      {/*  BOTTOM CTA -- Download CoopEsa (centered rounded card)       */}
+      {/*  BOTTOM CTA -- Download CoopPesa (centered rounded card)       */}
       {/* ============================================================ */}
       <section className="bg-white pt-20 sm:pt-24 pb-0 relative overflow-hidden">
         <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-12 pb-20 sm:pb-24 relative">
@@ -510,7 +510,7 @@ export default function DigitalBankingPage() {
             >
               <Image
                 src="/images/coopesa-mockup.png"
-                alt="CoopEsa Mobile App"
+                alt="CoopPesa Mobile App"
                 width={200}
                 height={400}
                 className="drop-shadow-2xl"
@@ -532,7 +532,7 @@ export default function DigitalBankingPage() {
             <div className="relative z-10 max-w-md">
               <Download className="mb-4 text-[#00C853]" size={36} />
               <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
-                Get CoopEsa on Your Phone
+                Get CoopPesa on Your Phone
               </h2>
               <p className="mt-3 text-base text-white/50 leading-relaxed">
                 Join over 50,000 Tanzanians who bank smarter every day. Send money, pay bills, apply for loans, and manage your finances -- all from one app.

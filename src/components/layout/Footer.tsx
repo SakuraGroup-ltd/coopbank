@@ -23,7 +23,7 @@ const personalBanking = [
 
 const digitalBanking = [
   { label: "CoopNet (Internet Banking)", href: "/digital-banking/coopnet" },
-  { label: "CoopEsa (Mobile App)", href: "/digital-banking" },
+  { label: "CoopPesa (Mobile App)", href: "/digital-banking" },
   { label: "USSD *150*84#", href: "/digital-banking/ussd" },
   { label: "CoopWakala (Agency)", href: "/digital-banking/coopwakala" },
   { label: "QR Pay", href: "/digital-banking/qr-pay" },
@@ -67,7 +67,7 @@ export default function Footer() {
         <div className="mx-auto max-w-7xl px-6 sm:px-12 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div>
             <h3 className="text-xl sm:text-2xl font-extrabold text-white leading-tight">
-              Open your account instantly on CoopEsa
+              Open your account instantly on CoopPesa
             </h3>
             <p className="text-sm text-white/70 mt-1">
               No branch visit needed — open your account digitally in minutes from your phone
@@ -80,7 +80,7 @@ export default function Footer() {
               rel="noopener"
               className="inline-flex items-center px-6 py-2.5 rounded-full border-2 border-white text-sm font-bold text-white hover:bg-white hover:text-[#1A8A3A] transition-colors"
             >
-              Download CoopEsa
+              Download CoopPesa
             </a>
           </div>
         </div>
@@ -270,7 +270,7 @@ export default function Footer() {
           <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
               <span className="text-xs font-medium text-white/50">
-                Download CoopEsa:
+                Download CoopPesa:
               </span>
               <div className="flex gap-2">
                 <a href="https://play.google.com/store/apps/details?id=com.coopbank.coopesa" target="_blank" rel="noopener noreferrer" className="transition-opacity hover:opacity-80">

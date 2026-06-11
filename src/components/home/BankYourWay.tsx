@@ -20,7 +20,7 @@ interface Channel {
 }
 
 const channels: Channel[] = [
-  { icon: Smartphone, label: "CoopEsa Mobile", href: "/digital-banking#coopesa" },
+  { icon: Smartphone, label: "CoopPesa Mobile", href: "/digital-banking#coopesa" },
   { icon: Monitor, label: "CoopNet Internet", href: "/digital-banking#coopnet" },
   { icon: Landmark, label: "Branch Banking", href: "/branches" },
   { icon: CreditCard, label: "ATM & Cards", href: "/branches#atm" },

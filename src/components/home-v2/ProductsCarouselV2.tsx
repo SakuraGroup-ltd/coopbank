@@ -26,7 +26,7 @@ const products: Product[] = [
     href: "/personal-banking#kilimo-tija",
   },
   {
-    name: "CoopEsa Mobile App",
+    name: "CoopPesa Mobile App",
     category: "Digital",
     features: ["Instant transfers & payments", "Bill payments & airtime top-up", "Real-time account notifications"],
     href: "/digital-banking#coopesa",

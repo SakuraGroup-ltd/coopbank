@@ -21,7 +21,7 @@ const features: Feature[] = [
 ];
 
 const channels = [
-  { icon: Smartphone, title: "CoopEsa Mobile App", desc: "Full banking on Android & iOS", href: "/digital-banking#coopesa", color: "#00C853" },
+  { icon: Smartphone, title: "CoopPesa Mobile App", desc: "Full banking on Android & iOS", href: "/digital-banking#coopesa", color: "#00C853" },
   { icon: Globe, title: "CoopNet Internet Banking", desc: "24/7 browser-based access", href: "/digital-banking#coopnet", color: "#00BCD4" },
   { icon: Banknote, title: "USSD *150*84#", desc: "Works on every phone", href: "/digital-banking#ussd", color: "#7C4DFF" },
   { icon: Building2, title: "CoopWakala Agency", desc: "100+ agent points nationwide", href: "/digital-banking#coopwakala", color: "#FF6D00" },

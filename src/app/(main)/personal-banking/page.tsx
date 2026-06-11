@@ -59,7 +59,7 @@ const accounts: AccountProduct[] = [
       "Business mentorship access",
       "Entrepreneurship training programs",
       "Preferential loan rates",
-      "Free CoopEsa mobile banking",
+      "Free CoopPesa mobile banking",
     ],
     requirements: [
       "Valid ID (NIDA, passport, voter ID)",
@@ -67,7 +67,7 @@ const accounts: AccountProduct[] = [
       "Passport photo",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "All CoopBank branches",
       "Agent Banking (CoopWakala)",
       "USSD *150*84#",
@@ -87,7 +87,7 @@ const accounts: AccountProduct[] = [
       "Open to all Tanzanians",
       "Low opening balance (TSH 10,000)",
       "Competitive interest rates",
-      "Free CoopEsa mobile banking",
+      "Free CoopPesa mobile banking",
       "Free SMS notifications",
       "Passbook provided",
     ],
@@ -97,7 +97,7 @@ const accounts: AccountProduct[] = [
       "Minimum opening balance TSH 10,000",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Internet Banking (CoopNet)",
       "USSD *150*84#",
       "All CoopBank branches",
@@ -118,7 +118,7 @@ const accounts: AccountProduct[] = [
       "Flexible deposit options",
       "Free financial advisory",
       "Access to loan facilities",
-      "Free CoopEsa mobile banking",
+      "Free CoopPesa mobile banking",
       "Free SMS notifications",
     ],
     requirements: [
@@ -128,7 +128,7 @@ const accounts: AccountProduct[] = [
       "Minimum opening balance TSH 10,000",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Internet Banking (CoopNet)",
       "USSD *150*84#",
       "All CoopBank branches",
@@ -159,7 +159,7 @@ const accounts: AccountProduct[] = [
       "Minimum opening balance TSH 10,000",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Agent Banking (CoopWakala)",
       "All branches",
       "USSD *150*84#",
@@ -178,7 +178,7 @@ const accounts: AccountProduct[] = [
       "Free Visa prepaid card",
       "Financial literacy training",
       "Low opening balance (TSH 5,000)",
-      "Free CoopEsa mobile banking",
+      "Free CoopPesa mobile banking",
       "School fees payment facility",
     ],
     requirements: [
@@ -188,7 +188,7 @@ const accounts: AccountProduct[] = [
       "Minimum opening balance TSH 5,000",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "All CoopBank branches",
       "USSD *150*84#",
       "Agent Banking (CoopWakala)",
@@ -206,7 +206,7 @@ const accounts: AccountProduct[] = [
       "Direct salary deposit",
       "Preferential loan rates",
       "Free salary processing",
-      "Free CoopEsa mobile banking",
+      "Free CoopPesa mobile banking",
       "Access to overdraft facility",
       "Free monthly statements",
       "Free SMS notifications",
@@ -218,7 +218,7 @@ const accounts: AccountProduct[] = [
       "Minimum opening balance TSH 10,000",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Internet Banking (CoopNet)",
       "USSD *150*84#",
       "All CoopBank branches",
@@ -239,7 +239,7 @@ const accounts: AccountProduct[] = [
       "Free banking services",
       "Salary domiciliation",
       "Dedicated staff banking support",
-      "Free CoopEsa mobile banking",
+      "Free CoopPesa mobile banking",
       "Free SMS notifications",
     ],
     requirements: [
@@ -248,7 +248,7 @@ const accounts: AccountProduct[] = [
       "Passport photo",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Internet Banking (CoopNet)",
       "USSD *150*84#",
       "All CoopBank branches",
@@ -282,7 +282,7 @@ const accounts: AccountProduct[] = [
     ],
     channels: [
       "All CoopBank branches",
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "USSD *150*84#",
       "Agent Banking (CoopWakala)",
     ],
@@ -301,7 +301,7 @@ const accounts: AccountProduct[] = [
       "Open to all Tanzanians",
       "Low opening balance (TSH 10,000)",
       "Competitive interest rates",
-      "Free CoopEsa mobile banking",
+      "Free CoopPesa mobile banking",
       "Free SMS notifications",
       "Passbook provided",
     ],
@@ -311,7 +311,7 @@ const accounts: AccountProduct[] = [
       "Minimum opening balance TSH 10,000",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Internet Banking (CoopNet)",
       "USSD *150*84#",
       "All CoopBank branches",
@@ -342,7 +342,7 @@ const accounts: AccountProduct[] = [
       "Minimum opening balance TSH 50,000",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Internet Banking",
       "All branches",
       "USSD *150*84#",
@@ -360,7 +360,7 @@ const accounts: AccountProduct[] = [
       "Competitive interest rates",
       "Flexible deposit amounts",
       "Access to loan facilities",
-      "Free CoopEsa mobile banking",
+      "Free CoopPesa mobile banking",
       "Reward incentives for consistent saving",
       "Free SMS notifications",
     ],
@@ -371,7 +371,7 @@ const accounts: AccountProduct[] = [
       "Minimum opening balance TSH 10,000",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "All CoopBank branches",
       "Agent Banking (CoopWakala)",
       "USSD *150*84#",
@@ -490,7 +490,7 @@ const accounts: AccountProduct[] = [
     channels: [
       "All CoopBank branches",
       "Internet Banking (CoopNet)",
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Cheque facility",
     ],
   },
@@ -524,7 +524,7 @@ const accounts: AccountProduct[] = [
       "Two referees",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Internet Banking (CoopNet)",
       "USSD *150*84#",
       "All branches",
@@ -545,7 +545,7 @@ const accounts: AccountProduct[] = [
       "Unlimited daily transactions",
       "Cheque book facility",
       "Preferential business loan rates",
-      "Free CoopEsa mobile banking",
+      "Free CoopPesa mobile banking",
     ],
     requirements: [
       "Valid ID (NIDA, passport, voter ID)",
@@ -555,7 +555,7 @@ const accounts: AccountProduct[] = [
       "Business registration (if applicable)",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Internet Banking (CoopNet)",
       "All CoopBank branches",
       "USSD *150*84#",
@@ -587,7 +587,7 @@ const accounts: AccountProduct[] = [
       "Minimum opening balance TSH 200,000",
     ],
     channels: [
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Internet Banking (CoopNet)",
       "All CoopBank branches",
       "USSD *150*84#",
@@ -622,7 +622,7 @@ const accounts: AccountProduct[] = [
     channels: [
       "Internet Banking (CoopNet)",
       "All CoopBank branches",
-      "CoopEsa Mobile App",
+      "CoopPesa Mobile App",
       "Dedicated corporate banker",
       "Cheque facility",
     ],
@@ -829,7 +829,7 @@ function ProductDetailSection({
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#1A8A3A] hover:bg-[#14692D] text-white font-semibold text-sm transition-colors duration-300"
         >
           <ArrowRight size={16} />
-          Open Account on CoopEsa
+          Open Account on CoopPesa
         </Link>
       </div>
 

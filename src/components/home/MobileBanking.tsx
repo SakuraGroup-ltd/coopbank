@@ -26,7 +26,7 @@ const features: Feature[] = [
 ];
 
 const channels = [
-  { icon: Smartphone, title: "CoopEsa Mobile App", desc: "Full banking on Android & iOS", href: "/digital-banking#coopesa" },
+  { icon: Smartphone, title: "CoopPesa Mobile App", desc: "Full banking on Android & iOS", href: "/digital-banking#coopesa" },
   { icon: Globe, title: "CoopNet Internet Banking", desc: "24/7 browser-based access", href: "/digital-banking#coopnet" },
   { icon: Banknote, title: "USSD *150*84#", desc: "Works on every phone, no internet needed", href: "/digital-banking#ussd" },
   { icon: Building2, title: "CoopWakala Agency", desc: "100+ agent points nationwide", href: "/digital-banking#coopwakala" },
@@ -63,7 +63,7 @@ export default function MobileBanking() {
               Coop-Pesa
             </span>
             <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-[42px] lg:leading-[1.15]">
-              Banking at Your Fingertips with CoopEsa
+              Banking at Your Fingertips with CoopPesa
             </h2>
             <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-white/60">
               Send money, pay bills, apply for loans, and manage your accounts -- all from your smartphone. Available on Android and iOS.
@@ -135,7 +135,7 @@ export default function MobileBanking() {
 
           {/* Right — Phone mockup */}
           <div className="lg:flex-1 flex flex-col items-center">
-            {/* CoopEsa mockup image */}
+            {/* CoopPesa mockup image */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -148,7 +148,7 @@ export default function MobileBanking() {
               >
                 <Image
                   src="/images/coopesa-mockup.png"
-                  alt="CoopEsa Mobile Banking App"
+                  alt="CoopPesa Mobile Banking App"
                   width={300}
                   height={600}
                   className="relative z-10 drop-shadow-2xl max-h-[350px] lg:max-h-none w-auto"

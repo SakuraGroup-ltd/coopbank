@@ -62,7 +62,7 @@ const tabs: Tab[] = [
     items: [
       { icon: Banknote, title: "Agri-Business Loans", desc: "TSH 100K–50M, 8–12% rate", href: "/loan-products#agri-business", color: "#00C853" },
       { icon: Banknote, title: "Salaried Loans", desc: "Fast payroll-linked loans", href: "/loan-products#salaried", color: "#FF6D00" },
-      { icon: Smartphone, title: "Digital Loans", desc: "Instant via CoopEsa app", href: "/loan-products#digital", color: "#00BCD4" },
+      { icon: Smartphone, title: "Digital Loans", desc: "Instant via CoopPesa app", href: "/loan-products#digital", color: "#00BCD4" },
       { icon: Banknote, title: "SME Loans", desc: "Working capital & asset finance", href: "/loan-products#sme", color: "#7C4DFF" },
       { icon: Banknote, title: "Asset Financing", desc: "Up to 80% asset value", href: "/loan-products#asset-financing", color: "#00C853" },
       { icon: Banknote, title: "Business Loans", desc: "Corporate & large enterprise", href: "/loan-products#business", color: "#FF6D00" },

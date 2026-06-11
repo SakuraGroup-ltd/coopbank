@@ -289,16 +289,16 @@ const loanProducts: LoanProduct[] = [
     category: "personal" as const,
     icon: Smartphone,
     longDesc:
-      "Get instant credit right from your phone with CoopBank Digital Loans via the CoopEsa app. No paperwork, no branch visits, no waiting -- just open the app and apply. Approval is instant based on your transaction history and repayment record. With 24/7 availability and automatic repayment, this is modern banking at its most convenient. Perfect for emergencies or short-term cash needs.",
+      "Get instant credit right from your phone with CoopBank Digital Loans via the CoopPesa app. No paperwork, no branch visits, no waiting -- just open the app and apply. Approval is instant based on your transaction history and repayment record. With 24/7 availability and automatic repayment, this is modern banking at its most convenient. Perfect for emergencies or short-term cash needs.",
     image: "/images/products/coopesa.jpg",
     features: [
-      "Instant approval via CoopEsa app",
+      "Instant approval via CoopPesa app",
       "No paperwork required",
       "24/7 availability",
       "Auto-debit repayment",
     ],
     requirements: [
-      "Active CoopEsa mobile banking",
+      "Active CoopPesa mobile banking",
       "3 months transaction history",
       "Good repayment record",
     ],

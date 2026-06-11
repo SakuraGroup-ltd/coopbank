@@ -69,10 +69,10 @@ export default function HeroV2() {
               className="mt-10 flex flex-wrap items-center gap-4"
             >
               <a
-                href="https://coopnet.coopbank.co.tz/Account/Register" target="_blank" rel="noopener"
+                href="/digital-banking#download"
                 className="group inline-flex items-center gap-2.5 rounded-2xl bg-[#1A1A2E] px-8 py-4 text-[15px] font-bold text-white transition-all hover:bg-[#2D2D44] hover:shadow-[0_8px_30px_rgba(26,26,46,0.15)] hover:gap-3.5"
               >
-                Open an Account
+                Download CoopPesa
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </a>
               <a

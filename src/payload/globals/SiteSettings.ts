@@ -61,7 +61,7 @@ export const SiteSettings: GlobalConfig = {
     {
       name: "appStore",
       type: "group",
-      label: "CoopEsa app links",
+      label: "CoopPesa app links",
       fields: [
         { name: "iosUrl", type: "text" },
         { name: "androidUrl", type: "text" },

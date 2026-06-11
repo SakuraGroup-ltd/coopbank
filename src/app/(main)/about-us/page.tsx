@@ -204,7 +204,7 @@ export default function AboutUsPage() {
             <p>
               Over the years, the Bank has continuously modernized its services
               through digital solutions such as CoopNet Internet Banking, the
-              CoopEsa Mobile App, and CoopWakala agency banking, strengthening its
+              CoopPesa Mobile App, and CoopWakala agency banking, strengthening its
               mission of expanding financial inclusion, particularly in rural and
               underserved communities.
             </p>

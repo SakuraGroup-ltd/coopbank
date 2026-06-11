@@ -1,6 +1,6 @@
 import type { Block } from "payload";
 
-// Two-column image-and-text section. Expresses the CoopEsa promo block, the
+// Two-column image-and-text section. Expresses the CoopPesa promo block, the
 // digital-account-opening section, and product feature explainers.
 export const ImageTextBlock: Block = {
   slug: "image-text",

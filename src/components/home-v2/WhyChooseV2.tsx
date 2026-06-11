@@ -46,7 +46,7 @@ const reasons: Reason[] = [
   {
     icon: Smartphone,
     title: "Digital Innovation",
-    description: "CoopEsa mobile banking and CoopNet internet banking at your fingertips.",
+    description: "CoopPesa mobile banking and CoopNet internet banking at your fingertips.",
     color: "#7C4DFF",
     stat: { value: 24, suffix: "/7", label: "Access" },
   },

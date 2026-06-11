@@ -261,7 +261,7 @@ export default function UssdPage() {
             <div className="absolute inset-0 bg-[#1A56A0]/[0.99] pointer-events-none rounded-3xl" />
             <div className="relative z-10 flex items-center justify-between gap-8">
               <div className="max-w-md">
-                <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Download CoopEsa Today</h2>
+                <h2 className="text-3xl font-extrabold text-white sm:text-4xl">Download CoopPesa Today</h2>
                 <p className="mt-3 text-base text-white/50">Available on Android and iOS</p>
                 <div className="mt-10 flex flex-wrap items-center gap-4">
                   <a href="https://play.google.com/store/apps/details?id=tz.co.coopbank.coopesa&hl=en" target="_blank" rel="noopener" className="inline-flex items-center gap-2 rounded-full bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/20">Google Play</a>
@@ -269,7 +269,7 @@ export default function UssdPage() {
                 </div>
               </div>
               <div className="hidden sm:block flex-shrink-0">
-                <img src="/images/coopesa-mockup.png" alt="CoopEsa Mobile App" className="h-[320px] w-auto drop-shadow-2xl" />
+                <img src="/images/coopesa-mockup.png" alt="CoopPesa Mobile App" className="h-[320px] w-auto drop-shadow-2xl" />
               </div>
             </div>
           </motion.div>

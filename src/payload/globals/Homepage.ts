@@ -3,7 +3,7 @@ import { editorOf } from "../access/editorOf";
 import { allBlocks } from "../blocks";
 
 // The homepage is just an ordered list of blocks — same engine as Pages.
-// Replaces the hand-coded grid+carousel+CoopEsa promo today.
+// Replaces the hand-coded grid+carousel+CoopPesa promo today.
 export const Homepage: GlobalConfig = {
   slug: "homepage",
   access: { read: () => true, update: editorOf("marketing") },

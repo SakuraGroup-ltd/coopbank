@@ -41,7 +41,7 @@ const tabs: Tab[] = [
     label: "Cards & Digital",
     products: [
       { name: "Visa Debit Card", desc: "Shop locally and internationally", icon: <Wallet size={20} /> },
-      { name: "CoopEsa Mobile App", desc: "Bank from your phone 24/7", icon: <Smartphone size={20} /> },
+      { name: "CoopPesa Mobile App", desc: "Bank from your phone 24/7", icon: <Smartphone size={20} /> },
       { name: "Internet Banking", desc: "Manage accounts online", icon: <Landmark size={20} /> },
       { name: "USSD Banking *150*86#", desc: "Bank without internet", icon: <Smartphone size={20} /> },
       { name: "Agent Banking", desc: "Bank at your nearest agent", icon: <Store size={20} /> },
@@ -56,7 +56,7 @@ const tabs: Tab[] = [
       { name: "Salaried Loans", desc: "For employed individuals", icon: <PiggyBank size={20} /> },
       { name: "Asset Financing", desc: "Vehicles and equipment", icon: <Car size={20} /> },
       { name: "Bajaji Loans", desc: "Transport business finance", icon: <Truck size={20} /> },
-      { name: "Digital Loans", desc: "Instant via CoopEsa app", icon: <Smartphone size={20} /> },
+      { name: "Digital Loans", desc: "Instant via CoopPesa app", icon: <Smartphone size={20} /> },
       { name: "Bunge Loans", desc: "Group lending power", icon: <Users size={20} /> },
       { name: "Business Loans", desc: "For corporates & large enterprises", icon: <Building2 size={20} /> },
       { name: "MSE Loans", desc: "For small businesses", icon: <Store size={20} /> },
@@ -75,7 +75,7 @@ type ShowcaseCard = {
 const showcaseCards: ShowcaseCard[] = [
   {
     title: "Mama Africa Account",
-    bullets: ["Everyday savings for all Tanzanians", "Low opening balance from TSH 10,000", "Free CoopEsa mobile banking"],
+    bullets: ["Everyday savings for all Tanzanians", "Low opening balance from TSH 10,000", "Free CoopPesa mobile banking"],
     image: "/images/products/mama-africa.jpg",
   },
   {
@@ -104,7 +104,7 @@ const showcaseCards: ShowcaseCard[] = [
     image: "/images/products/group.jpg",
   },
   {
-    title: "CoopEsa Mobile",
+    title: "CoopPesa Mobile",
     bullets: ["Send money instantly", "Pay bills and buy airtime", "Apply for digital loans"],
     image: "/images/products/coopesa.jpg",
   },

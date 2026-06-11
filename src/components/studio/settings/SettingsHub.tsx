@@ -279,7 +279,7 @@ export function SettingsHub({
         )}
 
         {tab === "app" && (
-          <Pane title="CoopEsa app links" hint="Mobile downloads and USSD shortcut">
+          <Pane title="CoopPesa app links" hint="Mobile downloads and USSD shortcut">
             <Field label="iOS App Store URL">
               <Input
                 type="url"
@@ -312,7 +312,7 @@ export function SettingsHub({
                 type="text"
                 value={hdr.topBar?.ctaLabel || ""}
                 onChange={(e) => saveHeader({ topBar: { ...hdr.topBar, ctaLabel: e.target.value } })}
-                placeholder="Open an Account"
+                placeholder="Download CoopPesa"
               />
             </Field>
             <Field label="CTA URL">
@@ -320,7 +320,7 @@ export function SettingsHub({
                 type="text"
                 value={hdr.topBar?.ctaHref || ""}
                 onChange={(e) => saveHeader({ topBar: { ...hdr.topBar, ctaHref: e.target.value } })}
-                placeholder="/personal-banking/open-account"
+                placeholder="/digital-banking#download"
               />
             </Field>
             <p className="text-xs text-studio-ink-3 mt-4 leading-relaxed">

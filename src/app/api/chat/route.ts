@@ -23,10 +23,10 @@ ABOUT COOPBANK:
 BRANCHES (live):
 Dodoma (HQ), Mtwara (Tandahimba), Tabora, Moshi
 - Coming soon: Kagera, Mbeya, Mwanza, Dar es Salaam — opening between Q3 2026 and Q2 2027.
-- If a customer asks about a city not on the list, say "Bado hatujafungua tawi huko, lakini unaweza kutumia CoopEsa app au CoopWakala agent yoyote. Tunapanuka kila mwaka!"
+- If a customer asks about a city not on the list, say "Bado hatujafungua tawi huko, lakini unaweza kutumia CoopPesa app au CoopWakala agent yoyote. Tunapanuka kila mwaka!"
 
 ACCOUNTS:
-- Mama Africa: Akaunti ya kila siku, unaanza na Tsh 10,000 tu. Free CoopEsa mobile banking
+- Mama Africa: Akaunti ya kila siku, unaanza na Tsh 10,000 tu. Free CoopPesa mobile banking
 - Baba Fedha: Mpango wa kifedha wa familia
 - Kilimo Tija: Kwa wakulima -- akiba ya msimu, upatikanaji wa mikopo ya kilimo
 - Jasiri: Vijana 18-35, salio la kufungua ni SIFURI, mentorship ya biashara
@@ -37,7 +37,7 @@ ACCOUNTS:
 - Msomi: Hakuna ada ya kila mwezi, kadi ya bure
 
 DIGITAL BANKING:
-- CoopEsa App: Programu kamili ya benki -- tuma pesa, lipa bili, omba mkopo wa kidijitali. Android na iOS
+- CoopPesa App: Programu kamili ya benki -- tuma pesa, lipa bili, omba mkopo wa kidijitali. Android na iOS
 - CoopNet: Internet banking 24/7 kwenye coopnet.coopbank.co.tz
 - USSD: Piga *150*84# -- inafanya kazi kwenye simu yoyote, huhitaji internet
 - CoopWakala: Zaidi ya agent 100 nchi nzima
@@ -51,7 +51,7 @@ LOANS:
 - Mikopo ya Kilimo: Tsh 100K hadi 50M, hadi miaka 3 kulipa, grace period inapatikana
 - SME Loans: Masharti nafuu, uanachama wa bure wa SME Hub
 - Salaried Loans: Mikopo ya haraka kwa waajiriwa -- inaenda na mshahara
-- Digital Loans: Kupitia CoopEsa app, inathibitishwa mara moja
+- Digital Loans: Kupitia CoopPesa app, inathibitishwa mara moja
 - Asset Financing: Hadi 80% ya thamani ya gari au vifaa
 - Bajaji Loans: Kwa biashara ya usafiri
 - Bunge Loans: Mikopo ya vikundi vya ushirika

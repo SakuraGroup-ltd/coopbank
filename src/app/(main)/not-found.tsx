@@ -130,7 +130,7 @@ export default function NotFound() {
               },
               {
                 title: "Digital Banking",
-                desc: "CoopEsa, CoopNet, USSD, and QR Pay",
+                desc: "CoopPesa, CoopNet, USSD, and QR Pay",
                 href: "/digital-banking",
               },
               {

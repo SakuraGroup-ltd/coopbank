@@ -20,7 +20,7 @@ export default function OpenAccountBanner() {
         "noopener"
       );
     } else {
-      router.push("/open-account");
+      router.push("/digital-banking#download");
     }
   }
 
@@ -29,10 +29,10 @@ export default function OpenAccountBanner() {
       <div className="mx-auto max-w-[1200px] px-6 sm:px-12 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
         <div>
           <h3 className="text-xl sm:text-2xl font-extrabold text-white leading-tight">
-            Open your account with CoopBank
+            Get the CoopPesa app
           </h3>
           <p className="text-sm text-white/70 mt-1">
-            Apply online in minutes — no branch visit needed
+            Bank from your phone — download CoopPesa today
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-3 shrink-0">
@@ -40,7 +40,7 @@ export default function OpenAccountBanner() {
             onClick={handleOpenAccount}
             className="inline-flex items-center px-6 py-2.5 rounded-full border-2 border-white text-sm font-bold text-white hover:bg-white hover:text-[#1A8A3A] transition-colors"
           >
-            Open an Account
+            Download CoopPesa
           </button>
         </div>
       </div>

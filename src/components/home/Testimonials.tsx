@@ -21,7 +21,7 @@ const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "The CoopEsa mobile app makes it so easy to manage my farm finances. I can receive payments, send money, and even apply for loans right from my phone in the village.",
+      "The CoopPesa mobile app makes it so easy to manage my farm finances. I can receive payments, send money, and even apply for loans right from my phone in the village.",
     name: "Joseph Kimaro",
     role: "Farmer, Kilimanjaro",
     stars: 5,

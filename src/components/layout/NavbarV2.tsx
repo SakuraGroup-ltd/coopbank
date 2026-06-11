@@ -118,7 +118,7 @@ const loansMenu: MegaColumn[] = [
     title: "Personal",
     items: [
       { label: "Salaried Loans", href: "/loan-products#salaried", desc: "Payroll-linked" },
-      { label: "Digital Loans", href: "/loan-products#digital", desc: "Instant via CoopEsa" },
+      { label: "Digital Loans", href: "/loan-products#digital", desc: "Instant via CoopPesa" },
       { label: "Investment Loans", href: "/loan-products#investment", desc: "Deposit as collateral" },
     ],
   },
@@ -164,7 +164,7 @@ const waysMenu: MegaColumn[] = [
   {
     title: "Digital Channels",
     items: [
-      { label: "CoopEsa Mobile App", href: "/digital-banking#coopesa", desc: "Android & iOS" },
+      { label: "CoopPesa Mobile App", href: "/digital-banking#coopesa", desc: "Android & iOS" },
       { label: "CoopNet Internet Banking", href: "/digital-banking#coopnet", desc: "24/7 browser access" },
       { label: "USSD *150*84#", href: "/digital-banking#ussd", desc: "Every phone, no internet" },
       { label: "CoopWakala Agency", href: "/digital-banking#coopwakala", desc: "100+ agents" },
@@ -188,11 +188,11 @@ const waysMenu: MegaColumn[] = [
 ];
 
 const productNav: NavItem[] = [
-  { label: "Accounts", href: "/personal-banking", megaMenu: accountsMenu, cta: { label: "Open an Account", href: "https://coopnet.coopbank.co.tz/Account/Register", desc: "Start banking with CoopBank today" } },
+  { label: "Accounts", href: "/personal-banking", megaMenu: accountsMenu, cta: { label: "Download CoopPesa", href: "/digital-banking#download", desc: "Get the CoopPesa app on Android or iOS" } },
   { label: "Cards", href: "/cards", megaMenu: cardsMenu, cta: { label: "Apply for a Card", href: "/cards#apply", desc: "Get your Visa card today" } },
   { label: "Loans", href: "/loan-products", megaMenu: loansMenu, cta: { label: "Loan Calculator", href: "/loan-products#calculator", desc: "Estimate your repayments" } },
   { label: "Foreign Exchange", href: "/treasury/foreign-exchange", megaMenu: forexMenu, cta: { label: "Daily FX Rates", href: "/treasury/foreign-exchange#rates", desc: "View today's exchange rates" } },
-  { label: "Ways of Banking", href: "/digital-banking", megaMenu: waysMenu, cta: { label: "Download CoopEsa", href: "/digital-banking#download", desc: "Get the app on Android or iOS" } },
+  { label: "Ways of Banking", href: "/digital-banking", megaMenu: waysMenu, cta: { label: "Download CoopPesa", href: "/digital-banking#download", desc: "Get the app on Android or iOS" } },
 ];
 
 /* ------------------------------------------------------------------ */

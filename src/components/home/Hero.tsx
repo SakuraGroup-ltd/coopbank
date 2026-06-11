@@ -27,7 +27,7 @@ const slides: Slide[] = [
     tagline: "Ustawi kwa wote",
     headline: "Empowering Communities Through Cooperative Banking",
     desc: "Accessible financial services for individuals, businesses, and communities across Tanzania.",
-    cta1: { label: "Open an Account", href: "/account-opening" },
+    cta1: { label: "Download CoopPesa", href: "/digital-banking#download" },
     cta2: { label: "Explore Services", href: "#services" },
   },
   {
@@ -36,7 +36,7 @@ const slides: Slide[] = [
     headline: "Digital Banking, Designed for You",
     desc: "Manage your finances anytime, anywhere. Mobile banking, instant transfers, and secure payments at your fingertips.",
     cta1: { label: "Mobile Banking", href: "/digital-banking" },
-    cta2: { label: "Open an Account", href: "/account-opening" },
+    cta2: { label: "Download CoopPesa", href: "/digital-banking#download" },
   },
 ];
 

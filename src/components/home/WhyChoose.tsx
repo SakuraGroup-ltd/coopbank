@@ -28,7 +28,7 @@ const reasons: Reason[] = [
     icon: Smartphone,
     title: "Digital Innovation",
     description:
-      "From CoopEsa mobile banking to CoopNet internet banking, we bring modern financial tools to your fingertips.",
+      "From CoopPesa mobile banking to CoopNet internet banking, we bring modern financial tools to your fingertips.",
   },
   {
     icon: MapPin,

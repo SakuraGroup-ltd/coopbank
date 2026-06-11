@@ -141,7 +141,7 @@ export default function ChatWidget() {
     "Nataka kufungua akaunti",
     "Napataje mkopo?",
     "Mpo wapi?",
-    "CoopEsa app",
+    "CoopPesa app",
     "Nawezaje kununua hisa?",
   ];
 

@@ -369,14 +369,14 @@ All account products are in the `accounts` array. Each entry has this shape:
   image: "/images/products/jasiri.jpg",
   features: [
     "Zero minimum opening balance",
-    "Free CoopEsa mobile banking",
+    "Free CoopPesa mobile banking",
     // ...
   ],
   requirements: [
     "National ID or Passport",
     // ...
   ],
-  channels: ["Branch", "CoopEsa App", "CoopWakala"],
+  channels: ["Branch", "CoopPesa App", "CoopWakala"],
 }
 ```
 
@@ -404,7 +404,7 @@ The main page lists digital channels in the `channels` array. Each channel has:
 {
   id: 2,
   slug: "coopesa",
-  name: "CoopEsa Mobile App",
+  name: "CoopPesa Mobile App",
   description: "A simple, secure...",
   image: "/images/products/coopesa-oldman.jpg",
   detailHref: "https://play.google.com/...",  // external link or internal page
@@ -914,7 +914,7 @@ In `src/app/(main)/careers/page.tsx`, set the job's `closing` date to a past dat
 | Primary phone | +255 27 275 4470 |
 | HQ address | Cooperative House, Lumumba Street, Dar es Salaam |
 | CoopNet URL | coopnet.coopbank.co.tz |
-| CoopEsa Play Store | play.google.com/store/apps/details?id=tz.co.coopbank.coopesa |
+| CoopPesa Play Store | play.google.com/store/apps/details?id=tz.co.coopbank.coopesa |
 
 ---
 
