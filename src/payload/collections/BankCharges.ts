@@ -2,17 +2,16 @@ import type { CollectionConfig } from "payload";
 import { isAdmin } from "../access/isAdmin";
 import { editorOf } from "../access/editorOf";
 
-// Bank charges / rates: a downloadable PDF or JPEG of the bank's fees & rates
-// for all transactions. Staff replace the document whenever rates change — the
-// public /bank-charges page shows the active ones (newest first).
+// Bank charges / rates: just a downloadable PDF or JPEG. Staff upload the file
+// (and replace it whenever rates change) — nothing else to fill in. The public
+// /bank-charges page simply displays the active document(s).
 export const BankCharges: CollectionConfig = {
   slug: "bank-charges",
   admin: {
     group: "Treasury",
-    description: "Bank charges & rates documents (PDF or JPEG). Replace whenever rates change.",
+    description: "Upload the bank charges / rates as a PDF or JPEG. Replace the file whenever rates change.",
     useAsTitle: "title",
-    defaultColumns: ["title", "effectiveDate", "active", "updatedAt"],
-    listSearchableFields: ["title"],
+    defaultColumns: ["title", "active", "updatedAt"],
   },
   access: {
     read: () => true,
@@ -22,27 +21,19 @@ export const BankCharges: CollectionConfig = {
   },
   fields: [
     {
-      name: "title",
-      type: "text",
-      required: true,
-      admin: { description: 'e.g. "Tariff Guide & Bank Charges 2026" or "Transaction Rates".' },
-    },
-    { name: "effectiveDate", type: "date", required: true, admin: { description: "When these charges take effect." } },
-    {
       name: "document",
       type: "upload",
       relationTo: "media",
       required: true,
       admin: {
-        description: "The PDF or JPEG showing the charges/rates. This is what customers view and download. Re-upload here whenever rates change.",
+        description: "The bank charges / rates PDF or JPEG. This is exactly what customers see and download. Re-upload here to update.",
       },
     },
     {
-      name: "summary",
-      type: "textarea",
-      admin: { description: "Optional note shown above the document on the public page." },
+      name: "title",
+      type: "text",
+      admin: { description: 'Optional label (e.g. "Tariff Guide 2026"). Shown above the document.' },
     },
     { name: "active", type: "checkbox", defaultValue: true, admin: { description: "Uncheck to hide from the public page." } },
-    { name: "order", type: "number", admin: { description: "Display order (lower shows first). Optional." } },
   ],
 };

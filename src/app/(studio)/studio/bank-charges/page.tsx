@@ -23,7 +23,7 @@ export default async function BankChargesPage() {
     collection: "bank-charges",
     limit: 200,
     depth: 1,
-    sort: "-effectiveDate",
+    sort: "-updatedAt",
   });
   const charges = result.docs.map((d) => d as unknown as Charge);
 
