@@ -73,7 +73,7 @@ export default function LoginForm() {
           <p className="text-center text-xs text-studio-ink-3">
             Forgot your password?{" "}
             <a href="/admin/forgot" className="text-cb-navy hover:text-cb-green underline">
-              Reset via Payload
+              Reset via admin portal
             </a>
           </p>
         </form>

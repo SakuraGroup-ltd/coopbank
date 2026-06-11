@@ -22,6 +22,7 @@ import { ServiceFees } from "./src/payload/collections/ServiceFees";
 import { AnnualReports } from "./src/payload/collections/AnnualReports";
 import { StatutoryNotices } from "./src/payload/collections/StatutoryNotices";
 import { LeadershipTeam } from "./src/payload/collections/LeadershipTeam";
+import { CoopwakalaAgents } from "./src/payload/collections/CoopwakalaAgents";
 
 import { Header } from "./src/payload/globals/Header";
 import { Footer } from "./src/payload/globals/Footer";
@@ -62,6 +63,7 @@ export default buildConfig({
     JobListings,
     ForexRates,
     Branches,
+    CoopwakalaAgents,
     WhistleblowerReports,
     Faqs,
     Auctions,

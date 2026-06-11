@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sendNotificationEmail } from "@/lib/mailer";
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,24 +27,15 @@ export async function POST(req: NextRequest) {
       <p style="margin-top:16px;color:#666;font-size:12px;">Submitted via coopbanktanzania.co.tz</p>
     `;
 
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "CoopBank Website <noreply@sakuragroup.co.tz>",
-        to: ["info@cbtbank.co.tz"],
-        reply_to: email,
-        subject: `CoopWakala Agent Application — ${fullName}`,
-        html,
-      }),
+    const result = await sendNotificationEmail({
+      to: "info@cbtbank.co.tz",
+      replyTo: email,
+      subject: `CoopWakala Agent Application — ${fullName}`,
+      html,
     });
 
-    if (!res.ok) {
-      const err = await res.text();
-      console.error("Resend error:", err);
+    if (!result.ok) {
+      console.error("Wakala email send failed:", result.error);
       return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
     }
 

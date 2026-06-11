@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sendNotificationEmail } from "@/lib/mailer";
 
 const ACCOUNT_LABELS: Record<string, string> = {
   "jasiri": "Jasiri Account (Youth 18–35)",
@@ -137,33 +138,16 @@ export async function POST(req: NextRequest) {
 
     const html = buildEmailHtml(fields, attachments.length);
 
-    const resendBody: Record<string, unknown> = {
-      from: "CoopBank Website <noreply@sakuragroup.co.tz>",
-      to: ["info@cbtbank.co.tz"],
-      reply_to: fields.email,
+    const result = await sendNotificationEmail({
+      to: "info@cbtbank.co.tz",
+      replyTo: fields.email,
       subject: `Account Application — ${fields.fullName} | ${ACCOUNT_LABELS[fields.accountType] ?? fields.accountType}`,
       html,
-    };
-
-    if (attachments.length > 0) {
-      resendBody.attachments = attachments.map((a) => ({
-        filename: a.filename,
-        content: a.content,
-      }));
-    }
-
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(resendBody),
+      attachments: attachments.map((a) => ({ filename: a.filename, content: a.content, mimetype: a.type })),
     });
 
-    if (!res.ok) {
-      const err = await res.text();
-      console.error("[ACCOUNT_APPLICATION] Resend error:", err);
+    if (!result.ok) {
+      console.error("[ACCOUNT_APPLICATION] Email send failed:", result.error);
       return NextResponse.json({ error: "Email delivery failed" }, { status: 500 });
     }
 

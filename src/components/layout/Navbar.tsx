@@ -594,19 +594,22 @@ export default function Navbar() {
 
             {/* Right side of main nav — Open Account CTA (desktop) */}
             <div className="ml-auto hidden xl:flex items-center gap-3">
-              <Link
-                href="https://coopnet.coopbank.co.tz/Account/Register" target="_blank" rel="noopener"
-                className={`inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[11px] font-bold transition-colors ${
-                  activeMega
-                    ? "bg-[#1A8A3A] text-white hover:bg-[#14692D]"
-                    : scrolled
-                    ? "bg-[#1A8A3A] text-white hover:bg-[#14692D]"
-                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
-                }`}
-              >
-                Open an Account
-                <ArrowRight className="h-3 w-3" />
-              </Link>
+              {/* "Open an Account" CTA hidden per request — set to true to restore */}
+              {false && (
+                <Link
+                  href="https://coopnet.coopbank.co.tz/Account/Register" target="_blank" rel="noopener"
+                  className={`inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[11px] font-bold transition-colors ${
+                    activeMega
+                      ? "bg-[#1A8A3A] text-white hover:bg-[#14692D]"
+                      : scrolled
+                      ? "bg-[#1A8A3A] text-white hover:bg-[#14692D]"
+                      : "bg-white/10 text-white border border-white/20 hover:bg-white/20"
+                  }`}
+                >
+                  Open an Account
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
+              )}
             </div>
           </div>
         </div>

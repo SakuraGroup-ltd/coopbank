@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 import { Storage } from "@google-cloud/storage";
 import { getPayload } from "payload";
 import config from "../../../../payload.config";
+import { sendNotificationEmail } from "@/lib/mailer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -93,26 +94,20 @@ export async function POST(req: Request) {
     // 4) Best-effort ALERT-ONLY email — deliberately contains NO report content,
     //    reporter identity, or evidence. Sensitive data stays in the access-controlled
     //    Payload collection; the email only nudges Compliance to review in Studio.
-    if (process.env.RESEND_API_KEY) {
-      try {
-        await fetch("https://api.resend.com/emails", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from: "CoopBank Whistleblower <noreply@sakuragroup.co.tz>",
-            to: ["whistleblow@cbtbank.co.tz"],
-            subject: `New whistleblower report awaiting review — ${caseRef}`,
-            html: `<div style="font-family:sans-serif">
+    try {
+      const mail = await sendNotificationEmail({
+        to: "whistleblow@cbtbank.co.tz",
+        subject: `New whistleblower report awaiting review — ${caseRef}`,
+        html: `<div style="font-family:sans-serif">
               <h3>A new confidential report has been submitted</h3>
               <p>Reference <b>${caseRef}</b> is awaiting triage.</p>
               <p>For confidentiality, no report details are included in this email.
               Please review it in <b>Studio → Compliance → Whistleblower Reports</b>.</p>
             </div>`,
-          }),
-        });
-      } catch (mailErr) {
-        console.error(`[WHISTLEBLOWER] notification email failed for ${caseRef}`, mailErr);
-      }
+      });
+      if (!mail.ok) console.error(`[WHISTLEBLOWER] notification email not sent for ${caseRef}:`, mail.error);
+    } catch (mailErr) {
+      console.error(`[WHISTLEBLOWER] notification email failed for ${caseRef}`, mailErr);
     }
 
     return NextResponse.json({ success: true, caseRef });

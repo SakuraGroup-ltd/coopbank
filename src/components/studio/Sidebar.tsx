@@ -24,6 +24,7 @@ import {
   BookText,
   FileWarning,
   Users2,
+  Store,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
@@ -71,6 +72,7 @@ const groups: Group[] = [
       { href: "/studio/jobs", label: "Job listings", icon: Briefcase, scope: "jobs" },
       { href: "/studio/tenders", label: "Tenders", icon: ScrollText, scope: "tenders" },
       { href: "/studio/branches", label: "Branches", icon: MapPin, scope: "branches" },
+      { href: "/studio/agents", label: "Agents", icon: Store, scope: "branches" },
       { href: "/studio/fees", label: "Service fees", icon: Banknote, scope: "fees" },
     ],
   },

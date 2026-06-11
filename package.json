@@ -9,7 +9,8 @@
     "lint": "eslint",
     "postinstall": "node ./scripts/postinstall-patches.cjs",
     "seed:assets": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/seed-assets.ts",
-    "seed:homepage": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/seed-homepage.ts"
+    "seed:homepage": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/seed-homepage.ts",
+    "seed:agents": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/seed-coopwakala-agents.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
@@ -37,6 +38,7 @@
     "leaflet": "^1.9.4",
     "lucide-react": "^0.577.0",
     "next": "^16.2.6",
+    "nodemailer": "^6.10.1",
     "papaparse": "^5.5.3",
     "payload": "^3.85.0",
     "react": "19.2.3",
@@ -47,6 +49,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/nodemailer": "^8.0.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
