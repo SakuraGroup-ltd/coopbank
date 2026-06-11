@@ -83,6 +83,8 @@ export function FeesGrid({ initial }: { initial: Fee[] }) {
     if (res.ok) {
       setRows((cur) => cur.filter((_, i) => i !== idx));
       router.refresh();
+    } else {
+      alert(`Delete failed (HTTP ${res.status}). ${await res.text().catch(() => "")}`);
     }
   }
 

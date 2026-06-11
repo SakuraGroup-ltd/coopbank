@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   Phone,
@@ -79,16 +79,23 @@ export function SettingsHub({
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
 
-  async function saveSite(partial: Partial<Site>) {
-    const next = { ...site, ...partial };
-    setSite(next);
+  // Debounced saves: update local state immediately for a responsive UI, but
+  // POST the *latest* full global once typing pauses (800ms). Refs hold the
+  // latest value so rapid edits can't fire out-of-order requests that clobber
+  // each other (the old code POSTed the whole global on every keystroke).
+  const siteRef = useRef(site);
+  const hdrRef = useRef(hdr);
+  const siteTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hdrTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  async function persistGlobal(url: string, data: unknown) {
     setSaveState("saving");
     setSaveError(null);
     try {
-      const res = await fetch("/api/globals/site-settings", {
+      const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(next),
+        body: JSON.stringify(data),
       });
       if (!res.ok) {
         setSaveState("error");
@@ -104,29 +111,20 @@ export function SettingsHub({
     }
   }
 
-  async function saveHeader(partial: Partial<Header>) {
-    const next = { ...hdr, ...partial };
+  function saveSite(partial: Partial<Site>) {
+    const next = { ...siteRef.current, ...partial };
+    siteRef.current = next;
+    setSite(next);
+    if (siteTimer.current) clearTimeout(siteTimer.current);
+    siteTimer.current = setTimeout(() => persistGlobal("/api/globals/site-settings", siteRef.current), 800);
+  }
+
+  function saveHeader(partial: Partial<Header>) {
+    const next = { ...hdrRef.current, ...partial };
+    hdrRef.current = next;
     setHdr(next);
-    setSaveState("saving");
-    setSaveError(null);
-    try {
-      const res = await fetch("/api/globals/header", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(next),
-      });
-      if (!res.ok) {
-        setSaveState("error");
-        setSaveError(`HTTP ${res.status}`);
-        return;
-      }
-      setSaveState("saved");
-      setSavedAt(new Date());
-      router.refresh();
-    } catch (e) {
-      setSaveState("error");
-      setSaveError(e instanceof Error ? e.message : "Network error");
-    }
+    if (hdrTimer.current) clearTimeout(hdrTimer.current);
+    hdrTimer.current = setTimeout(() => persistGlobal("/api/globals/header", hdrRef.current), 800);
   }
 
   return (

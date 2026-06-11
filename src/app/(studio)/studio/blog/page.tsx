@@ -40,16 +40,18 @@ function timeAgo(date?: string): string {
   return new Date(date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 }
 
-export default async function BlogListPage() {
+export default async function BlogListPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   await requireStudioUser();
   const payload = await getPayload({ config });
+  const q = (await searchParams)?.q?.trim() || "";
 
   const result = await payload.find({
     collection: "blog-posts",
-    limit: 100,
+    limit: 500,
     depth: 1,
     draft: true,
     sort: "-updatedAt",
+    ...(q ? { where: { title: { like: q } } } : {}),
   });
 
   const posts = result.docs.map((d) => d as unknown as BlogPost);
@@ -80,14 +82,16 @@ export default async function BlogListPage() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <div className="relative">
+          <form action="/studio/blog" className="relative">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-studio-ink-3" />
             <input
               type="search"
+              name="q"
+              defaultValue={q}
               placeholder="Search posts…"
               className="h-9 pl-9 pr-3 rounded-lg border border-studio-border bg-studio-panel text-sm w-64 focus:border-cb-navy/30 focus:ring-2 focus:ring-cb-navy/15 focus:outline-none"
             />
-          </div>
+          </form>
           <Link
             href="/studio/blog/new"
             className="h-9 px-4 text-sm inline-flex items-center gap-2 rounded-lg bg-studio-ink hover:bg-cb-navy-deep text-white font-medium transition-colors"

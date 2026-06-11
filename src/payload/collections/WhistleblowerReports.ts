@@ -153,5 +153,17 @@ export const WhistleblowerReports: CollectionConfig = {
         condition: (d) => ["resolved", "dismissed"].includes(d?.status),
       },
     },
+    // HTML mirrors written by the studio triage editor — these are what the
+    // panel saves and reads (the richText fields above are legacy Lexical).
+    {
+      name: "internalNotesHtml",
+      type: "textarea",
+      admin: { description: "Investigation notes (HTML from the triage editor)." },
+    },
+    {
+      name: "resolutionHtml",
+      type: "textarea",
+      admin: { description: "Outcome / actions taken (HTML from the triage editor)." },
+    },
   ],
 };

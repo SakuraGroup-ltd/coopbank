@@ -63,14 +63,16 @@ export function WhistleblowerCase({ report }: { report: Record<string, unknown> 
     status?: string;
     internalNotes?: unknown;
     resolution?: unknown;
+    internalNotesHtml?: string;
+    resolutionHtml?: string;
   };
 
   const [status, setStatus] = useState(r.status || "new");
   const [internalNotesHtml, setInternalNotesHtml] = useState(
-    typeof r.internalNotes === "string" ? r.internalNotes : "",
+    typeof r.internalNotesHtml === "string" ? r.internalNotesHtml : "",
   );
   const [resolutionHtml, setResolutionHtml] = useState(
-    typeof r.resolution === "string" ? r.resolution : "",
+    typeof r.resolutionHtml === "string" ? r.resolutionHtml : "",
   );
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -79,15 +81,13 @@ export function WhistleblowerCase({ report }: { report: Record<string, unknown> 
     setSaveState("saving");
     setSaveError(null);
     try {
-      // We piggy-back on the existing richText fields — Payload will accept a
-      // string here and store it on read-only varchar columns we added later
-      // if you migrate. For now we send the HTML in the legacy fields so
-      // existing schema accepts it; that's a 5-min follow-up to add notes_html.
       const res = await fetch(`/api/whistleblower-reports/${r.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           status,
+          internalNotesHtml,
+          resolutionHtml,
         }),
       });
       if (!res.ok) {
