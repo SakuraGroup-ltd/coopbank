@@ -64,6 +64,7 @@ const groups: Group[] = [
     items: [
       { href: "/studio/auctions", label: "Auctions", icon: Landmark, scope: "auctions" },
       { href: "/studio/rates", label: "Interest rates", icon: Percent, scope: "rates" },
+      { href: "/studio/bank-charges", label: "Bank charges", icon: Banknote, scope: "charges" },
     ],
   },
   {

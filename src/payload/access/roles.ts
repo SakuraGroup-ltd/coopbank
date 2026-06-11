@@ -65,6 +65,7 @@ export const STUDIO_VISIBILITY: Record<string, Role[]> = {
   fees:         ["master_admin", "admin", "viewer", "marketer", "procurement"],
   activity:     ["master_admin", "admin", "viewer", "compliance"],
   reports:      ["master_admin", "admin", "viewer", "marketer"],
+  charges:      ["master_admin", "admin", "viewer", "treasurer"],
   notices:      ["master_admin", "admin", "viewer", "compliance"],
   leadership:   ["master_admin", "admin", "viewer", "marketer"],
 };

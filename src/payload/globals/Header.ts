@@ -13,8 +13,8 @@ export const Header: GlobalConfig = {
       name: "topBar",
       type: "group",
       fields: [
-        { name: "ctaLabel", type: "text", defaultValue: "Open an Account" },
-        { name: "ctaHref", type: "text", defaultValue: "/personal-banking/open-account" },
+        { name: "ctaLabel", type: "text", defaultValue: "Download CoopPesa" },
+        { name: "ctaHref", type: "text", defaultValue: "/digital-banking#download" },
       ],
     },
     {

@@ -11,6 +11,7 @@ import { Tenders } from "./src/payload/collections/Tenders";
 import { JobListings } from "./src/payload/collections/JobListings";
 import { ForexRates } from "./src/payload/collections/ForexRates";
 import { Branches } from "./src/payload/collections/Branches";
+import { BankCharges } from "./src/payload/collections/BankCharges";
 import { BlogPosts } from "./src/payload/collections/BlogPosts";
 import { Pages } from "./src/payload/collections/Pages";
 import { WhistleblowerReports } from "./src/payload/collections/WhistleblowerReports";
@@ -70,6 +71,7 @@ export default buildConfig({
     InterestRates,
     PressReleases,
     ServiceFees,
+    BankCharges,
     AnnualReports,
     StatutoryNotices,
     LeadershipTeam,

@@ -267,6 +267,7 @@ const topLinks = [
   { label: "Whistleblower", href: "/whistleblower" },
   { label: "News", href: "/news" },
   { label: "Blog", href: "/blog" },
+  { label: "Bank Charges", href: "/bank-charges" },
   { label: "FAQs", href: "/faqs" },
 ];
 
