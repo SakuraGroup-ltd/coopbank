@@ -78,6 +78,20 @@ export default buildConfig({
   ],
   globals: [Header, Footer, Homepage, SiteSettings],
   secret: process.env.PAYLOAD_SECRET || "spike-secret-not-for-prod",
+  // serverURL + CORS/CSRF whitelist — required for cookie-authenticated studio
+  // saves (PATCH/POST to /api/*). Without these, Payload rejects same-origin
+  // mutations from the browser with a 403, so /studio edits never persist.
+  serverURL: process.env.NEXT_PUBLIC_SITE_URL || "https://dev.coopbank.co.tz",
+  cors: [
+    "https://dev.coopbank.co.tz",
+    "https://coopbank-dev-5vgc65ps3q-ew.a.run.app",
+    "https://coopbank-dev-1061283808106.europe-west1.run.app",
+  ],
+  csrf: [
+    "https://dev.coopbank.co.tz",
+    "https://coopbank-dev-5vgc65ps3q-ew.a.run.app",
+    "https://coopbank-dev-1061283808106.europe-west1.run.app",
+  ],
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URI },

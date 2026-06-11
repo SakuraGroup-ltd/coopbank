@@ -45,6 +45,15 @@ export default async function ForexPage() {
     } as Rate;
   });
 
+  // USD first, then the other majors, then alphabetical — matches the public order.
+  const ORDER = ["USD", "EUR", "GBP", "ZAR", "KES"];
+  rates.sort((a, b) => {
+    const ia = ORDER.indexOf(a.currencyCode);
+    const ib = ORDER.indexOf(b.currencyCode);
+    if (ia !== -1 || ib !== -1) return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+    return a.currencyCode.localeCompare(b.currencyCode);
+  });
+
   const newest = rates
     .slice()
     .sort(
