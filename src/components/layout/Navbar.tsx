@@ -266,6 +266,7 @@ const topLinks = [
   { label: "Tenders", href: "/tenders" },
   { label: "Whistleblower", href: "/whistleblower" },
   { label: "News", href: "/news" },
+  { label: "Blog", href: "/blog" },
   { label: "FAQs", href: "/faqs" },
 ];
 
@@ -428,15 +429,7 @@ export default function Navbar() {
                 >
                   <Globe className="h-3 w-3" />EN
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setLang("SW")}
-                  className={`px-2 py-0.5 rounded text-[10px] font-bold transition-colors ${
-                    lang === "SW" ? "bg-white/15 text-white" : "text-white/35 hover:text-white/60"
-                  }`}
-                >
-                  SW
-                </button>
+                {/* SW toggle hidden for now — restore when translations are ready */}
               </div>
 
               <span className="text-white/15 text-xs">|</span>
@@ -874,11 +867,7 @@ export default function Navbar() {
                     onClick={() => setLang("EN")}
                     className={`px-4 py-2 text-xs font-bold transition-colors ${lang === "EN" ? "bg-[#1A8A3A] text-white" : "text-slate-500"}`}
                   >EN</button>
-                  <button
-                    type="button"
-                    onClick={() => setLang("SW")}
-                    className={`px-4 py-2 text-xs font-bold transition-colors ${lang === "SW" ? "bg-[#1A8A3A] text-white" : "text-slate-500"}`}
-                  >SW</button>
+                  {/* SW toggle hidden for now — restore when translations are ready */}
                 </div>
                 <div className="flex-1 text-right">
                   <p className="text-[11px] text-slate-500">+255 27 275 4470</p>

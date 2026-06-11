@@ -109,7 +109,7 @@ export default function ForeignExchangeClient({ rates }: { rates: ForexRate[] })
                 </div>
                 <div className="bg-[#f4f6f9] rounded-2xl p-6">
                   <Globe2 className="text-[#1A8A3A] mb-3" size={24} />
-                  <p className="text-sm font-bold text-[#1A56A0] mb-1">All major currencies</p>
+                  <p className="text-sm font-bold text-[#1A56A0] mb-1">Major currencies</p>
                   <p className="text-xs text-[#4A5568] leading-relaxed">
                     USD, EUR, GBP, ZAR, KES and more.
                   </p>

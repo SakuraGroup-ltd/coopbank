@@ -47,5 +47,14 @@ export default async function ForeignExchangePage() {
     })
     .filter((r) => r.active !== "false");
 
+  // USD most prominent, then the other majors, then the rest alphabetically.
+  const ORDER = ["USD", "EUR", "GBP", "ZAR", "KES"];
+  rates.sort((a, b) => {
+    const ia = ORDER.indexOf(a.currency_code);
+    const ib = ORDER.indexOf(b.currency_code);
+    if (ia !== -1 || ib !== -1) return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+    return a.currency_code.localeCompare(b.currency_code);
+  });
+
   return <ForeignExchangeClient rates={rates} />;
 }

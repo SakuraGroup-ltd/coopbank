@@ -26,7 +26,7 @@ export const ForexRates: CollectionConfig = {
       type: "text",
       required: true,
       unique: true,
-      admin: { description: "ISO 4217 — USD, GBP, EUR, KES, SAR, ZAR…" },
+      admin: { description: "ISO 4217 — USD, GBP, EUR, KES, ZAR…" },
       validate: (val: unknown) =>
         (typeof val === "string" && /^[A-Z]{3}$/.test(val)) || "Must be 3 uppercase letters.",
     },
