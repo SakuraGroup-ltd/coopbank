@@ -1,5 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
+import { getPayload } from "payload";
+import config from "../../../../payload.config";
 
 const SYSTEM_PROMPT = `Wewe ni Mshirika -- msaidizi wa kidijitali wa Cooperative Bank of Tanzania. Jina lako ni Mshirika. Unapenda kusaidia na una moyo wa Kitanzania.
 
@@ -16,7 +18,7 @@ YOUR PERSONALITY:
 ABOUT COOPBANK:
 - Cooperative Bank of Tanzania Plc. Licensed by Bank of Tanzania. 30+ years serving Tanzania
 - Motto: "Ustawi kwa wote" (Prosperity for all)
-- HQ: Kuu Street, Dodoma
+- HQ: Sikukuu Street, Dodoma
 - Customer care: +255 27 275 4470
 - Website: coopbank.co.tz
 
@@ -45,7 +47,6 @@ DIGITAL BANKING:
 
 CARDS:
 - Visa Prepaid Card: Jazia na utumie popote duniani
-- Visa Prepaid Card: Jazia na utumie popote
 
 LOANS:
 - Mikopo ya Kilimo: Tsh 100K hadi 50M, hadi miaka 3 kulipa, grace period inapatikana
@@ -82,7 +83,7 @@ THINGS YOU DON'T KNOW (always redirect):
 - Anything about other banks
 
 CONVERSATION STYLE EXAMPLES:
-- Customer: "Mpo wapi?" -> You: "Makao makuu yetu yapo Dodoma (Mtaa wa Kuu), na tuna matawi Mtwara (Tandahimba), Tabora, na Moshi. Matawi mapya yanafunguliwa Kagera, Mbeya, Mwanza, na Dar es Salaam. Uko mkoa gani? Nikutafutie tawi la karibu nawe au CoopWakala agent"
+- Customer: "Mpo wapi?" -> You: "Makao makuu yetu yapo Dodoma (Mtaa wa Sikukuu), na tuna matawi Mtwara (Tandahimba), Tabora, na Moshi. Matawi mapya yanafunguliwa Kagera, Mbeya, Mwanza, na Dar es Salaam. Uko mkoa gani? Nikutafutie tawi la karibu nawe au CoopWakala agent"
 - Customer: "Nataka mkopo!!" -> You: "Sawa kabisa! Tuna mikopo mingi -- ya kilimo, biashara, mshahara, hata ya kidijitali kupitia app. Mkopo unahitaji kwa nini? Nitakushauri upi unakufaa zaidi"
 - Customer: "App yenu haifanyi kazi!!" -> You: "Samahani sana kwa usumbufu huo. Jaribu kufunga na kufungua tena app, au hakikisha una toleo jipya. Kama bado, piga +255 27 275 4470 -- timu ya tech itakusaidia moja kwa moja"
 - Customer: "I love your bank!" -> You: "Thank you so much! That really means a lot to us. We work hard to serve you well. Karibu sana CoopBank!"
@@ -94,17 +95,144 @@ CLOSING:
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
+// ---- FAQ grounding -------------------------------------------------------
+// Lean on the bank's own curated knowledge: pull approved FAQs and (a) answer
+// a strongly-matching question directly WITHOUT calling Gemini (cheaper, and
+// the answer is human-vetted), or (b) inject them as authoritative context so
+// Gemini answers from our facts rather than free-form generation.
+type Faq = { question: string; answerHtml: string };
+
+function stripHtml(s: string): string {
+  return (s || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+}
+function normalize(s: string): string {
+  return (s || "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+function wordSet(s: string): Set<string> {
+  return new Set(normalize(s).split(" ").filter((w) => w.length > 2));
+}
+function overlap(a: string, b: string): number {
+  const A = wordSet(a);
+  const B = wordSet(b);
+  if (!A.size || !B.size) return 0;
+  let inter = 0;
+  for (const w of A) if (B.has(w)) inter++;
+  return inter / (A.size + B.size - inter);
+}
+
+async function getActiveFaqs(): Promise<Faq[]> {
+  try {
+    const payload = await getPayload({ config });
+    const res = await payload.find({
+      collection: "faqs",
+      where: { active: { equals: true } },
+      limit: 100,
+      depth: 0,
+      sort: "sortOrder",
+    });
+    return res.docs.map((d) => ({
+      question: (d as { question?: string }).question || "",
+      answerHtml: (d as { answerHtml?: string }).answerHtml || "",
+    }));
+  } catch {
+    return [];
+  }
+}
+
+// Return an FAQ only on a strong match, so we never hand a customer the wrong
+// canned answer. Below the bar we fall through to Gemini (still FAQ-grounded).
+function bestFaqMatch(userMsg: string, faqs: Faq[]): Faq | null {
+  const nUser = normalize(userMsg);
+  if (nUser.length < 6) return null;
+  let best: Faq | null = null;
+  let bestScore = 0;
+  for (const f of faqs) {
+    const nQ = normalize(f.question);
+    if (!nQ) continue;
+    let score = overlap(userMsg, f.question);
+    if (nQ.length > 12 && (nUser.includes(nQ) || nQ.includes(nUser))) {
+      score = Math.max(score, 0.85);
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      best = f;
+    }
+  }
+  return bestScore >= 0.78 ? best : null;
+}
+
+function faqGroundingBlock(faqs: Faq[]): string {
+  if (!faqs.length) return "";
+  const lines = faqs
+    .slice(0, 40)
+    .map((f) => `Q: ${f.question}\nA: ${stripHtml(f.answerHtml)}`)
+    .join("\n");
+  return `\n\nAPPROVED FAQ ANSWERS (authoritative — prefer these exact facts when the customer's question relates to one):\n${lines}`;
+}
+
+// Best-effort log of one chat turn — never lets a logging failure break the
+// customer-facing reply. See [[coopbank-cms-schema-and-studio]] memory for
+// why this collection needed a manual Neon DDL (schema-push is off).
+async function logChatTurn(params: { sessionId: string; userMessage: string; botReply: string; page: string | null }) {
+  try {
+    const payload = await getPayload({ config });
+    await payload.create({
+      collection: "chat-conversations",
+      overrideAccess: true,
+      data: {
+        sessionId: params.sessionId,
+        userMessage: params.userMessage,
+        botReply: params.botReply,
+        page: params.page || undefined,
+      },
+    });
+  } catch (err) {
+    console.error("[CHAT LOG] failed to save conversation:", (err as Error)?.message);
+  }
+}
+
+// Optional Google Sheet mirror. Dormant unless CHAT_SHEET_WEBHOOK_URL is set to
+// a Google Apps Script web-app URL that appends a row. Best-effort: a failure
+// here never affects the customer reply.
+async function mirrorToSheet(params: { sessionId: string; userMessage: string; botReply: string; page: string | null }) {
+  const url = process.env.CHAT_SHEET_WEBHOOK_URL;
+  if (!url) return;
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        timestamp: new Date().toISOString(),
+        sessionId: params.sessionId,
+        page: params.page || "",
+        userMessage: params.userMessage,
+        botReply: params.botReply,
+      }),
+    });
+  } catch (err) {
+    console.error("[CHAT SHEET] mirror failed:", (err as Error)?.message);
+  }
+}
+
 export async function POST(req: Request) {
   try {
-    const { messages } = await req.json();
+    const { messages, sessionId } = await req.json();
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
-    // Build contents array with system prompt + conversation
-    const contents = messages
-      .filter((m: { role: string }) => m.role === "user")
-      .map((m: { content: string }) => m.content)
-      .join("\n");
+    // Bounded generation: this is a short-answer KB assistant, so cap output and
+    // keep temperature moderate. Shorter, cheaper, faster replies — and it leans
+    // on the embedded knowledge base rather than long free-form generation.
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        temperature: 0.6,
+        topP: 0.9,
+        maxOutputTokens: 512,
+      },
+    });
 
     // Build full conversation for context
     const conversationContext = messages
@@ -113,10 +241,33 @@ export async function POST(req: Request) {
       )
       .join("\n");
 
-    const prompt = `${SYSTEM_PROMPT}\n\nCONVERSATION SO FAR:\n${conversationContext}\n\nRespond as Mshirika to the customer's latest message. Keep it short.`;
+    const lastUserMessage = [...messages].reverse().find((m: { role: string }) => m.role === "user")?.content;
 
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
+    // Ground in the bank's curated FAQs.
+    const faqs = await getActiveFaqs();
+    const directMatch = lastUserMessage ? bestFaqMatch(lastUserMessage, faqs) : null;
+
+    let text: string;
+    if (directMatch) {
+      // Strong FAQ hit — serve the vetted answer directly, no Gemini call.
+      text = stripHtml(directMatch.answerHtml);
+    } else {
+      const prompt = `${SYSTEM_PROMPT}${faqGroundingBlock(faqs)}\n\nCONVERSATION SO FAR:\n${conversationContext}\n\nRespond as Mshirika to the customer's latest message. Keep it short.`;
+      const result = await model.generateContent(prompt);
+      text = result.response.text();
+    }
+
+    if (lastUserMessage) {
+      // Await both sinks: fire-and-forget doesn't survive Cloud Run CPU
+      // throttling after the response returns, so we'd silently drop logs.
+      const turn = {
+        sessionId: sessionId || "unknown",
+        userMessage: lastUserMessage,
+        botReply: text,
+        page: req.headers.get("referer"),
+      };
+      await Promise.allSettled([logChatTurn(turn), mirrorToSheet(turn)]);
+    }
 
     return NextResponse.json({ message: text });
   } catch (error: any) {

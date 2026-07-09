@@ -1,11 +1,11 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { ArrowRight, Home, Phone } from "lucide-react";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
+// Server component: the footer now reads CMS globals (server-only), so this
+// page must not be a client component. The 404 doesn't need entrance
+// animations, so plain markup is fine.
 export default function NotFound() {
   return (
     <>
@@ -24,58 +24,28 @@ export default function NotFound() {
         <div className="absolute inset-0 bg-[#1A56A0]/[0.99] pointer-events-none" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
-          {/* Animated 404 number */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mb-6"
-          >
+          <div className="mb-6">
             <span className="text-[140px] sm:text-[180px] lg:text-[220px] font-extrabold leading-none bg-gradient-to-b from-white/25 to-white/5 bg-clip-text text-transparent select-none">
               404
             </span>
-          </motion.div>
+          </div>
 
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex justify-center mb-5 -mt-16"
-          >
+          <div className="flex justify-center mb-5 -mt-16">
             <span className="inline-block rounded-full bg-white/10 border border-white/20 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white">
               Page Not Found
             </span>
-          </motion.div>
+          </div>
 
-          {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-5"
-          >
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-5">
             This page took a detour
-          </motion.h1>
+          </h1>
 
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-white/60 max-w-xl mx-auto text-lg leading-relaxed mb-10"
-          >
-            The page you are looking for might have been moved, renamed, or
-            is temporarily unavailable. Let us help you find your way back.
-          </motion.p>
+          <p className="text-white/60 max-w-xl mx-auto text-lg leading-relaxed mb-10">
+            The page you are looking for might have been moved, renamed, or is temporarily
+            unavailable. Let us help you find your way back.
+          </p>
 
-          {/* CTA buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-wrap justify-center gap-4"
-          >
+          <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/"
               className="inline-flex items-center gap-2 rounded-lg bg-[#1A8A3A] px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-[#00C853]"
@@ -90,64 +60,30 @@ export default function NotFound() {
               <Phone size={16} />
               Contact Us
             </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Quick links section */}
       <section className="bg-[#F2F4F8] py-20">
         <div className="max-w-4xl mx-auto px-6 sm:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="text-center mb-12"
-          >
+          <div className="text-center mb-12">
             <h2 className="text-2xl font-bold text-[#0F3D7A] mb-3">
               Where would you like to go?
             </h2>
             <p className="text-[#0F3D7A]/60">
               Here are some helpful pages to get you back on track.
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
-          >
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              {
-                title: "Personal Banking",
-                desc: "Savings, current accounts, and fixed deposits",
-                href: "/personal-banking",
-              },
-              {
-                title: "Loan Products",
-                desc: "Personal, business, and agricultural loans",
-                href: "/loan-products",
-              },
-              {
-                title: "Digital Banking",
-                desc: "CoopPesa, CoopNet, USSD, and QR Pay",
-                href: "/digital-banking",
-              },
-              {
-                title: "Branch Locator",
-                desc: "Find a branch near you",
-                href: "/branches",
-              },
-              {
-                title: "Careers",
-                desc: "Join the CoopBank team",
-                href: "/careers",
-              },
-              {
-                title: "About Us",
-                desc: "Our story, mission, and values",
-                href: "/about-us",
-              },
+              { title: "Personal Banking", desc: "Savings, current accounts, and fixed deposits", href: "/personal-banking" },
+              { title: "Loan Products", desc: "Personal, business, and agricultural loans", href: "/loan-products" },
+              { title: "Digital Banking", desc: "CoopPesa, CoopNet, USSD, and QR Pay", href: "/digital-banking" },
+              { title: "Branch Locator", desc: "Find a branch near you", href: "/branches" },
+              { title: "Careers", desc: "Join the CoopBank team", href: "/careers" },
+              { title: "About Us", desc: "Our story, mission, and values", href: "/about-us" },
             ].map((link) => (
               <Link
                 key={link.href}
@@ -166,7 +102,7 @@ export default function NotFound() {
                 />
               </Link>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
       <Footer />

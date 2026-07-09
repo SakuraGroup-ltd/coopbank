@@ -5,11 +5,11 @@
 // blank. With this group acting as a root, there must be NO src/app/layout.tsx.
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import "../globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ChatWidget from "@/components/ChatWidget";
+import Analytics from "@/components/Analytics";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -48,13 +48,7 @@ export default function MainLayout({
         <main>{children}</main>
         <Footer />
         <ChatWidget />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-2Z8YNGMKV9" strategy="afterInteractive" />
-        <Script id="ga4-config" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-2Z8YNGMKV9');`}
-        </Script>
+        <Analytics />
       </body>
     </html>
   );

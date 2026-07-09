@@ -8,6 +8,7 @@ import {
   AlertTriangle,
   Smartphone,
   Layout,
+  PanelBottom,
   Loader2,
   CheckCircle2,
   AlertCircle,
@@ -17,7 +18,7 @@ import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
 import { cn } from "../ui/cn";
 
-type Tab = "contact" | "social" | "banner" | "app" | "header";
+type Tab = "contact" | "social" | "banner" | "app" | "header" | "footer";
 
 type Site = {
   contact?: {
@@ -52,6 +53,11 @@ type Header = {
   topBar?: { ctaLabel?: string; ctaHref?: string };
 };
 
+type Footer = {
+  tagline?: string;
+  copyright?: string;
+};
+
 type SaveState = "idle" | "saving" | "saved" | "error";
 
 const TABS: Array<{ value: Tab; label: string; icon: typeof Phone }> = [
@@ -60,11 +66,13 @@ const TABS: Array<{ value: Tab; label: string; icon: typeof Phone }> = [
   { value: "banner", label: "Emergency banner", icon: AlertTriangle },
   { value: "app", label: "Mobile / USSD", icon: Smartphone },
   { value: "header", label: "Header", icon: Layout },
+  { value: "footer", label: "Footer", icon: PanelBottom },
 ];
 
 export function SettingsHub({
   siteSettings,
   header,
+  footer,
 }: {
   siteSettings: Record<string, unknown>;
   header: Record<string, unknown>;
@@ -75,6 +83,7 @@ export function SettingsHub({
   const [tab, setTab] = useState<Tab>("contact");
   const [site, setSite] = useState<Site>(siteSettings as Site);
   const [hdr, setHdr] = useState<Header>(header as Header);
+  const [ftr, setFtr] = useState<Footer>(footer as Footer);
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -85,8 +94,10 @@ export function SettingsHub({
   // each other (the old code POSTed the whole global on every keystroke).
   const siteRef = useRef(site);
   const hdrRef = useRef(hdr);
+  const ftrRef = useRef(ftr);
   const siteTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hdrTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const ftrTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   async function persistGlobal(url: string, data: unknown) {
     setSaveState("saving");
@@ -125,6 +136,14 @@ export function SettingsHub({
     setHdr(next);
     if (hdrTimer.current) clearTimeout(hdrTimer.current);
     hdrTimer.current = setTimeout(() => persistGlobal("/api/globals/header", hdrRef.current), 800);
+  }
+
+  function saveFooter(partial: Partial<Footer>) {
+    const next = { ...ftrRef.current, ...partial };
+    ftrRef.current = next;
+    setFtr(next);
+    if (ftrTimer.current) clearTimeout(ftrTimer.current);
+    ftrTimer.current = setTimeout(() => persistGlobal("/api/globals/footer", ftrRef.current), 800);
   }
 
   return (
@@ -324,6 +343,33 @@ export function SettingsHub({
             <p className="text-xs text-studio-ink-3 mt-4 leading-relaxed">
               Primary nav structure (mega menus) is edited through Payload Admin for now — adding a
               tree editor is on the list.
+            </p>
+          </Pane>
+        )}
+
+        {tab === "footer" && (
+          <Pane title="Footer" hint="Tagline + copyright shown in the site footer">
+            <Field label="Tagline">
+              <Input
+                type="text"
+                value={ftr.tagline || ""}
+                onChange={(e) => saveFooter({ tagline: e.target.value })}
+                placeholder="Ustawi kwa wote"
+              />
+            </Field>
+            <Field label="Copyright line">
+              <Input
+                type="text"
+                value={ftr.copyright || ""}
+                onChange={(e) => saveFooter({ copyright: e.target.value })}
+                placeholder="© 2026 Cooperative Bank Tanzania Plc. All rights reserved."
+              />
+            </Field>
+            <p className="text-xs text-studio-ink-3 mt-4 leading-relaxed">
+              Contact details, social links, and app-store URLs shown in the footer are edited under
+              the <strong>Contact</strong>, <strong>Social</strong>, and <strong>Mobile / USSD</strong> tabs.
+              Footer nav-link columns fall back to the built-in set and can be overridden in Payload
+              Admin (Footer global) — a column editor here is on the list.
             </p>
           </Pane>
         )}

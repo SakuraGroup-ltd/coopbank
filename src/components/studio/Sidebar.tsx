@@ -25,6 +25,7 @@ import {
   FileWarning,
   Users2,
   Store,
+  MessagesSquare,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
@@ -49,6 +50,7 @@ const groups: Group[] = [
       { href: "/studio/press", label: "Press releases", icon: Megaphone, scope: "press" },
       { href: "/studio/pages", label: "Pages", icon: ScrollText, scope: "pages" },
       { href: "/studio/faqs", label: "FAQs", icon: HelpCircle, scope: "faqs" },
+      { href: "/studio/conversations", label: "Chat & concerns", icon: MessagesSquare, scope: "conversations" },
       { href: "/studio/library", label: "Media library", icon: Images, scope: "library" },
     ],
   },

@@ -19,7 +19,7 @@ export const SiteSettings: GlobalConfig = {
         { name: "email", type: "email", defaultValue: "info@cbtbank.co.tz" },
         { name: "hrEmail", type: "email", defaultValue: "hr@cbtbank.co.tz" },
         { name: "tendersEmail", type: "email", defaultValue: "tenders@cbtbank.co.tz" },
-        { name: "headquartersAddress", type: "textarea", defaultValue: "Kuu Street, P.O. Box 201, Dodoma" },
+        { name: "headquartersAddress", type: "textarea", defaultValue: "Sikukuu Street, P.O. Box 201, Dodoma" },
       ],
     },
     {

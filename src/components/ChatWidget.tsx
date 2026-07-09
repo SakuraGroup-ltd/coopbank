@@ -28,6 +28,12 @@ export default function ChatWidget() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
+  // One id per widget mount — groups every turn of this chat session in the log.
+  const sessionIdRef = useRef<string>(
+    typeof crypto !== "undefined" && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`
+  );
 
   // Play attention sound after 3 seconds
   useEffect(() => {
@@ -88,7 +94,7 @@ export default function ChatWidget() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
+        body: JSON.stringify({ messages: newMessages, sessionId: sessionIdRef.current }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "API error");
@@ -119,7 +125,7 @@ export default function ChatWidget() {
     fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: newMessages }),
+      body: JSON.stringify({ messages: newMessages, sessionId: sessionIdRef.current }),
     })
       .then((r) => r.json())
       .then((data) => {

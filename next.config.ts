@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
     qualities: [75, 90],
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
+      // GCS-hosted media uploads (Studio profile photos, etc.)
+      { protocol: "https", hostname: "storage.googleapis.com" },
     ],
   },
   async redirects() {

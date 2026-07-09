@@ -13,6 +13,7 @@ import { ForexRates } from "./src/payload/collections/ForexRates";
 import { Branches } from "./src/payload/collections/Branches";
 import { BankCharges } from "./src/payload/collections/BankCharges";
 import { BlogPosts } from "./src/payload/collections/BlogPosts";
+import { MediaCoverage } from "./src/payload/collections/MediaCoverage";
 import { Pages } from "./src/payload/collections/Pages";
 import { WhistleblowerReports } from "./src/payload/collections/WhistleblowerReports";
 import { Faqs } from "./src/payload/collections/Faqs";
@@ -24,6 +25,7 @@ import { AnnualReports } from "./src/payload/collections/AnnualReports";
 import { StatutoryNotices } from "./src/payload/collections/StatutoryNotices";
 import { LeadershipTeam } from "./src/payload/collections/LeadershipTeam";
 import { CoopwakalaAgents } from "./src/payload/collections/CoopwakalaAgents";
+import { ChatConversations } from "./src/payload/collections/ChatConversations";
 
 import { Header } from "./src/payload/globals/Header";
 import { Footer } from "./src/payload/globals/Footer";
@@ -60,11 +62,13 @@ export default buildConfig({
     Media,
     Pages,
     BlogPosts,
+    MediaCoverage,
     Tenders,
     JobListings,
     ForexRates,
     Branches,
     CoopwakalaAgents,
+    ChatConversations,
     WhistleblowerReports,
     Faqs,
     Auctions,
@@ -95,6 +99,10 @@ export default buildConfig({
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URI },
+    // Schema is managed by hand on Neon (see collection headers). Never let the
+    // adapter auto-push/alter the schema — in dev this would otherwise mutate
+    // the shared production database.
+    push: false,
   }),
   // Uploads land in GCS — files survive Cloud Run cold-starts and serve
   // globally via the public bucket. On Cloud Run the SDK picks up Application
