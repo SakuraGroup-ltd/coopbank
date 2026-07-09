@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { STUDIO_PREVIEW_MESSAGE, type PreviewScope } from "@/lib/studio/livePreview";
 
 // Posts the current draft into the preview iframe on every change (coalesced to
@@ -11,26 +11,25 @@ export function useDraftBroadcast<T>(
   draft: T,
 ) {
   const draftRef = useRef(draft);
-  draftRef.current = draft;
+  useEffect(() => {
+    draftRef.current = draft;
+  }, [draft]);
 
-  const post = () => {
+  const post = useCallback(() => {
     const win = iframeRef.current?.contentWindow;
     if (!win) return;
     win.postMessage({ type: STUDIO_PREVIEW_MESSAGE, scope, data: draftRef.current }, "*");
-  };
+  }, [iframeRef, scope]);
 
   useEffect(() => {
-    let raf = 0;
-    raf = requestAnimationFrame(post);
+    const raf = requestAnimationFrame(post);
     return () => cancelAnimationFrame(raf);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [draft, scope]);
+  }, [draft, post]);
 
   useEffect(() => {
     const el = iframeRef.current;
     if (!el) return;
     el.addEventListener("load", post);
     return () => el.removeEventListener("load", post);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scope]);
+  }, [iframeRef, post]);
 }
