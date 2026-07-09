@@ -11,6 +11,7 @@
 ## Global Constraints
 
 - **Database:** `push: false`. Neon is **shared with production**. Every schema change is an **additive** migration (new nullable columns / child tables only) that must be applied to Neon **by the repo owner** — never auto-pushed. Until applied, code must fall back to current hardcoded defaults so nothing breaks. (`payload.config.ts:105`)
+- **The Payload CLI is broken in this repo:** `npx payload <anything>` crashes with `TypeError: loadEnvConfig is not a function` (Next 16 × Payload 3.85 `@next/env` incompatibility; the `_bootstrap-payload.cjs` preload does not rescue the bin). All Payload work runs programmatically via `node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/<x>.ts` (see `package.json:11-13`). Do not rely on `payload generate:types` / `payload migrate:*`. The repo generates no `payload-types.ts`; globals/collections are read as `Record<string, any>`.
 - **No test framework exists** in this repo. The verification gate for every task is: (a) `npx tsc --noEmit` passes, and (b) the explicit manual QA in the dev app (`npm run dev`) described in that task. Do **not** add a test runner.
 - **Auth:** studio server pages call `requireStudioUser()` from `@/lib/studio/auth`; mutations rely on the `payload-token` cookie + `editorOf("marketing")` access already on the Footer global and leadership-team collection.
 - **Payload REST:** globals save via `POST /api/globals/<slug>` (whole global). Collections: `POST /api/<slug>`, `PATCH /api/<slug>/<id>`, `DELETE /api/<slug>/<id>`. Create returns `{ doc: { id } }`. Media upload: `POST /api/media` with `multipart/form-data` (`file` field), returns `{ doc: { id, url } }`.
@@ -467,27 +468,33 @@ In `src/payload/globals/Footer.ts`, inside `fields`, after the existing `columns
 },
 ```
 
-- [ ] **Step 2: Regenerate Payload types + reviewable SQL**
+- [ ] **Step 2: Produce the additive SQL — the Payload CLI is BROKEN in this repo**
 
-Run: `npx payload generate:types` → updates `payload-types.ts`.
-Run: `npx payload migrate:create footer_editable_fields` → generates a migration file under `src/migrations/` (or the configured dir) with the additive SQL. **Do not run `migrate` against Neon.**
+**Do NOT run `npx payload ...`** — it crashes with `TypeError: loadEnvConfig is not a function` (Next 16 × Payload 3.85 `@next/env` incompatibility; the repo's `_bootstrap-payload.cjs` preload does not rescue the bin). The codebase generates **no** `payload-types.ts` and reads these globals as `Record<string, any>`, so **no type generation is needed**.
+
+Generate the additive DDL on a **throwaway scratch Postgres — never Neon**:
+1. Point a scratch env's `DATABASE_URI` at a local empty database and set `push: true` in a scratch copy of the config.
+2. Boot Payload once via the existing bootstrap pattern (mirror `scripts/seed-assets.ts`: `node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/<oneoff>.ts` that just calls `getPayload({ config })`) so the adapter creates the new schema.
+3. `pg_dump --schema-only` the footer objects and keep ONLY the additive statements: new columns on `footer` (`open_account_banner_enabled`, `open_account_banner_heading`, `open_account_banner_subtext`, `open_account_banner_button_label`, `open_account_banner_button_href`, `about`, `branches_note`, `developer_credit_label`, `developer_credit_href`) and new child tables `footer_branches`, `footer_legal_links` (Payload's array-table convention: `id, _order, _parent_id, label, href`).
+4. Save the reviewed `ALTER TABLE … ADD COLUMN` / `CREATE TABLE` statements to `docs/superpowers/migrations/2026-07-09-footer-fields.sql`.
 
 - [ ] **Step 3: Verify compile**
 
 Run: `npx tsc --noEmit`
-Expected: no errors. (`resolveFooterData` already reads these keys defensively, so it compiles whether or not the DB has them yet.)
+Expected: no errors. (`resolveFooterData` reads these keys defensively, so it compiles whether or not the DB has them yet.)
 
 - [ ] **Step 4: Hand off the migration (operational gate)**
 
-Print the generated SQL and stop for the repo owner to apply it to Neon. Note in the commit body that the migration is **pending manual application**. The site keeps using fallbacks until then.
+Give `docs/superpowers/migrations/2026-07-09-footer-fields.sql` to the repo owner to apply to Neon. The site keeps using fallbacks until then, so nothing breaks meanwhile.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/payload/globals/Footer.ts payload-types.ts src/migrations/
+git add src/payload/globals/Footer.ts docs/superpowers/migrations/2026-07-09-footer-fields.sql
 git commit -m "feat(footer): add banner/about/branches/legal/developer fields to footer global
 
-Additive Neon migration generated — PENDING manual application by repo owner."
+Additive SQL captured in docs/superpowers/migrations — PENDING manual
+application to Neon by repo owner (Payload CLI is broken under Next 16)."
 ```
 
 ---
@@ -727,7 +734,7 @@ async function uploadPhoto(file: File) {
 }
 ```
 
-In `persist()`, the body is `{ name, title, category, bio, email, linkedin, sortOrder, active, photo: draft.photo?.id }`.
+In `persist()`, the body is `{ name, title, category, bio, linkedin, sortOrder, active, photo: draft.photo?.id, ...(draft.email ? { email: draft.email } : {}) }`. **Caution:** `email` on the collection is Payload type `email` (`LeadershipTeam.ts:38`) — sending an empty string can 400, so omit it when blank (as shown).
 
 Wrap the form pane in `<LivePreviewShell previewSrc={`/studio-preview/leadership?category=${draft.category}`} livePath={draft.category === "board" ? "/about-us/board" : "/about-us/management"} scope="leadership" draft={{ intro: "", highlightCount: draft.category === "board" ? 2 : 1, people: [{ name: draft.name, title: draft.title, image: draft.photo?.url }] }}>`. (Single-profile preview showing the live card style; the full grid is visible via "Open live".)
 
@@ -847,26 +854,46 @@ These flip several **BROKEN/PARTIAL** items to **WORKS** with ~zero schema. Each
 
 ### Task 12: Fix FAQ HTML render bug
 
-**Files:** Modify `src/components/.../FaqsClient.tsx` (the answer render, ~line 55).
+**Files:** Modify `src/app/(main)/faqs/FaqsClient.tsx:55` (verified real path — NOT under `src/components/`).
 
-- [ ] **Step 1:** Replace the plain-text `{answer}` render (currently `whitespace-pre-line`) with `<div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: answerHtml }} />`, reading the `answerHtml` field the collection already stores.
+- [ ] **Step 1:** The answer is rendered as plain text at line 55: `<p className="pb-5 pr-8 text-[#4A5568] text-sm leading-relaxed whitespace-pre-line">{a}</p>`. The `a` prop already contains the HTML string — `faqs/page.tsx:45` maps `answer: r.answerHtml` — so **no page.tsx change is needed**. Replace the line with: `<div className="pb-5 pr-8 text-[#4A5568] text-sm leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: a }} />`. (Note: the search filter at line 79 will now match on raw HTML — harmless.)
 - [ ] **Step 2:** Verify: an FAQ authored with bold/links in `/studio/faqs` renders formatted (not literal tags) on `/faqs`. `npx tsc --noEmit` clean.
 - [ ] **Step 3:** Commit `fix(faqs): render answerHtml as HTML instead of literal text`.
 
-### Task 13: Wire the whistleblower evidence array
+### Task 13: Surface whistleblower evidence in the studio case view — ⚠️ DECISION-GATED
 
-**Files:** Modify `src/app/api/whistleblower/route.ts`.
+**⚠️ Do NOT implement the naive "create a `media` doc" fix.** The `media` collection runs with
+`disablePayloadAccessControl: true` (`payload.config.ts:118`) → every media doc gets a **public** GCS
+URL. The intake route (`src/app/api/whistleblower/route.ts:45-68`) *deliberately* uploads evidence to
+a **private** bucket (`coopbank-whistleblower`) and stores only a compliance-only signed-URL proxy
+(`/api/studio/whistleblower/evidence?path=gs://…`) inside `description`. Moving evidence into `media`
+would publish confidential whistleblower attachments — a security regression.
 
-- [ ] **Step 1:** After uploading each evidence file to GCS, create a `media` doc (or reuse the existing upload) and push its id into the report's `evidence` array field on `payload.create`, instead of embedding a proxy link in `description`.
-- [ ] **Step 2:** Verify: submit `/whistleblower` with a file → the case in `/studio/whistleblower/:id` shows it in the Evidence panel. `npx tsc --noEmit` clean.
-- [ ] **Step 3:** Commit `fix(whistleblower): populate evidence array so studio case view shows attachments`.
+The collection's `evidence` array requires `{ file: <mediaId> (upload→media, required), note? }` objects,
+so it cannot hold private-bucket paths without either making media public or building a private-access
+upload. **This needs a design decision before coding.** Two safe options:
+
+- **Option A (smallest, keeps privacy):** leave intake as-is; make the studio case view
+  (`src/components/studio/whistleblower/WhistleblowerCase.tsx`) render the existing proxy links (parse
+  them out of `description`, or add a dedicated `evidenceLinks` **text-array** field on the collection
+  — additive migration — that the intake populates instead of appending to `description`). No public media.
+- **Option B (proper):** introduce a private evidence-media flow (a separate upload collection with
+  access control **on**, served through the signed-URL proxy) and populate `evidence` with those ids.
+
+- [ ] **Step 1:** Confirm the chosen option with the repo owner (Option A recommended for this plan).
+- [ ] **Step 2:** Implement the chosen option; if it adds a field, capture additive SQL per the Task-4 gate.
+- [ ] **Step 3:** Verify the studio case view shows the attachment link AND the file is not publicly
+  reachable without the compliance proxy. `npx tsc --noEmit` clean.
+- [ ] **Step 4:** Commit `fix(whistleblower): surface private evidence in the studio case view (no public media)`.
 
 ### Task 14: Branches — consume saved map/photo/coordinates
 
-**Files:** Modify `src/app/(main)/branches/page.tsx` (mapper) + `BranchesClient.tsx` (type + render).
+**Files:** Modify `src/app/(main)/branches/page.tsx` (mapper) + `src/app/(main)/branches/BranchesClient.tsx` (type + render).
 
-- [ ] **Step 1:** Pass `mapsUrl`, `photo` (url), `coordinates` from the collection through the page mapper into `ClientBranch`; use saved `mapsUrl` when present (else keep the synthesized search URL); render `photo` where the card has an image slot. Fix the `"{region}, {region} Region"` duplicate.
-- [ ] **Step 2:** Verify: set a branch `mapsUrl`/`photo` in `/studio/branches`, Save → `/branches` uses them. `npx tsc --noEmit` clean.
+- [ ] **Step 1a (client — the real gap):** `maps_url` is **already** passed by the mapper (`page.tsx:47,61`) and typed on `ClientBranch` (`BranchesClient.tsx:13`), but the client **ignores it** and synthesizes its own URL at `BranchesClient.tsx:257-262` (used at lines 321, 445). Change that block to prefer the saved value: `const mapsUrl = branch.maps_url?.trim() ? branch.maps_url : \`https://www.google.com/maps/search/?api=1&query=${mapsQuery}\`;`.
+- [ ] **Step 1b (photo + coordinates):** these are genuinely missing from the mapper. Set `depth: 1` at `page.tsx:34` (currently `depth: 0`, so `photo` returns a numeric id, not a URL), add `photo` (url) + `coordinates` (`{lat,lng}` from `Branches.ts:55-63`) to the mapper output and `ClientBranch`, and render `photo` in a new card image slot (no image element exists on the card today).
+- [ ] **Step 1c (duplicate region):** fix `BranchesClient.tsx:304` — `{branch.region}, {branch.region} Region` → `{branch.region} Region`.
+- [ ] **Step 2:** Verify: set a branch `mapsUrl`/`photo` in `/studio/branches`, Save → `/branches` uses the saved map link and shows the photo; the region label reads e.g. "Dodoma Region" (not "Dodoma, Dodoma Region"). `npx tsc --noEmit` clean.
 - [ ] **Step 3:** Commit `fix(branches): consume saved mapsUrl/photo/coordinates on the public page`.
 
 ---

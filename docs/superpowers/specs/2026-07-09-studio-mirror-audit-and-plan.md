@@ -47,7 +47,7 @@ The entire marketing surface is hand-coded React with inline data arrays:
 Editors that punt to raw Payload admin, or lack in-studio operations:
 
 - **Bounce to `/admin`:** Leadership (add/edit), Annual Reports (create+edit), Statutory Notices (create+edit), Forex (create currency), Bank Charges (create+edit). **No editor at all:** MediaCoverage (News).
-- **No in-studio delete** anywhere except Interest Rates (`delete: isAdmin` + no UI): Blog, Press, Careers, Tenders, Branches (hard), FAQs, Auctions, Forex, Agents.
+- **No in-studio delete** on: Blog, Press, Careers, Tenders, Branches (hard delete), FAQs, Auctions, Forex, Agents. (Interest Rates **and** Service Fees *do* have full in-studio create/update/**delete** — verified; they are **orphaned** (no public consumer), not CRUD-incomplete.)
 - **Render / wiring bugs:** FAQ answers (`answerHtml`) printed as literal HTML text; Branches ignore saved `mapsUrl/photo/coordinates`; Press `mediaContact` not editable though rendered; Whistleblower `evidence` array never populated (link stuffed into description); Tenders cards show no teaser.
 - **Public routes missing:** `/investors` (Navbar links to `#annual-reports` / `#notices` → **404**); no `(main)/[slug]` route to render Pages block docs live.
 
