@@ -11,6 +11,9 @@ export type ClientBranch = {
   hours_weekday: string;
   hours_saturday: string;
   maps_url: string;
+  photo: string;
+  lat: string;
+  lng: string;
   is_hq: string;
   coming_soon: string;
   expected_opening: string;
@@ -259,7 +262,11 @@ export default function BranchesClient({ branches }: { branches: ClientBranch[] 
                         ? `${branch.name}, ${branch.address}`
                         : `${branch.name}, ${branch.region}, Tanzania`
                     );
-                    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+                    // Prefer the maps link saved in the Studio; synthesise a
+                    // search URL only when the editor left it blank.
+                    const mapsUrl = branch.maps_url?.trim()
+                      ? branch.maps_url
+                      : `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
 
                     return (
                       <motion.div
@@ -272,6 +279,18 @@ export default function BranchesClient({ branches }: { branches: ClientBranch[] 
                             : "border-slate-200"
                         }`}
                       >
+                        {/* Branch exterior photo (set in /studio/branches) */}
+                        {branch.photo && (
+                          <div className="h-40 w-full overflow-hidden rounded-t-2xl">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={branch.photo}
+                              alt={branch.name}
+                              className="h-full w-full object-cover"
+                              loading="lazy"
+                            />
+                          </div>
+                        )}
                         {/* Header -- clickable */}
                         <button
                           onClick={() => toggle(branch.name)}
@@ -301,7 +320,7 @@ export default function BranchesClient({ branches }: { branches: ClientBranch[] 
                                 )}
                               </h3>
                               <p className="mt-0.5 text-sm text-[#4A5568]">
-                                {branch.region}, {branch.region} Region
+                                {branch.region} Region
                               </p>
                               {/* Operating hours shown directly on card */}
                               {branch.hours_weekday && (

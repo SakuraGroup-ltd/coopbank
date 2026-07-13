@@ -31,7 +31,8 @@ export default async function BranchesPage() {
   const result = await payload.find({
     collection: "branches",
     limit: 500,
-    depth: 0,
+    // depth 1 so the photo upload resolves to a URL (depth 0 returns a bare id)
+    depth: 1,
     sort: "name",
   });
 
@@ -45,11 +46,18 @@ export default async function BranchesPage() {
       hoursWeekday?: string;
       hoursSaturday?: string;
       mapsUrl?: string;
+      photo?: { url?: string } | number | null;
+      coordinates?: { lat?: number | null; lng?: number | null } | null;
       isHq?: boolean;
       comingSoon?: boolean;
       expectedOpening?: string;
       active?: boolean;
     };
+    // Same photo-URL rule as leadership: only absolute URLs render; legacy
+    // /api/media/file/* paths 500 on live.
+    const photoUrl = typeof r.photo === "object" && r.photo ? r.photo.url : undefined;
+    const photoUsable =
+      photoUrl && /^https?:\/\//.test(photoUrl) && !photoUrl.includes("/api/media/file/");
     return {
       name: r.name,
       type: TYPE_LABEL[r.type || "branch"] || r.type || "Branch",
@@ -59,6 +67,9 @@ export default async function BranchesPage() {
       hours_weekday: r.hoursWeekday || "",
       hours_saturday: r.hoursSaturday || "",
       maps_url: r.mapsUrl || "",
+      photo: photoUsable ? (photoUrl as string) : "",
+      lat: r.coordinates?.lat != null ? String(r.coordinates.lat) : "",
+      lng: r.coordinates?.lng != null ? String(r.coordinates.lng) : "",
       is_hq: r.isHq ? "true" : "false",
       coming_soon: r.comingSoon ? "true" : "false",
       expected_opening: r.expectedOpening || "",
