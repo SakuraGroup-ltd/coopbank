@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import Navbar from "@/components/layout/Navbar";
+import EmergencyBanner from "@/components/layout/EmergencyBanner";
 import Footer from "@/components/layout/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import Analytics from "@/components/Analytics";
@@ -44,6 +45,7 @@ export default function MainLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
+        <EmergencyBanner />
         <Navbar />
         <main>{children}</main>
         <Footer />
