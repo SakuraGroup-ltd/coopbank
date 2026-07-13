@@ -24,6 +24,7 @@ import { ServiceFees } from "./src/payload/collections/ServiceFees";
 import { AnnualReports } from "./src/payload/collections/AnnualReports";
 import { StatutoryNotices } from "./src/payload/collections/StatutoryNotices";
 import { LeadershipTeam } from "./src/payload/collections/LeadershipTeam";
+import { ShowcaseCards } from "./src/payload/collections/ShowcaseCards";
 import { CoopwakalaAgents } from "./src/payload/collections/CoopwakalaAgents";
 import { ChatConversations } from "./src/payload/collections/ChatConversations";
 
@@ -79,6 +80,7 @@ export default buildConfig({
     AnnualReports,
     StatutoryNotices,
     LeadershipTeam,
+    ShowcaseCards,
   ],
   globals: [Header, Footer, Homepage, SiteSettings],
   secret: process.env.PAYLOAD_SECRET || "spike-secret-not-for-prod",
