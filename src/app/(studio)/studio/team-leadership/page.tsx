@@ -67,7 +67,7 @@ export default async function LeadershipPage() {
             </p>
           </div>
         </div>
-        <Link href="/admin/collections/leadership-team/create" className="h-9 px-4 text-sm inline-flex items-center gap-2 rounded-lg bg-studio-ink hover:bg-cb-navy-deep text-white font-medium">
+        <Link href="/studio/team-leadership/new" className="h-9 px-4 text-sm inline-flex items-center gap-2 rounded-lg bg-studio-ink hover:bg-cb-navy-deep text-white font-medium">
           <Plus className="w-4 h-4" />
           Add profile
         </Link>
@@ -92,7 +92,7 @@ export default async function LeadershipPage() {
                   {items.map((p) => (
                     <Link
                       key={String(p.id)}
-                      href={`/admin/collections/leadership-team/${p.id}`}
+                      href={`/studio/team-leadership/${p.id}`}
                       className="group block rounded-2xl border border-studio-border bg-studio-panel hover:border-cb-navy/30 hover:shadow-[0_4px_16px_rgba(15,15,15,0.06)] transition-all overflow-hidden"
                     >
                       <div className="aspect-square bg-studio-soft relative overflow-hidden">
