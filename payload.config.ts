@@ -90,11 +90,13 @@ export default buildConfig({
     "https://dev.coopbank.co.tz",
     "https://coopbank-dev-5vgc65ps3q-ew.a.run.app",
     "https://coopbank-dev-1061283808106.europe-west1.run.app",
+    "http://localhost:3000",
   ],
   csrf: [
     "https://dev.coopbank.co.tz",
     "https://coopbank-dev-5vgc65ps3q-ew.a.run.app",
     "https://coopbank-dev-1061283808106.europe-west1.run.app",
+    "http://localhost:3000",
   ],
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
   db: postgresAdapter({

@@ -26,6 +26,7 @@ import {
   Users2,
   Store,
   MessagesSquare,
+  PanelBottom,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
@@ -91,6 +92,7 @@ const groups: Group[] = [
     items: [
       { href: "/studio/activity", label: "Activity log", icon: History, scope: "activity" },
       { href: "/studio/users", label: "Team", icon: UsersIcon, scope: "users" },
+      { href: "/studio/footer", label: "Footer", icon: PanelBottom, scope: "settings" },
       { href: "/studio/settings", label: "Settings", icon: Settings, scope: "settings" },
     ],
   },
