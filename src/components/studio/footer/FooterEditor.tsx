@@ -18,6 +18,7 @@ import { Button } from "@/components/studio/ui/Button";
 import {
   resolveFooterData,
   type FooterGlobal,
+  type SiteSettingsGlobal,
   type FooterData,
   type FooterLink,
 } from "@/components/layout/FooterView";
@@ -55,6 +56,34 @@ function seedDraft(initialFooter: FooterGlobal): FooterDraft {
   };
 }
 
+// The slices of site-settings the footer consumes (contact / social / app).
+// Saved back to /api/globals/site-settings alongside the footer global so the
+// whole footer story is editable from one screen.
+export type SiteDraft = {
+  contact: { phone: string; email: string; headquartersAddress: string };
+  social: { facebook: string; instagram: string; linkedin: string };
+  appStore: { androidUrl: string; iosUrl: string };
+};
+
+function seedSite(initialSite: SiteSettingsGlobal): SiteDraft {
+  return {
+    contact: {
+      phone: initialSite?.contact?.phone ?? "",
+      email: initialSite?.contact?.email ?? "",
+      headquartersAddress: initialSite?.contact?.headquartersAddress ?? "",
+    },
+    social: {
+      facebook: initialSite?.social?.facebook ?? "",
+      instagram: initialSite?.social?.instagram ?? "",
+      linkedin: initialSite?.social?.linkedin ?? "",
+    },
+    appStore: {
+      androidUrl: initialSite?.appStore?.androidUrl ?? "",
+      iosUrl: initialSite?.appStore?.iosUrl ?? "",
+    },
+  };
+}
+
 function move<T>(arr: T[], i: number, dir: -1 | 1): T[] {
   const j = i + dir;
   if (j < 0 || j >= arr.length) return arr;
@@ -65,9 +94,16 @@ function move<T>(arr: T[], i: number, dir: -1 | 1): T[] {
 
 type SaveState = "idle" | "saving" | "saved" | "error";
 
-export function FooterEditor({ initialFooter }: { initialFooter: FooterGlobal }) {
+export function FooterEditor({
+  initialFooter,
+  initialSite,
+}: {
+  initialFooter: FooterGlobal;
+  initialSite: SiteSettingsGlobal;
+}) {
   const router = useRouter();
   const [draft, setDraft] = useState<FooterDraft>(() => seedDraft(initialFooter));
+  const [site, setSite] = useState<SiteDraft>(() => seedSite(initialSite));
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -77,23 +113,34 @@ export function FooterEditor({ initialFooter }: { initialFooter: FooterGlobal })
     setSaveState("idle");
   }
 
+  function patchSite(partial: Partial<SiteDraft>) {
+    setSite((s) => ({ ...s, ...partial }));
+    setSaveState("idle");
+  }
+
   // The preview consumes the same resolver production uses, so what the iframe
   // shows is exactly what the live footer will render after save.
-  const previewData: FooterData = resolveFooterData({}, draft);
+  const previewData: FooterData = resolveFooterData(site, draft);
 
   async function handleSave() {
     setSaveState("saving");
     setSaveError(null);
     try {
-      const res = await fetch("/api/globals/footer", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(draft),
-      });
-      if (!res.ok) {
-        const txt = await res.text().catch(() => "");
+      const post = (url: string, body: unknown) =>
+        fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+      const [ftrRes, siteRes] = await Promise.all([
+        post("/api/globals/footer", draft),
+        post("/api/globals/site-settings", site),
+      ]);
+      const failed = [ftrRes, siteRes].find((r) => !r.ok);
+      if (failed) {
+        const txt = await failed.text().catch(() => "");
         setSaveState("error");
-        setSaveError(txt || `HTTP ${res.status}`);
+        setSaveError(txt || `HTTP ${failed.status}`);
         return;
       }
       setSaveState("saved");
@@ -230,6 +277,47 @@ export function FooterEditor({ initialFooter }: { initialFooter: FooterGlobal })
                 onChange={(legalLinks) => patch({ legalLinks })}
                 addLabel="Add legal link"
               />
+            </Section>
+
+            <Section title="Contact" hint="Shown in the footer HQ block — saved to Site settings">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Field label="Phone">
+                  <Input value={site.contact.phone} placeholder="+255 27 275 4470" onChange={(e) => patchSite({ contact: { ...site.contact, phone: e.target.value } })} />
+                </Field>
+                <Field label="Email">
+                  <Input value={site.contact.email} placeholder="info@cbtbank.co.tz" onChange={(e) => patchSite({ contact: { ...site.contact, email: e.target.value } })} />
+                </Field>
+              </div>
+              <Field label="HQ address" hint="Footer shows the first line only">
+                <textarea
+                  value={site.contact.headquartersAddress}
+                  placeholder="Sikukuu Street, P.O. Box 201, Dodoma"
+                  onChange={(e) => patchSite({ contact: { ...site.contact, headquartersAddress: e.target.value } })}
+                  rows={2}
+                  className="w-full px-3 py-2 rounded-lg border border-studio-border bg-studio-panel text-sm text-studio-ink focus:border-cb-navy/30 focus:ring-2 focus:ring-cb-navy/15 focus:outline-none"
+                />
+              </Field>
+            </Section>
+
+            <Section title="Social links" hint="Saved to Site settings">
+              <Field label="Facebook">
+                <Input value={site.social.facebook} onChange={(e) => patchSite({ social: { ...site.social, facebook: e.target.value } })} />
+              </Field>
+              <Field label="Instagram">
+                <Input value={site.social.instagram} onChange={(e) => patchSite({ social: { ...site.social, instagram: e.target.value } })} />
+              </Field>
+              <Field label="LinkedIn">
+                <Input value={site.social.linkedin} onChange={(e) => patchSite({ social: { ...site.social, linkedin: e.target.value } })} />
+              </Field>
+            </Section>
+
+            <Section title="Mobile app" hint="Store badges — saved to Site settings">
+              <Field label="Google Play URL">
+                <Input value={site.appStore.androidUrl} onChange={(e) => patchSite({ appStore: { ...site.appStore, androidUrl: e.target.value } })} />
+              </Field>
+              <Field label="App Store URL">
+                <Input value={site.appStore.iosUrl} onChange={(e) => patchSite({ appStore: { ...site.appStore, iosUrl: e.target.value } })} />
+              </Field>
             </Section>
 
             <Section title="Developer credit">
