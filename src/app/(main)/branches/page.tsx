@@ -66,7 +66,8 @@ export default async function BranchesPage() {
       phone: r.phone || "",
       hours_weekday: r.hoursWeekday || "",
       hours_saturday: r.hoursSaturday || "",
-      maps_url: r.mapsUrl || "",
+      // http(s) only — a saved javascript: URL would XSS via the card's href
+      maps_url: r.mapsUrl && /^https?:\/\//i.test(r.mapsUrl.trim()) ? r.mapsUrl.trim() : "",
       photo: photoUsable ? (photoUrl as string) : "",
       lat: r.coordinates?.lat != null ? String(r.coordinates.lat) : "",
       lng: r.coordinates?.lng != null ? String(r.coordinates.lng) : "",

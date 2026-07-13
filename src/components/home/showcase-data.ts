@@ -85,6 +85,13 @@ export type ShowcaseDoc = {
   active?: boolean | null;
 };
 
+// Editor-saved links may only be http(s), site-relative, or hash — anything
+// else (javascript:, data:) would be a stored XSS via the card's href.
+export function safeHref(href: string | null | undefined): string {
+  const h = (href || "").trim();
+  return /^(https?:\/\/|\/|#)/i.test(h) ? h : "";
+}
+
 // Maps CMS docs to view cards. Rejects legacy /api/media/file/* photo URLs
 // (they 500 on live — same gotcha as leadership photos) and falls back to a
 // same-title hardcoded image, else a generic one.
@@ -102,7 +109,7 @@ export function resolveShowcaseCards(docs: ShowcaseDoc[]): ShowcaseCard[] {
           .map((b) => b.trim())
           .filter(Boolean),
         image: usable ? (url as string) : localByTitle[d.title as string] || "/images/products/group.jpg",
-        href: d.href?.trim() || "/personal-banking",
+        href: safeHref(d.href) || "/personal-banking",
       };
     });
   return cards.length ? cards : FALLBACK_SHOWCASE_CARDS;

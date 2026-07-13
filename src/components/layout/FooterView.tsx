@@ -179,6 +179,13 @@ function shortAddress(full?: string | null): string {
   return full.split(/[,\n]/)[0].trim() || FALLBACK_CONTACT.address;
 }
 
+// Editor-saved links may only be http(s), site-relative, or hash — anything
+// else (javascript:, data:) would be a stored XSS via the rendered href.
+function safeHref(href?: string | null): string {
+  const h = (href || "").trim();
+  return /^(https?:\/\/|\/|#)/i.test(h) ? h : "";
+}
+
 export function resolveFooterData(site: SiteSettingsGlobal, footer: FooterGlobal): FooterData {
   const globalColumns: FooterColumn[] = Array.isArray(footer?.columns)
     ? footer.columns
@@ -186,7 +193,9 @@ export function resolveFooterData(site: SiteSettingsGlobal, footer: FooterGlobal
         .map((c) => ({
           heading: c.heading,
           links: Array.isArray(c.links)
-            ? c.links.filter((l): l is FooterLink => !!l?.label && !!l?.href)
+            ? c.links
+                .filter((l): l is FooterLink => !!l?.label && !!l?.href)
+                .map((l) => ({ label: l.label, href: safeHref(l.href) }))
             : [],
         }))
     : [];
@@ -213,25 +222,28 @@ export function resolveFooterData(site: SiteSettingsGlobal, footer: FooterGlobal
       heading: footer?.openAccountBanner?.heading || FALLBACK_BANNER.heading,
       subtext: footer?.openAccountBanner?.subtext || FALLBACK_BANNER.subtext,
       buttonLabel: footer?.openAccountBanner?.buttonLabel || FALLBACK_BANNER.buttonLabel,
-      buttonHref: footer?.openAccountBanner?.buttonHref || site?.appStore?.androidUrl || FALLBACK_BANNER.buttonHref,
+      buttonHref:
+        safeHref(footer?.openAccountBanner?.buttonHref) ||
+        safeHref(site?.appStore?.androidUrl) ||
+        FALLBACK_BANNER.buttonHref,
     },
     about: footer?.about || FALLBACK_ABOUT,
     branches:
       Array.isArray(footer?.branches) && footer.branches.length
         ? footer.branches
             .filter((b): b is RawLink & { label: string } => !!b?.label)
-            .map((b) => ({ label: b.label, href: b.href ?? "" }))
+            .map((b) => ({ label: b.label, href: safeHref(b.href) }))
         : FALLBACK_BRANCHES,
     branchesNote: footer?.branchesNote || FALLBACK_BRANCHES_NOTE,
     legalLinks:
       Array.isArray(footer?.legalLinks) && footer.legalLinks.length
         ? footer.legalLinks
             .filter((l): l is RawLink & { label: string } => !!l?.label)
-            .map((l) => ({ label: l.label, href: l.href ?? "" }))
+            .map((l) => ({ label: l.label, href: safeHref(l.href) }))
         : FALLBACK_LEGAL,
     developerCredit: {
       label: footer?.developerCredit?.label || FALLBACK_DEV.label,
-      href: footer?.developerCredit?.href || FALLBACK_DEV.href,
+      href: safeHref(footer?.developerCredit?.href) || FALLBACK_DEV.href,
     },
   };
 }
