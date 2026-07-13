@@ -52,7 +52,10 @@ function FaqItem({ q, a, defaultOpen = false }: { q: string; a: string; defaultO
             transition={{ duration: 0.35, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <p className="pb-5 pr-8 text-[#4A5568] text-sm leading-relaxed whitespace-pre-line">{a}</p>
+            <div
+              className="pb-5 pr-8 text-[#4A5568] text-sm leading-relaxed prose prose-sm max-w-none"
+              dangerouslySetInnerHTML={{ __html: a }}
+            />
           </motion.div>
         )}
       </AnimatePresence>

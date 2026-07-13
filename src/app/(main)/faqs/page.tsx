@@ -3,6 +3,7 @@ import { getPayload } from "payload";
 import config from "../../../../payload.config";
 import FaqsClient from "./FaqsClient";
 import type { Faq } from "./FaqsClient";
+import { sanitiseHtml } from "@/lib/sanitise";
 
 export const dynamic = "force-dynamic";
 
@@ -42,7 +43,9 @@ export default async function FaqsPage() {
       };
       return {
         question: r.question,
-        answer: r.answerHtml,
+        // Rendered with dangerouslySetInnerHTML in FaqsClient — sanitise here
+        // (server-side, once) since drafts can be seeded from visitor chats.
+        answer: sanitiseHtml(r.answerHtml),
         category: CATEGORY_LABEL[r.category || "general"] || r.category || "General",
         order: String(r.sortOrder ?? 100),
         active: r.active === false ? "false" : "true",
