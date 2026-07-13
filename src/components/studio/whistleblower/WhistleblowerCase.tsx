@@ -25,6 +25,33 @@ import { Select } from "../ui/Select";
 import { Badge } from "../ui/Badge";
 import { Avatar } from "../ui/Avatar";
 
+// Evidence lives in a PRIVATE GCS bucket; the intake route appends
+// compliance-only proxy links (/api/studio/whistleblower/evidence?path=gs://…)
+// to the description. Surface those as proper attachment links and hide the
+// raw block from the description text. (Never move evidence into the public
+// `media` collection — it would publish confidential attachments.)
+const EVIDENCE_LINK_RE = /\/api\/studio\/whistleblower\/evidence\?path=[^\s]+/g;
+const EVIDENCE_BLOCK_RE = /\n*Evidence file\(s\) — private, view in Studio \(Compliance only\):[\s\S]*$/;
+
+function extractEvidenceLinks(description: string): { href: string; filename: string }[] {
+  return (description.match(EVIDENCE_LINK_RE) || []).map((href) => {
+    let filename = "attachment";
+    try {
+      const gsPath = decodeURIComponent(href.split("path=")[1] || "");
+      const base = gsPath.split("/").pop() || "attachment";
+      // strip the timestamp prefix the intake route adds: "<ts36>-<name>"
+      filename = base.replace(/^[a-z0-9]+-/, "") || base;
+    } catch {
+      // keep the generic label if the URL is malformed
+    }
+    return { href, filename };
+  });
+}
+
+function descriptionWithoutEvidence(description: string): string {
+  return description.replace(EVIDENCE_BLOCK_RE, "").trimEnd();
+}
+
 const STATUS_OPTIONS = [
   { value: "new", label: "New" },
   { value: "review", label: "Under Review" },
@@ -142,8 +169,33 @@ export function WhistleblowerCase({ report }: { report: Record<string, unknown> 
             Description
           </h2>
           <p className="text-sm text-studio-ink leading-relaxed whitespace-pre-wrap">
-            {r.description}
+            {descriptionWithoutEvidence(r.description)}
           </p>
+          {extractEvidenceLinks(r.description).length > 0 && (
+            <>
+              <h2 className="text-xs uppercase tracking-[0.08em] font-semibold text-studio-ink-3 mt-6 mb-2">
+                Evidence
+              </h2>
+              <ul className="space-y-1.5">
+                {extractEvidenceLinks(r.description).map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener"
+                      className="inline-flex items-center gap-1.5 text-sm text-cb-navy hover:underline"
+                    >
+                      <Paperclip className="w-3.5 h-3.5" />
+                      {link.filename}
+                    </a>
+                    <span className="ml-2 text-[10px] text-studio-ink-3">
+                      private — opens via short-lived signed URL
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
           {r.involvedParties && (
             <>
               <h2 className="text-xs uppercase tracking-[0.08em] font-semibold text-studio-ink-3 mt-6 mb-2">
