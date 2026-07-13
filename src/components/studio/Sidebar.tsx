@@ -27,6 +27,7 @@ import {
   Store,
   MessagesSquare,
   PanelBottom,
+  GalleryHorizontalEnd,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
@@ -50,6 +51,7 @@ const groups: Group[] = [
       { href: "/studio/blog", label: "Blog & news", icon: Newspaper, scope: "blog" },
       { href: "/studio/press", label: "Press releases", icon: Megaphone, scope: "press" },
       { href: "/studio/pages", label: "Pages", icon: ScrollText, scope: "pages" },
+      { href: "/studio/showcase", label: "Homepage slider", icon: GalleryHorizontalEnd, scope: "pages" },
       { href: "/studio/faqs", label: "FAQs", icon: HelpCircle, scope: "faqs" },
       { href: "/studio/conversations", label: "Chat & concerns", icon: MessagesSquare, scope: "conversations" },
       { href: "/studio/library", label: "Media library", icon: Images, scope: "library" },

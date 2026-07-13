@@ -4,12 +4,9 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export type ShowcaseCard = {
-  title: string;
-  bullets: string[];
-  image: string;
-  href: string;
-};
+import type { ShowcaseCard } from "./showcase-data";
+
+export type { ShowcaseCard } from "./showcase-data";
 
 // Pure presentational half of the homepage dark carousel — driven entirely by
 // props so the live site, the studio live-preview, and the fallback content

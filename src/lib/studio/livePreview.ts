@@ -3,7 +3,7 @@
 // previews ever share an origin.
 export const STUDIO_PREVIEW_MESSAGE = "studio-live-preview" as const;
 
-export type PreviewScope = "footer" | "leadership";
+export type PreviewScope = "footer" | "leadership" | "showcase";
 
 export type StudioPreviewMessage<T = unknown> = {
   type: typeof STUDIO_PREVIEW_MESSAGE;
