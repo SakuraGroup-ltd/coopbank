@@ -23,8 +23,8 @@ import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { default as default_9ed509b5e5f7d08a16335393f27586cc } from '../../../../src/payload/components/Icon'
 import { default as default_5470ea90f7a8fd882c2fe59ff2b1c5b9 } from '../../../../src/payload/components/Logo'
+import { GcsClientUploadHandler as GcsClientUploadHandler_06e62ca02c7c441053a9b643e5545934 } from '@payloadcms/storage-gcs/client'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
-import { GcsClientUploadHandler as GcsClientUploadHandler_storage_gcs } from '@payloadcms/storage-gcs/client'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
@@ -53,6 +53,6 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "/src/payload/components/Icon#default": default_9ed509b5e5f7d08a16335393f27586cc,
   "/src/payload/components/Logo#default": default_5470ea90f7a8fd882c2fe59ff2b1c5b9,
-  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
-  "@payloadcms/storage-gcs/client#GcsClientUploadHandler": GcsClientUploadHandler_storage_gcs
+  "@payloadcms/storage-gcs/client#GcsClientUploadHandler": GcsClientUploadHandler_06e62ca02c7c441053a9b643e5545934,
+  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

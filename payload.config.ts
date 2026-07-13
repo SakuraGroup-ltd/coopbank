@@ -89,12 +89,18 @@ export default buildConfig({
   // mutations from the browser with a 403, so /studio edits never persist.
   serverURL: process.env.NEXT_PUBLIC_SITE_URL || "https://dev.coopbank.co.tz",
   cors: [
+    "https://coopbank.co.tz",
+    "https://www.coopbank.co.tz",
+    "https://coopbank-concept-web-5vgc65ps3q-ew.a.run.app",
     "https://dev.coopbank.co.tz",
     "https://coopbank-dev-5vgc65ps3q-ew.a.run.app",
     "https://coopbank-dev-1061283808106.europe-west1.run.app",
     "http://localhost:3000",
   ],
   csrf: [
+    "https://coopbank.co.tz",
+    "https://www.coopbank.co.tz",
+    "https://coopbank-concept-web-5vgc65ps3q-ew.a.run.app",
     "https://dev.coopbank.co.tz",
     "https://coopbank-dev-5vgc65ps3q-ew.a.run.app",
     "https://coopbank-dev-1061283808106.europe-west1.run.app",
