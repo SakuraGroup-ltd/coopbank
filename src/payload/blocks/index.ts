@@ -10,6 +10,9 @@ import { ProductGridBlock } from "./ProductGrid";
 import { StatsBlock } from "./Stats";
 import { ImageTextBlock } from "./ImageText";
 import { FeaturedNewsBlock } from "./FeaturedNews";
+import { sectionBlocks } from "./sections";
+
+export { SECTION_BLOCK_SLUGS } from "./sections";
 
 export const allBlocks = [
   HeroBlock,
@@ -22,4 +25,5 @@ export const allBlocks = [
   FAQBlock,
   CTAStripBlock,
   FeaturedNewsBlock,
+  ...sectionBlocks,
 ];

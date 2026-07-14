@@ -1,16 +1,15 @@
 import type { GlobalConfig } from "payload";
 import { editorOf } from "../access/editorOf";
-import { allBlocks } from "../blocks";
 
-// The homepage is just an ordered list of blocks — same engine as Pages.
-// Replaces the hand-coded grid+carousel+CoopPesa promo today.
+// Site-wide homepage settings that don't belong to the block stack itself.
+// The homepage's block composition lives in the Pages collection (slug=home).
 export const Homepage: GlobalConfig = {
   slug: "homepage",
   access: { read: () => true, update: editorOf("marketing") },
   admin: {
     group: "Configuration",
     description:
-      "Site-wide homepage settings — featured news rail picks, hero overrides, optional emergency banner. The homepage's main block stack lives in Pages → 'home'.",
+      "Site-wide homepage settings — featured news rail picks. The homepage itself is composed in Pages → 'home'.",
     livePreview: {
       url: () =>
         // Homepage content lives in the Pages collection with slug=home; the
@@ -26,12 +25,6 @@ export const Homepage: GlobalConfig = {
     },
   },
   fields: [
-    {
-      name: "layout",
-      type: "blocks",
-      labels: { singular: "Block", plural: "Homepage blocks" },
-      blocks: allBlocks,
-    },
     {
       name: "featuredBlogPosts",
       type: "relationship",
