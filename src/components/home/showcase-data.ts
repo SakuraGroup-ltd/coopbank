@@ -4,6 +4,8 @@
 // editor). Putting it in a client file would turn resolveShowcaseCards into an
 // uncallable client reference on the server.
 
+import { safeHref } from "@/lib/safe-href";
+
 export type ShowcaseCard = {
   title: string;
   bullets: string[];
@@ -87,10 +89,7 @@ export type ShowcaseDoc = {
 
 // Editor-saved links may only be http(s), site-relative, or hash — anything
 // else (javascript:, data:) would be a stored XSS via the card's href.
-export function safeHref(href: string | null | undefined): string {
-  const h = (href || "").trim();
-  return /^(https?:\/\/|\/|#)/i.test(h) ? h : "";
-}
+export { safeHref } from "@/lib/safe-href";
 
 // Maps CMS docs to view cards. Rejects legacy /api/media/file/* photo URLs
 // (they 500 on live — same gotcha as leadership photos) and falls back to a
