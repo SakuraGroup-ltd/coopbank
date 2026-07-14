@@ -23,7 +23,13 @@ function rateLimited(ip: string): boolean {
   }
   arr.push(now);
   hits.set(ip, arr);
-  if (hits.size > 5000) hits.clear(); // memory backstop
+  if (hits.size > 5000) {
+    // Evict only IPs with no in-window hits — a full clear() would reset
+    // active counters and open a burst window.
+    for (const [k, v] of hits) {
+      if (!v.some((t) => now - t < WINDOW_MS)) hits.delete(k);
+    }
+  }
   return false;
 }
 
@@ -38,10 +44,10 @@ export async function POST(req: Request) {
     // Honeypot filled → pretend success, store nothing.
     if ((body.website || "").trim()) return NextResponse.json({ success: true });
 
-    const name = (body.name || "").trim().slice(0, 120);
+    const name = (body.name || "").trim().replace(/[\r\n]+/g, " ").slice(0, 120);
     const email = (body.email || "").trim().slice(0, 160);
     const phone = (body.phone || "").trim().slice(0, 30);
-    const subject = (body.subject || "").trim().slice(0, 160);
+    const subject = (body.subject || "").trim().replace(/[\r\n]+/g, " ").slice(0, 160);
     const message = (body.message || "").trim().slice(0, 4000);
     if (!name || !email || !subject || !message) {
       return NextResponse.json({ error: "Please fill in your name, email, subject and message." }, { status: 400 });
@@ -50,7 +56,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
     }
 
-    const ip = (req.headers.get("x-forwarded-for") || "unknown").split(",")[0].trim();
+    // Cloudflare fronts the site; CF-Connecting-IP is the trusted client IP.
+    // Leftmost X-Forwarded-For is client-spoofable — use it only as fallback.
+    const ip =
+      req.headers.get("cf-connecting-ip") ||
+      (req.headers.get("x-forwarded-for") || "unknown").split(",")[0].trim();
     if (rateLimited(ip)) {
       return NextResponse.json({ error: "Too many messages — please try again later." }, { status: 429 });
     }

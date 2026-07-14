@@ -4,7 +4,10 @@
 
 BEGIN;
 
-CREATE TYPE enum_contact_messages_status AS ENUM ('new', 'read', 'handled');
+DO $$ BEGIN
+  CREATE TYPE enum_contact_messages_status AS ENUM ('new', 'read', 'handled');
+EXCEPTION WHEN duplicate_object THEN null;
+END $$;
 
 CREATE TABLE IF NOT EXISTS contact_messages (
   id serial PRIMARY KEY,
