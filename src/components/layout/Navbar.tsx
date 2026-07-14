@@ -409,7 +409,7 @@ export default function Navbar() {
               </Link>
               <span className="text-white/15 mx-1">|</span>
               <Link
-                href="/about-us#contact"
+                href="/contact-us"
                 className="flex items-center gap-1 text-[11px] text-white/55 hover:text-white transition-colors px-1.5 py-0.5"
               >
                 <HelpCircle className="h-3 w-3" />
@@ -700,7 +700,7 @@ export default function Navbar() {
                 <div className="flex items-center gap-4">
                   <Link href="/branches" onClick={() => setActiveMega(null)} className="text-[11px] text-slate-500 hover:text-slate-800 transition-colors">Find a Branch</Link>
                   <Link href="/faqs" onClick={() => setActiveMega(null)} className="text-[11px] text-slate-500 hover:text-slate-800 transition-colors">FAQs</Link>
-                  <Link href="/about-us#contact" onClick={() => setActiveMega(null)} className="text-[11px] text-slate-500 hover:text-slate-800 transition-colors">Contact Us</Link>
+                  <Link href="/contact-us" onClick={() => setActiveMega(null)} className="text-[11px] text-slate-500 hover:text-slate-800 transition-colors">Contact Us</Link>
                 </div>
               </div>
             </div>
