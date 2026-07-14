@@ -17,6 +17,7 @@ export const SiteSettings: GlobalConfig = {
       fields: [
         { name: "phone", type: "text", defaultValue: "+255 27 275 4470" },
         { name: "email", type: "email", defaultValue: "info@cbtbank.co.tz" },
+        { name: "contactFormEmail", type: "email", defaultValue: "info@cbtbank.co.tz", admin: { description: "Where /contact-us form submissions are emailed." } },
         { name: "hrEmail", type: "email", defaultValue: "hr@cbtbank.co.tz" },
         { name: "tendersEmail", type: "email", defaultValue: "tenders@cbtbank.co.tz" },
         { name: "headquartersAddress", type: "textarea", defaultValue: "Sikukuu Street, P.O. Box 201, Dodoma" },
