@@ -3,44 +3,11 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { defaultHeroSlides, type HeroSlide } from "./home-defaults";
 
-interface Slide {
-  image: string;
-  tagline: string;
-  headline: string;
-  desc: string;
-  cta1: { label: string; href: string };
-  cta2: { label: string; href: string };
-}
+export default function Hero({ slides = defaultHeroSlides }: { slides?: HeroSlide[] }) {
+  if (!slides.length) slides = defaultHeroSlides;
 
-const slides: Slide[] = [
-  {
-    image: "/images/hero-president.jpg",
-    tagline: "Benki ya Ushirikiano",
-    headline: "Trusted by the Nation, Built for Every Tanzanian",
-    desc: "From farmers to entrepreneurs, CoopBank serves over 2 million customers with financial solutions that uplift communities.",
-    cta1: { label: "About Us", href: "/about-us" },
-    cta2: { label: "Our Impact", href: "/about-us#impact" },
-  },
-  {
-    image: "/images/hero-farming.jpg",
-    tagline: "Ustawi kwa wote",
-    headline: "Empowering Communities Through Cooperative Banking",
-    desc: "Accessible financial services for individuals, businesses, and communities across Tanzania.",
-    cta1: { label: "Download CoopPesa", href: "/digital-banking#download" },
-    cta2: { label: "Explore Services", href: "#services" },
-  },
-  {
-    image: "/images/products/coopnet-lady.jpg",
-    tagline: "Benki Yako Mkononi",
-    headline: "Digital Banking, Designed for You",
-    desc: "Manage your finances anytime, anywhere. Mobile banking, instant transfers, and secure payments at your fingertips.",
-    cta1: { label: "Mobile Banking", href: "/digital-banking" },
-    cta2: { label: "Download CoopPesa", href: "/digital-banking#download" },
-  },
-];
-
-export default function Hero() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
 

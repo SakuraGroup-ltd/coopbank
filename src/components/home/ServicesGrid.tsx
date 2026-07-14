@@ -3,58 +3,18 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import {
-  Smartphone, Banknote, CreditCard, ArrowRight,
-  QrCode, Globe, ShoppingCart, Zap,
-  Tractor, Car, Store, Briefcase, Users, PiggyBank,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { iconOf } from "@/components/blocks/icon-map";
+import { safeHref } from "@/lib/safe-href";
+import { defaultServiceTabs, type ServiceTab } from "./home-defaults";
 
-interface ServiceItem {
-  icon: LucideIcon;
-  title: string;
-  desc: string;
-  href: string;
-}
-
-interface Tab {
-  id: string;
-  label: string;
-  items: ServiceItem[];
-}
-
-const tabs: Tab[] = [
-  {
-    id: "cards",
-    label: "Cards & Payments",
-    items: [
-      { icon: CreditCard, title: "Visa Debit Card", desc: "Linked to your CoopBank account", href: "/cards#visa-debit" },
-      { icon: CreditCard, title: "Visa Prepaid Card", desc: "Load & spend anywhere", href: "/cards#visa-prepaid" },
-      { icon: QrCode, title: "TAN-QR Pay", desc: "Lipa Namba all networks", href: "/cards#qr-pay" },
-      { icon: Globe, title: "Online Shopping", desc: "Secure e-commerce payments", href: "/cards#online" },
-      { icon: ShoppingCart, title: "Bill Payments", desc: "LUKU, DAWASA, school fees & more", href: "/cards#bill-pay" },
-    ],
-  },
-  {
-    id: "loans",
-    label: "Loans",
-    items: [
-      { icon: Tractor, title: "Agri-Business Loans", desc: "TSH 100K-50M, 8-12% rate", href: "/loan-products#agri-business" },
-      { icon: PiggyBank, title: "Salaried Loans", desc: "Fast payroll-linked loans", href: "/loan-products#salaried" },
-      { icon: Smartphone, title: "Digital Loans", desc: "Instant via CoopPesa app", href: "/loan-products#digital" },
-      { icon: Briefcase, title: "SME Loans", desc: "Working capital & asset finance", href: "/loan-products#sme" },
-      { icon: Car, title: "Asset Financing", desc: "Up to 80% asset value", href: "/loan-products#asset-financing" },
-      { icon: Store, title: "Business Loans", desc: "Corporate & large enterprise", href: "/loan-products#business" },
-    ],
-  },
-];
-
-export default function ServicesGrid() {
-  const [activeTab, setActiveTab] = useState("cards");
+export default function ServicesGrid({ tabs = defaultServiceTabs }: { tabs?: ServiceTab[] }) {
+  if (!tabs.length) tabs = defaultServiceTabs;
+  const [activeTab, setActiveTab] = useState(tabs[0].id);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
-  const currentTab = tabs.find((t) => t.id === activeTab)!;
+  const currentTab = tabs.find((t) => t.id === activeTab) ?? tabs[0];
 
   return (
     <section id="services" ref={ref} className="bg-[#F2F4F8] py-20 lg:py-24">
@@ -94,7 +54,7 @@ export default function ServicesGrid() {
             className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
           >
             {currentTab.items.map((item, i) => {
-              const Icon = item.icon;
+              const Icon = iconOf(item.icon);
               return (
                 <motion.div
                   key={item.title}
@@ -103,7 +63,7 @@ export default function ServicesGrid() {
                   transition={{ duration: 0.35, delay: i * 0.06 }}
                 >
                   <Link
-                    href={item.href}
+                    href={safeHref(item.href) || "#"}
                     className="group flex items-start gap-4 rounded-xl bg-white p-6 shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-all duration-200 hover:shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:-translate-y-1"
                   >
                     <div className="shrink-0 flex h-12 w-12 items-center justify-center rounded-lg bg-[#1A8A3A]/10">

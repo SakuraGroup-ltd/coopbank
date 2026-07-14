@@ -4,35 +4,14 @@ import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
-import {
-  ArrowRight, Smartphone, Globe, Banknote, Building2,
-  Fingerprint, Bell, QrCode, Wifi, Send, CreditCard, Receipt, Shield,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { iconOf } from "@/components/blocks/icon-map";
+import { safeHref, safeImg } from "@/lib/safe-href";
+import { defaultAppPromo, type AppPromoContent } from "./home-defaults";
 
-interface Feature {
-  icon: LucideIcon;
-  title: string;
-  desc: string;
-}
+export default function MobileBanking(props: Partial<AppPromoContent> = {}) {
+  const c: AppPromoContent = { ...defaultAppPromo, ...props };
+  if (!c.features?.length) c.features = defaultAppPromo.features;
 
-const features: Feature[] = [
-  { icon: Send, title: "Instant Transfers", desc: "Send money to any bank or mobile wallet in seconds" },
-  { icon: Receipt, title: "Bill Payments", desc: "Pay LUKU, DAWASA, school fees and government services" },
-  { icon: CreditCard, title: "Digital Loans", desc: "Apply and get approved instantly from your phone" },
-  { icon: Shield, title: "Biometric Security", desc: "Fingerprint and Face ID for secure access" },
-  { icon: Bell, title: "Real-time Alerts", desc: "Instant push notifications for every transaction" },
-  { icon: QrCode, title: "TAN-QR Payments", desc: "Lipa Namba -- scan to pay all networks nationwide" },
-];
-
-const channels = [
-  { icon: Smartphone, title: "CoopPesa Mobile App", desc: "Full banking on Android & iOS", href: "/digital-banking#coopesa" },
-  { icon: Globe, title: "CoopNet Internet Banking", desc: "24/7 browser-based access", href: "/digital-banking#coopnet" },
-  { icon: Banknote, title: "USSD *150*84#", desc: "Works on every phone, no internet needed", href: "/digital-banking#ussd" },
-  { icon: Building2, title: "CoopWakala Agency", desc: "100+ agent points nationwide", href: "/digital-banking#coopwakala" },
-];
-
-export default function MobileBanking() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -60,19 +39,19 @@ export default function MobileBanking() {
             className="mb-8 lg:mb-0 lg:flex-1"
           >
             <span className="inline-block rounded-full bg-[#00C853]/15 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-[#00C853] mb-5">
-              Coop-Pesa
+              {c.badge}
             </span>
             <h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-[42px] lg:leading-[1.15]">
-              Banking at Your Fingertips with CoopPesa
+              {c.heading}
             </h2>
             <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-white/60">
-              Send money, pay bills, apply for loans, and manage your accounts -- all from your smartphone. Available on Android and iOS.
+              {c.copy}
             </p>
 
             {/* Features grid */}
             <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-3 sm:gap-4">
-              {features.map((f, i) => {
-                const Icon = f.icon;
+              {c.features.map((f, i) => {
+                const Icon = iconOf(f.icon);
                 return (
                   <motion.div
                     key={f.title}
@@ -96,7 +75,7 @@ export default function MobileBanking() {
             {/* Download buttons + USSD inline */}
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
-                href="https://apps.apple.com/tz/app/coopesa/id6755827543" target="_blank" rel="noopener"
+                href={safeHref(c.appStoreUrl) || defaultAppPromo.appStoreUrl} target="_blank" rel="noopener"
                 className="inline-flex items-center gap-3 rounded-xl bg-white/10 border border-white/15 px-5 py-3 transition-all hover:bg-white/15"
               >
                 <svg viewBox="0 0 24 24" className="h-7 w-7 shrink-0">
@@ -109,7 +88,7 @@ export default function MobileBanking() {
               </Link>
 
               <Link
-                href="https://play.google.com/store/apps/details?id=tz.co.coopbank.coopesa&hl=en" target="_blank" rel="noopener"
+                href={safeHref(c.playStoreUrl) || defaultAppPromo.playStoreUrl} target="_blank" rel="noopener"
                 className="inline-flex items-center gap-3 rounded-xl bg-white/10 border border-white/15 px-5 py-3 transition-all hover:bg-white/15"
               >
                 <svg viewBox="0 0 24 24" className="h-7 w-7 shrink-0">
@@ -128,7 +107,7 @@ export default function MobileBanking() {
               <div className="h-10 w-px bg-white/15 hidden sm:block" />
               <div className="flex flex-col">
                 <span className="text-[9px] text-white/50 leading-none uppercase">USSD</span>
-                <span className="text-[20px] font-black text-white leading-tight tracking-tight" style={{ fontFamily: "'Gilroy', 'Inter', sans-serif" }}>*150*84#</span>
+                <span className="text-[20px] font-black text-white leading-tight tracking-tight" style={{ fontFamily: "'Gilroy', 'Inter', sans-serif" }}>{c.ussdCode}</span>
               </div>
             </div>
           </motion.div>
@@ -147,7 +126,7 @@ export default function MobileBanking() {
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               >
                 <Image
-                  src="/images/coopesa-mockup.png"
+                  src={safeImg(c.mockupImage) || defaultAppPromo.mockupImage}
                   alt="CoopPesa Mobile Banking App"
                   width={300}
                   height={600}
