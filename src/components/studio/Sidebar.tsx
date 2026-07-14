@@ -28,6 +28,7 @@ import {
   MessagesSquare,
   PanelBottom,
   GalleryHorizontalEnd,
+  Inbox,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
@@ -54,6 +55,7 @@ const groups: Group[] = [
       { href: "/studio/showcase", label: "Homepage slider", icon: GalleryHorizontalEnd, scope: "pages" },
       { href: "/studio/faqs", label: "FAQs", icon: HelpCircle, scope: "faqs" },
       { href: "/studio/conversations", label: "Chat & concerns", icon: MessagesSquare, scope: "conversations" },
+      { href: "/studio/messages", label: "Contact messages", icon: Inbox, scope: "conversations" },
       { href: "/studio/library", label: "Media library", icon: Images, scope: "library" },
     ],
   },
