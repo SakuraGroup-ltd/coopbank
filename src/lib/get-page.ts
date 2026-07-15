@@ -19,6 +19,8 @@ export async function getPublishedPage(slug: string): Promise<PageDoc | null> {
       where: { slug: { equals: slug } },
       limit: 1,
       depth: 1, // populate upload relations in legacy generic blocks
+      draft: false,
+      overrideAccess: false, // enforce publicReadPublished at the access layer — the _status guard below stays as belt-and-braces
     });
     const doc = res.docs[0] as unknown as (PageDoc & { _status?: string }) | undefined;
     if (!doc || doc._status === "draft") return null;
