@@ -188,7 +188,18 @@ function ServicesGridEditor({ block, onChange }: { block: Block; onChange: OnCha
                 <RemoveBtn onClick={() => patch({ tabs: tabs.filter((_, idx) => idx !== ti) })} />
               </div>
               <FieldRow>
-                <Input value={(t.label as string) || ""} onChange={(e) => setTab(ti, { label: e.target.value })} placeholder="Tab label" />
+                <Input
+                  value={(t.label as string) || ""}
+                  onChange={(e) => {
+                    const label = e.target.value;
+                    const prevAuto = slugifyId((t.label as string) || "");
+                    const curId = (t.id as string) || "";
+                    const patch: Record<string, unknown> = { label };
+                    if (!curId || curId === prevAuto) patch.id = slugifyId(label);
+                    setTab(ti, patch);
+                  }}
+                  placeholder="Tab label"
+                />
                 <Input value={(t.id as string) || ""} onChange={(e) => setTab(ti, { id: e.target.value })} placeholder="tab-id" />
               </FieldRow>
               <Subsection title={`Items (${items.length}/8)`}>
