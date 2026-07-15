@@ -10,7 +10,8 @@
     "postinstall": "node ./scripts/postinstall-patches.cjs",
     "seed:assets": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/seed-assets.ts",
     "seed:homepage": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/seed-homepage.ts",
-    "seed:agents": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/seed-coopwakala-agents.ts"
+    "seed:agents": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/seed-coopwakala-agents.ts",
+    "seed:pages": "node --require ./scripts/_bootstrap-payload.cjs --import tsx ./scripts/seed-pages.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
