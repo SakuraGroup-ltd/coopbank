@@ -5,6 +5,8 @@
 // don't know how to render falls through to a labelled debug card — easier
 // for editors to spot a misconfigured block than a silent blank.
 import type { JSX } from "react";
+import { SectionBlockClient } from "@/components/blocks/SectionBlockClient";
+import { SECTION_BLOCK_SLUGS } from "@/payload/blocks/sections";
 
 type MediaRef = { url?: string; alt?: string } | string | null | undefined;
 
@@ -521,6 +523,9 @@ export function BlockRenderer({ blocks }: { blocks: Block[] }) {
   return (
     <>
       {blocks.map((b, i) => {
+        if (SECTION_BLOCK_SLUGS.includes(b.blockType)) {
+          return <SectionBlockClient key={i} block={b} />;
+        }
         const Renderer = renderers[b.blockType] || FallbackRender;
         return <Renderer key={i} block={b} />;
       })}
