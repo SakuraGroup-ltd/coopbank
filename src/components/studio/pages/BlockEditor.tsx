@@ -4,9 +4,11 @@
 // to the right editor and keeps the parent (PageComposer) free of block
 // specifics. Kept dense intentionally — editors get many blocks per page,
 // so each editor stays compact, no big card chrome.
-import { Plus, X } from "lucide-react";
 import { Input } from "../ui/Input";
 import { Select } from "../ui/Select";
+import { SectionBlockEditor } from "./SectionBlockEditors";
+import { SECTION_BLOCK_SLUGS } from "@/payload/blocks/sections";
+import { Label, FieldRow, Subsection, TextArea, AddBtn, RemoveBtn, updateArr, removeArr } from "./editor-ui";
 
 type Block = { blockType: string; [k: string]: unknown };
 
@@ -17,6 +19,9 @@ export function BlockEditor({
   block: Block;
   onChange: (data: Record<string, unknown>) => void;
 }) {
+  if (SECTION_BLOCK_SLUGS.includes(block.blockType)) {
+    return <SectionBlockEditor block={block} onChange={onChange} />;
+  }
   switch (block.blockType) {
     case "hero":
       return <HeroEditor block={block} onChange={onChange} />;
@@ -45,50 +50,6 @@ export function BlockEditor({
         </p>
       );
   }
-}
-
-function Label({ children, hint }: { children: React.ReactNode; hint?: string }) {
-  return (
-    <div className="flex items-baseline justify-between mb-1.5">
-      <span className="text-[10px] font-semibold uppercase tracking-[0.08em] text-studio-ink-3">{children}</span>
-      {hint && <span className="text-[10px] text-studio-ink-3">{hint}</span>}
-    </div>
-  );
-}
-
-function FieldRow({ children }: { children: React.ReactNode }) {
-  return <div className="grid grid-cols-1 md:grid-cols-2 gap-3">{children}</div>;
-}
-
-function Subsection({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="border-t border-studio-border pt-4 mt-4 first:border-t-0 first:pt-0 first:mt-0">
-      <p className="text-xs font-semibold text-studio-ink-2 mb-3">{title}</p>
-      {children}
-    </div>
-  );
-}
-
-function TextArea({
-  value,
-  onChange,
-  placeholder,
-  rows = 2,
-}: {
-  value?: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-  rows?: number;
-}) {
-  return (
-    <textarea
-      value={value || ""}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      rows={rows}
-      className="w-full px-3 py-2 rounded-lg border border-studio-border bg-studio-panel text-sm focus:border-cb-navy/30 focus:ring-2 focus:ring-cb-navy/15 focus:outline-none resize-none"
-    />
-  );
 }
 
 // ─────────────── Hero ───────────────
@@ -455,45 +416,3 @@ function FeaturedNewsEditor({ block, onChange }: { block: Block; onChange: (d: R
   );
 }
 
-// ─────────────── helpers ───────────────
-function updateArr<T>(
-  field: string,
-  arr: T[],
-  i: number,
-  patch: Partial<T>,
-  onChange: (d: Record<string, unknown>) => void,
-) {
-  const next = arr.map((item, idx) => (idx === i ? { ...item, ...patch } : item));
-  onChange({ [field]: next });
-}
-
-function removeArr<T>(field: string, arr: T[], i: number, onChange: (d: Record<string, unknown>) => void) {
-  const next = arr.filter((_, idx) => idx !== i);
-  onChange({ [field]: next });
-}
-
-function AddBtn({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="inline-flex items-center gap-1.5 text-xs font-medium text-cb-navy hover:text-cb-green px-2 py-1 rounded-md hover:bg-cb-navy/5"
-    >
-      <Plus className="w-3 h-3" />
-      {children}
-    </button>
-  );
-}
-
-function RemoveBtn({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="w-7 h-7 rounded-md text-studio-ink-3 hover:bg-rose-50 hover:text-rose-600 inline-flex items-center justify-center shrink-0"
-      title="Remove"
-    >
-      <X className="w-3.5 h-3.5" />
-    </button>
-  );
-}

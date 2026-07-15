@@ -50,6 +50,21 @@ const BLOCK_LABEL: Record<string, string> = {
   faq: "FAQ",
   "cta-strip": "CTA strip",
   "featured-news": "Featured news",
+  "hero-slider": "Hero slider",
+  "quick-links": "Quick links",
+  "app-promo": "App promo",
+  "services-grid": "Services grid",
+  "forex-ticker": "Forex ticker",
+  "page-header": "Page header",
+  "bank-prayer": "Bank prayer",
+  story: "Story",
+  "branch-network": "Branch network",
+  "journey-timeline": "Journey timeline",
+  "mission-vision": "Mission & vision",
+  "core-values": "Core values",
+  "contact-details": "Contact details",
+  "contact-form": "Contact form",
+  "contact-map": "Map",
 };
 
 export function PageComposer({ mode, initial }: { mode: Mode; initial: PageDraft }) {
@@ -429,6 +444,25 @@ function summarizeBlock(block: Block): string {
   if (block.blockType === "cta-strip") return (block.headline as string) || "—";
   if (block.blockType === "featured-news") return (block.heading as string) || "Latest News";
   if (block.blockType === "rich-text") return "Rich text content";
+
+  const data = (block.data as Record<string, unknown>) || {};
+  if (block.blockType === "hero-slider") {
+    const n = ((data.slides as unknown[]) || []).length;
+    return `${n} slide${n === 1 ? "" : "s"}`;
+  }
+  if (block.blockType === "quick-links") {
+    const n = ((data.links as unknown[]) || []).length;
+    return `${(data.heading as string) || "Quick links"} · ${n} link${n === 1 ? "" : "s"}`;
+  }
+  if (block.blockType === "page-header") return (data.title as string) || "—";
+  if (["app-promo", "story", "bank-prayer", "branch-network", "journey-timeline", "mission-vision", "core-values", "contact-details", "contact-form", "contact-map"].includes(block.blockType)) {
+    return (data.heading as string) || "—";
+  }
+  if (block.blockType === "forex-ticker") return "FX rates strip";
+  if (block.blockType === "services-grid") {
+    const n = ((data.tabs as unknown[]) || []).length;
+    return `${n} tab${n === 1 ? "" : "s"}`;
+  }
   return "—";
 }
 
