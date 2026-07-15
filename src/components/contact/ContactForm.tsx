@@ -57,14 +57,14 @@ export default function ContactForm(props: Partial<typeof defaultContactForm> = 
             {/* Honeypot — humans never see or fill this */}
             <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
             <div className="grid sm:grid-cols-2 gap-4">
-              <input className={input} name="name" placeholder="Full name" required maxLength={120} />
-              <input className={input} name="email" type="email" placeholder="Email address" required maxLength={160} />
+              <input className={input} name="name" placeholder="Full name" aria-label="Full name" required maxLength={120} />
+              <input className={input} name="email" type="email" placeholder="Email address" aria-label="Email address" required maxLength={160} />
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <input className={input} name="phone" placeholder="Phone (optional)" maxLength={30} />
-              <input className={input} name="subject" placeholder="Subject" required maxLength={160} />
+              <input className={input} name="phone" placeholder="Phone (optional)" aria-label="Phone (optional)" maxLength={30} />
+              <input className={input} name="subject" placeholder="Subject" aria-label="Subject" required maxLength={160} />
             </div>
-            <textarea className={input} name="message" placeholder="How can we help?" required rows={6} maxLength={4000} />
+            <textarea className={input} name="message" placeholder="How can we help?" aria-label="How can we help?" required rows={6} maxLength={4000} />
             {state === "error" && <p className="text-sm text-rose-600">{error}</p>}
             <button
               type="submit"

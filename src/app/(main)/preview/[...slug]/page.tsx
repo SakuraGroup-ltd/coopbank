@@ -13,6 +13,7 @@ import { getPayload } from "payload";
 import config from "../../../../../payload.config";
 import PreviewClient from "@/components/preview/PreviewClient";
 import CareersClient, { type ClientJob } from "../../careers/CareersClient";
+import { requireStudioUser } from "@/lib/studio/auth";
 
 const JOB_TYPE_LABEL: Record<string, string> = {
   "full-time": "Full-time",
@@ -44,6 +45,7 @@ type Args = { params: Promise<{ slug?: string[] }> };
 export const dynamic = "force-dynamic";
 
 export default async function PreviewPage({ params }: Args) {
+  await requireStudioUser();
   const { slug = [] } = await params;
   const payload = await getPayload({ config });
 
