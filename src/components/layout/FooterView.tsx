@@ -165,7 +165,7 @@ const FALLBACK_BRANCHES: FooterLink[] = [
 ];
 const FALLBACK_BRANCHES_NOTE = "+ 4 more coming soon";
 const FALLBACK_LEGAL: FooterLink[] = [
-  { label: "Privacy Policy", href: "#" },
+  { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms of Service", href: "#" },
   { label: "Cookie Policy", href: "#" },
   { label: "Whistleblower", href: "/whistleblower" },

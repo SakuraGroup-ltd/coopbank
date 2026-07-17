@@ -12,7 +12,7 @@ export const RESERVED_SLUGS = new Set([
   "home", "about-us", "contact-us", "bank-charges", "blog", "branches",
   "careers", "digital-banking", "faqs", "home-2", "loan-products", "news",
   "open-account", "personal-banking", "press", "preview", "tenders",
-  "treasury", "whistleblower", "cards", "studio", "studio-preview", "api",
+  "treasury", "whistleblower", "privacy", "cards", "studio", "studio-preview", "api",
   "admin", "sitemap.xml", "robots.txt",
 ]);
 
