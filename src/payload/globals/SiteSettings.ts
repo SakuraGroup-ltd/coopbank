@@ -60,6 +60,41 @@ export const SiteSettings: GlobalConfig = {
       ],
     },
     {
+      name: "announcementCard",
+      type: "group",
+      admin: {
+        description:
+          "A dismissible card that slides in at the bottom-right of every page. Use for an AGM, dividend notice, or event. It appears while active and comes down on its own after the event day.",
+      },
+      fields: [
+        { name: "active", type: "checkbox", defaultValue: false },
+        {
+          name: "eventDate",
+          type: "date",
+          admin: {
+            description:
+              "The date of the event being announced. The card automatically comes down after this day.",
+            date: { pickerAppearance: "dayAndTime" },
+            condition: (d) => Boolean(d?.announcementCard?.active),
+          },
+        },
+        {
+          name: "image",
+          type: "upload",
+          relationTo: "media",
+          admin: {
+            description: "Poster / artwork shown as the card thumbnail.",
+            condition: (d) => Boolean(d?.announcementCard?.active),
+          },
+        },
+        { name: "eyebrow", type: "text", admin: { description: 'Small label above the title, e.g. "Announcement" or "Tangazo".', condition: (d) => Boolean(d?.announcementCard?.active) } },
+        { name: "title", type: "text", admin: { condition: (d) => Boolean(d?.announcementCard?.active) } },
+        { name: "subtitle", type: "text", admin: { description: "One line: date · venue.", condition: (d) => Boolean(d?.announcementCard?.active) } },
+        { name: "ctaLabel", type: "text", admin: { description: 'Button text, e.g. "Read the full notice".', condition: (d) => Boolean(d?.announcementCard?.active) } },
+        { name: "ctaHref", type: "text", admin: { description: "Where the button links, e.g. /press/notice-second-agm-2026.", condition: (d) => Boolean(d?.announcementCard?.active) } },
+      ],
+    },
+    {
       name: "appStore",
       type: "group",
       label: "CoopPesa app links",
