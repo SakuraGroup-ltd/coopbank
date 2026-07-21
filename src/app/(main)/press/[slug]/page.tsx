@@ -15,6 +15,7 @@ type Release = {
   summary?: string;
   bodyHtml?: string;
   document?: { url?: string; filename?: string };
+  attachments?: { label: string; file?: { url?: string } }[];
   mediaContact?: { name?: string; email?: string; phone?: string };
 };
 
@@ -107,6 +108,25 @@ export default async function PressReleasePage({ params }: { params: Promise<{ s
             <FileText className="w-4 h-4" />
             Download official PDF
           </a>
+        )}
+
+        {r.attachments && r.attachments.length > 0 && (
+          <div className="flex flex-wrap gap-3 mt-4">
+            {r.attachments
+              .filter((a) => a.file?.url)
+              .map((a, i) => (
+                <a
+                  key={i}
+                  href={a.file!.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-[#1A56A0] text-white text-sm font-semibold hover:bg-[#0F3D7A] transition-colors"
+                >
+                  <FileText className="w-4 h-4" />
+                  {a.label}
+                </a>
+              ))}
+          </div>
         )}
 
         {(r.mediaContact?.email || r.mediaContact?.phone) && (

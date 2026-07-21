@@ -56,7 +56,7 @@ Neon DB to confirm real column/table shapes (do not assume from the
 `showcase_cards` migration alone — that migration is for a top-level
 collection, this is an array field on an existing collection with
 `versions.drafts` enabled, so both `press_releases_attachments` and
-`_press_releases_v_attachments` tables are needed, plus the version-table
+`_press_releases_v_version_attachments` tables are needed, plus the version-table
 foreign key):
 
 ```sql
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS press_releases_attachments (
   _order integer NOT NULL,
   _parent_id integer NOT NULL,
   id character varying PRIMARY KEY,
-  label character varying NOT NULL,
+  label character varying,
   file_id integer,
   CONSTRAINT press_releases_attachments_parent_id_fk
     FOREIGN KEY (_parent_id) REFERENCES press_releases(id) ON DELETE CASCADE,
@@ -92,21 +92,21 @@ CREATE INDEX IF NOT EXISTS press_releases_attachments_order_idx ON press_release
 CREATE INDEX IF NOT EXISTS press_releases_attachments_parent_id_idx ON press_releases_attachments (_parent_id);
 CREATE INDEX IF NOT EXISTS press_releases_attachments_file_idx ON press_releases_attachments (file_id);
 
-CREATE TABLE IF NOT EXISTS _press_releases_v_attachments (
+CREATE TABLE IF NOT EXISTS _press_releases_v_version_attachments (
   _order integer NOT NULL,
   _parent_id integer NOT NULL,
   id serial PRIMARY KEY,
   label character varying,
   file_id integer,
   _uuid character varying,
-  CONSTRAINT _press_releases_v_attachments_parent_id_fk
+  CONSTRAINT _press_releases_v_version_attachments_parent_id_fk
     FOREIGN KEY (_parent_id) REFERENCES _press_releases_v(id) ON DELETE CASCADE,
-  CONSTRAINT _press_releases_v_attachments_file_id_media_id_fk
+  CONSTRAINT _press_releases_v_version_attachments_file_id_media_id_fk
     FOREIGN KEY (file_id) REFERENCES media(id) ON DELETE SET NULL
 );
-CREATE INDEX IF NOT EXISTS _press_releases_v_attachments_order_idx ON _press_releases_v_attachments (_order);
-CREATE INDEX IF NOT EXISTS _press_releases_v_attachments_parent_id_idx ON _press_releases_v_attachments (_parent_id);
-CREATE INDEX IF NOT EXISTS _press_releases_v_attachments_file_idx ON _press_releases_v_attachments (file_id);
+CREATE INDEX IF NOT EXISTS _press_releases_v_version_attachments_order_idx ON _press_releases_v_version_attachments (_order);
+CREATE INDEX IF NOT EXISTS _press_releases_v_version_attachments_parent_id_idx ON _press_releases_v_version_attachments (_parent_id);
+CREATE INDEX IF NOT EXISTS _press_releases_v_version_attachments_file_idx ON _press_releases_v_version_attachments (file_id);
 
 COMMIT;
 ```

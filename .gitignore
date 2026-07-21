@@ -44,3 +44,4 @@ media/
 
 # Claude worktrees (superpowers:using-git-worktrees)
 .worktrees/
+.superpowers/
