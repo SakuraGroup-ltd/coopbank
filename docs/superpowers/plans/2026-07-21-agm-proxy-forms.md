@@ -90,7 +90,7 @@ Do not `git add` this file at any point.
 
 **Interfaces:**
 - Consumes: Task 1's introspection output.
-- Produces: `press_releases_attachments` and `_press_releases_v_attachments` tables — consumed by Task 4 (the Payload field will read/write these tables) and Task 7 (the upload script writes rows here indirectly via Payload's local API).
+- Produces: `press_releases_attachments` and `_press_releases_v_version_attachments` tables — consumed by Task 4 (the Payload field will read/write these tables) and Task 7 (the upload script writes rows here indirectly via Payload's local API).
 
 - [ ] **Step 1: Reconcile the draft below against Task 1's output**
 
@@ -101,7 +101,7 @@ Starting draft (mirrors the existing `docs/superpowers/migrations/2026-07-13-sho
 -- Apply manually to Neon (push:false). Conventions mirrored from the
 -- showcase_cards migration (array table + FK to media) and adapted for a
 -- collection with versions.drafts enabled, which needs a matching
--- _press_releases_v_attachments table. Verified via read-only
+-- _press_releases_v_version_attachments table. Verified via read-only
 -- introspection 2026-07-21 (docs/superpowers/plans/2026-07-21-agm-proxy-forms.md, Task 1).
 
 BEGIN;
@@ -121,28 +121,28 @@ CREATE INDEX IF NOT EXISTS press_releases_attachments_order_idx ON press_release
 CREATE INDEX IF NOT EXISTS press_releases_attachments_parent_id_idx ON press_releases_attachments (_parent_id);
 CREATE INDEX IF NOT EXISTS press_releases_attachments_file_idx ON press_releases_attachments (file_id);
 
-CREATE TABLE IF NOT EXISTS _press_releases_v_attachments (
+CREATE TABLE IF NOT EXISTS _press_releases_v_version_attachments (
   _order integer NOT NULL,
   _parent_id integer NOT NULL,
   id serial PRIMARY KEY,
   label character varying,
   file_id integer,
   _uuid character varying,
-  CONSTRAINT _press_releases_v_attachments_parent_id_fk
+  CONSTRAINT _press_releases_v_version_attachments_parent_id_fk
     FOREIGN KEY (_parent_id) REFERENCES _press_releases_v(id) ON DELETE CASCADE,
-  CONSTRAINT _press_releases_v_attachments_file_id_media_id_fk
+  CONSTRAINT _press_releases_v_version_attachments_file_id_media_id_fk
     FOREIGN KEY (file_id) REFERENCES media(id) ON DELETE SET NULL
 );
-CREATE INDEX IF NOT EXISTS _press_releases_v_attachments_order_idx ON _press_releases_v_attachments (_order);
-CREATE INDEX IF NOT EXISTS _press_releases_v_attachments_parent_id_idx ON _press_releases_v_attachments (_parent_id);
-CREATE INDEX IF NOT EXISTS _press_releases_v_attachments_file_idx ON _press_releases_v_attachments (file_id);
+CREATE INDEX IF NOT EXISTS _press_releases_v_version_attachments_order_idx ON _press_releases_v_version_attachments (_order);
+CREATE INDEX IF NOT EXISTS _press_releases_v_version_attachments_parent_id_idx ON _press_releases_v_version_attachments (_parent_id);
+CREATE INDEX IF NOT EXISTS _press_releases_v_version_attachments_file_idx ON _press_releases_v_version_attachments (file_id);
 
 COMMIT;
 ```
 
 Reconciliation checklist (adjust the draft, then save the final file):
 1. Does `press_releases.id` introspect as `integer`/`serial`? If it's something else (e.g. `character varying` for a custom ID field), change `_parent_id integer` to match in both new tables.
-2. Does `_press_releases_v` exist with an `id` column? If its type differs from `integer`, adjust `_press_releases_v_attachments._parent_id` to match.
+2. Does `_press_releases_v` exist with an `id` column? If its type differs from `integer`, adjust `_press_releases_v_version_attachments._parent_id` to match.
 3. Do any of the new index names (`press_releases_attachments_order_idx`, etc.) already exist per Task 1's `=== INDEXES ===` output? If so, rename to avoid collision (append `_2` is fine — Payload doesn't require exact index names, only the columns/constraints it queries against).
 4. Confirm `media(id)` and `payload_locked_documents_rels` both exist as referenced (they will — every other collection already depends on them).
 5. `press_releases` has `versions: { drafts: true }` enabled. Payload's schema builder suppresses `NOT NULL` on every column of a drafts-enabled collection — including `required: true` fields — confirmed by Task 1's introspection showing `press_releases.headline` (`required: true` in the collection config) as `is_nullable: 'YES'` in the live DB. `label` (`required: true` on the `attachments` field) must therefore be declared `character varying` with no `NOT NULL`, matching `file_id`'s nullability in the same table.
@@ -218,7 +218,7 @@ const { Client } = require('pg');
 (async () => {
   const c = new Client({ connectionString: process.env.DATABASE_URI });
   await c.connect();
-  const r = await c.query(\"SELECT table_name FROM information_schema.tables WHERE table_name IN ('press_releases_attachments', '_press_releases_v_attachments')\");
+  const r = await c.query(\"SELECT table_name FROM information_schema.tables WHERE table_name IN ('press_releases_attachments', '_press_releases_v_version_attachments')\");
   console.log(r.rows);
   await c.end();
 })();
