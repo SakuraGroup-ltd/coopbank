@@ -83,6 +83,24 @@ export const PressReleases: CollectionConfig = {
       admin: { description: "Official press release PDF, where applicable." },
     },
     {
+      name: "attachments",
+      type: "array",
+      labels: { singular: "Attachment", plural: "Attachments" },
+      admin: {
+        description:
+          "Extra downloadable documents (proxy forms, appendices). The official notice PDF stays in the field above.",
+      },
+      fields: [
+        {
+          name: "label",
+          type: "text",
+          required: true,
+          admin: { description: 'Button text, e.g. "Proxy Form (English)".' },
+        },
+        { name: "file", type: "upload", relationTo: "media", required: true },
+      ],
+    },
+    {
       name: "mediaContact",
       type: "group",
       fields: [
