@@ -494,7 +494,7 @@ export default function DigitalBankingPage() {
       {/* ============================================================ */}
       {/*  BOTTOM CTA -- Download CoopPesa (centered rounded card)       */}
       {/* ============================================================ */}
-      <section className="bg-white pt-20 sm:pt-24 pb-0 relative overflow-hidden">
+      <section id="download" className="scroll-mt-24 bg-white pt-20 sm:pt-24 pb-0 relative overflow-hidden">
         <div className="mx-auto max-w-5xl px-6 sm:px-8 lg:px-12 pb-20 sm:pb-24 relative">
           {/* Phone floating above the card */}
           <motion.div
