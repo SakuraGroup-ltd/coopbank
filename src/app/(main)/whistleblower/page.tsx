@@ -557,9 +557,12 @@ export default function WhistleblowerPage() {
                   <p className="mb-4 text-sm leading-relaxed text-body">
                     {channel.description}
                   </p>
-                  <p className="text-sm font-semibold text-[#1A8A3A]">
+                  <a
+                    href={`mailto:${channel.detail}`}
+                    className="text-sm font-semibold text-[#1A8A3A] hover:underline"
+                  >
                     {channel.detail}
-                  </p>
+                  </a>
                 </motion.div>
               );
             })}
