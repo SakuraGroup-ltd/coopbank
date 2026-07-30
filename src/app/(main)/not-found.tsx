@@ -1,15 +1,16 @@
 import { ArrowRight, Home, Phone } from "lucide-react";
 import Link from "next/link";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 
 // Server component: the footer now reads CMS globals (server-only), so this
 // page must not be a client component. The 404 doesn't need entrance
 // animations, so plain markup is fine.
+//
+// No Navbar/Footer here — (main)/layout.tsx already wraps {children} (this
+// page included) with both. Rendering them again duplicated the nav and
+// footer on every 404 inside the marketing site.
 export default function NotFound() {
   return (
     <>
-      <Navbar />
       {/* Hero-style 404 section */}
       <section className="relative overflow-hidden pt-32 pb-24 sm:pt-36 sm:pb-32">
         {/* Pattern background */}
@@ -105,7 +106,6 @@ export default function NotFound() {
           </div>
         </div>
       </section>
-      <Footer />
     </>
   );
 }
