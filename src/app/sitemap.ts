@@ -27,6 +27,7 @@ const ROUTES = [
   "/treasury/foreign-exchange",
   "/treasury/government-securities",
   "/branches",
+  "/investors",
   "/bank-charges",
   "/open-account",
   "/news",
