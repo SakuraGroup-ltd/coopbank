@@ -56,7 +56,7 @@ export default async function ReportsPage() {
             </p>
           </div>
         </div>
-        <Link href="/admin/collections/annual-reports/create" className="h-9 px-4 text-sm inline-flex items-center gap-2 rounded-lg bg-studio-ink hover:bg-cb-navy-deep text-white font-medium">
+        <Link href="/studio/reports/new" className="h-9 px-4 text-sm inline-flex items-center gap-2 rounded-lg bg-studio-ink hover:bg-cb-navy-deep text-white font-medium">
           <Plus className="w-4 h-4" />
           Add report
         </Link>
@@ -67,7 +67,7 @@ export default async function ReportsPage() {
           <BookText className="w-12 h-12 mx-auto text-studio-ink-3 opacity-40 mb-4" />
           <h3 className="text-base font-semibold text-studio-ink mb-1">No reports yet</h3>
           <p className="text-sm text-studio-ink-3 mb-6">Upload the first annual report PDF.</p>
-          <Link href="/admin/collections/annual-reports/create" className="inline-flex h-9 px-4 text-sm items-center gap-2 rounded-lg bg-studio-ink hover:bg-cb-navy-deep text-white font-medium">
+          <Link href="/studio/reports/new" className="inline-flex h-9 px-4 text-sm items-center gap-2 rounded-lg bg-studio-ink hover:bg-cb-navy-deep text-white font-medium">
             <Plus className="w-4 h-4" />
             Upload first report
           </Link>
@@ -77,7 +77,7 @@ export default async function ReportsPage() {
           {reports.map((r) => (
             <Link
               key={String(r.id)}
-              href={`/admin/collections/annual-reports/${r.id}`}
+              href={`/studio/reports/${r.id}`}
               className="group block rounded-2xl border border-studio-border bg-studio-panel hover:border-cb-navy/30 hover:shadow-[0_4px_16px_rgba(15,15,15,0.06)] transition-all overflow-hidden"
             >
               <div className="aspect-[16/10] bg-studio-soft relative">
